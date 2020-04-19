@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "348420035533",
+    "firebase_url": "https://dsaw-afffc.firebaseio.com",
+    "project_id": "dsaw-afffc",
+    "storage_bucket": "dsaw-afffc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348420035533:android:08047594f435a52bb16a84",
+        "android_client_info": {
+          "package_name": "com.nguyenhongphuc98.dsaw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348420035533-b3030a5c8rnr9ah513mkh5lnr06f1m7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJvMd5s5YFDp4vlY_O_fF9t1oNCrB64-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348420035533-b3030a5c8rnr9ah513mkh5lnr06f1m7h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
