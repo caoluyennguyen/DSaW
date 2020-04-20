@@ -17,4 +17,13 @@
         android:icon="@drawable/report_48"
         android:title="@string/title_report" />
 
+    <item
+        android:id="@+id/navigation_user"
+        android:icon="@drawable/user_48"
+        android:title="@string/title_user"/>
+
+    <item
+        android:id="@+id/navigation_admin"
+        android:icon="@drawable/admin_menu_48"
+        android:title="@string/title_admin"/>
 </menu>
