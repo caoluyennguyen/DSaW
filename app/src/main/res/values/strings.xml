@@ -4,4 +4,11 @@
     <string name="title_news">News</string>
     <string name="title_report">Report</string>
     <string name="title_user">User</string>
+    <string name="taocanhbao">Tạo cảnh báo</string>
+    <string name="nhap_thong_tin">Nhập ngắn gọn thông tin ở dây</string>
+    <string name="noi_dung_canh_bao">Nội dung cảnh báo</string>
+    <string name="cmnd_the_can_cuoc">CMND/Thẻ căn cước</string>
+    <string name="cmnd_nguoi_nhan">CMND người nhận</string>
+    <string name="gui_den_nguoi_cu_the">Gửi đến người cụ thể?</string>
+    <string name="gui_ngay">Gửi ngay</string>
 </resources>
