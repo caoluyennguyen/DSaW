@@ -26,7 +26,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-        navView.inflateMenu(R.menu.bottom_nav_menu);
+        if (mMenuSet == 1)
+            navView.inflateMenu(R.menu.bottom_nav_menu);
+        else
+            navView.inflateMenu(R.menu.bottom_nav_menu_admin);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
