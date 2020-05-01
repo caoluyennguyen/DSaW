@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/new_rows_bg">
+
+    <ImageView
+        android:id="@+id/news_item_cover"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/news_cover"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/news_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH
+COVID-19 TRONG MÙA DỊCH"
+        android:textColor="#000"
+        android:textAllCaps="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/news_item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch
+bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà
+nhà hạnh phúc ấm no..."
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+</LinearLayout>
