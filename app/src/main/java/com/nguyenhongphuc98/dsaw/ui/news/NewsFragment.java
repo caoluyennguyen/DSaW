@@ -31,6 +31,7 @@ public class NewsFragment extends Fragment {
                 ViewModelProviders.of(this).get(NewsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_news, container, false);
         lvNews=root.findViewById(R.id.news_info_lv);
+        newsViewModel.setContext(getContext());
 
         newsViewModel.getAdaptor().observe(this, new Observer<NewsAdaptor>() {
             @Override

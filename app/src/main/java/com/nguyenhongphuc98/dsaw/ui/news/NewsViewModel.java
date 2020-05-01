@@ -23,7 +23,24 @@ public class NewsViewModel extends ViewModel {
 
     public NewsViewModel() {
         mAdaptor = new MutableLiveData<>();
+    }
+
+    public LiveData<NewsAdaptor> getAdaptor() {
+        return mAdaptor;
+    }
+
+    public void setContext(Context c) {
+        this.context = c;
         lsNews = new ArrayList<>();
+        lsNews.add(new News("Phuc",
+                "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
+                "cover",
+                "22:03 - 22/11/2019",
+                "1",
+                "link to post",
+                "THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH COVID-19 TRONG MÙA DỊCH",
+                "link"));
+
         lsNews.add(new News("Phuc",
                 "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
                 "cover",
@@ -44,10 +61,4 @@ public class NewsViewModel extends ViewModel {
         adaptor = new NewsAdaptor(this.context, lsNews);
         mAdaptor.setValue(adaptor);
     }
-
-    public LiveData<NewsAdaptor> getAdaptor() {
-        return mAdaptor;
-    }
-
-    public void setContext(Context c) {this.context = c; }
 }

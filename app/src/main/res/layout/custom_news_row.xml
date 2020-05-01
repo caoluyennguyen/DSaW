@@ -7,9 +7,11 @@
     <ImageView
         android:id="@+id/news_item_cover"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:src="@drawable/news_cover"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:background="@drawable/new_rows_bg"
+        />
 
     <TextView
         android:id="@+id/news_item_title"
@@ -32,5 +34,6 @@ bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nh
 nhà hạnh phúc ấm no..."
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"/>
 </LinearLayout>

@@ -39,6 +39,7 @@ public class NewsAdaptor extends ArrayAdapter {
             viewRow=layoutInflater.inflate(R.layout.custom_news_row,parent,false);
             ViewHolder holder=new ViewHolder();
             holder.cover =viewRow.findViewById(R.id.news_item_cover);
+            holder.cover.setClipToOutline(true);
             holder.title =viewRow.findViewById(R.id.news_item_title);
             holder.content =viewRow.findViewById(R.id.news_item_content);
 
