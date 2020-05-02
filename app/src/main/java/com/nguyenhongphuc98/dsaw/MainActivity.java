@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
         myRef.setValue("Hello, World!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Utils.activity = this;
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         if (mMenuSet == 1)
