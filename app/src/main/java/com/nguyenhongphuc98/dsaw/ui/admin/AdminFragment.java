@@ -108,7 +108,6 @@ public class AdminFragment extends Fragment {
     }
 
     public void openImportPatientPage() {
-        Toast.makeText(getContext(),"nhập case",Toast.LENGTH_SHORT).show();
         Utils.replaceFragment(this.caseFragment);
     }
 
