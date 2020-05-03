@@ -5,4 +5,13 @@
     <string name="title_report">Report</string>
     <string name="title_user">User</string>
     <string name="title_admin">Admin</string>
+    <string name="see_all"> <u>Xem tất cả</u>.</string>
+
+    <string-array name="case_array">
+        <item>Chọn đối tượng</item>
+        <item>F0 - Nhiễm bệnh</item>
+        <item>F1 - Nghi nhiễm</item>
+        <item>F2 - Tiếp xúc F0</item>
+        <item>F3 - Tiếp xúc F1</item>
+    </string-array>
 </resources>

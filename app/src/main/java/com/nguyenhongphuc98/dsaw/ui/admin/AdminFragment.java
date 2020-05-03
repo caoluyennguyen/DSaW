@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.Utils;
+import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
 
 public class AdminFragment extends Fragment {
 
@@ -25,6 +27,8 @@ public class AdminFragment extends Fragment {
     View viewSurvey;
     View createPost;
     View viewStatistics;
+
+    CaseFragment caseFragment;
 
     public static AdminFragment newInstance() {
         return new AdminFragment();
@@ -55,6 +59,8 @@ public class AdminFragment extends Fragment {
         viewSurvey = view.findViewById(R.id.item_view_survey);
         createPost = view.findViewById(R.id.item_create_post);
         viewStatistics = view.findViewById(R.id.item_view_statistics);
+
+        caseFragment = new CaseFragment();
     }
 
     private void setupAction() {
@@ -102,7 +108,7 @@ public class AdminFragment extends Fragment {
     }
 
     public void openImportPatientPage() {
-        Toast.makeText(getContext(),"nhập case",Toast.LENGTH_SHORT).show();
+        Utils.replaceFragment(this.caseFragment);
     }
 
     public void openCreateWaringPage() {
