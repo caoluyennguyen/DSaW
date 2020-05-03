@@ -1,0 +1,109 @@
+package com.nguyenhongphuc98.dsaw.ui.cases;
+
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
+import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.adaptor.CaseAdaptor;
+
+public class ViewCaseFragment extends Fragment {
+
+    private ViewCaseViewModel mViewModel;
+    private Button btnFilter;
+    private EditText etSearch;
+    private ListView lvCases;
+
+    PopupMenu popup;
+
+    public static ViewCaseFragment newInstance() {
+        return new ViewCaseFragment();
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_view_case, container, false);
+        setupView(view);
+        setupAction();
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(ViewCaseViewModel.class);
+        mViewModel.setContext(getContext());
+        mViewModel.getAdaptor().observe(this, new Observer<CaseAdaptor>() {
+            @Override
+            public void onChanged(CaseAdaptor caseAdaptor) {
+                lvCases.setAdapter(caseAdaptor);
+            }
+        });
+    }
+
+    private void setupView(View view) {
+
+        btnFilter = view.findViewById(R.id.view_case_filter_btn);
+        etSearch = view.findViewById(R.id.view_case_search_et);
+        lvCases = view.findViewById(R.id.view_case_case_lv);
+
+        popup = new PopupMenu(getContext(), btnFilter);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.case_menu, popup.getMenu());
+    }
+
+    private void setupAction() {
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup.show();
+            }
+        });
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Toast.makeText(getContext(),s.toString(),Toast.LENGTH_SHORT).show();
+                mViewModel.filterByNameOrCMND(s.toString());
+            }
+        });
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String f = item.getTitle().toString().split(" ")[1];
+                mViewModel.filterByF(f);
+                return true;
+            }
+        });
+    }
+}

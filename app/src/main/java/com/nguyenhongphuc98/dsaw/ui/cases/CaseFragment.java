@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.CaseAdaptor;
 
 public class CaseFragment extends Fragment {
@@ -35,6 +36,8 @@ public class CaseFragment extends Fragment {
     private Button btnUpdate;
     private EditText tvCmnd;
     private TextView tvSeeAll;
+
+    ViewCaseFragment viewCaseFragment;
 
     public static CaseFragment newInstance() {
         return new CaseFragment();
@@ -64,6 +67,9 @@ public class CaseFragment extends Fragment {
     }
 
     private void setupView(View view) {
+
+        viewCaseFragment = new ViewCaseFragment();
+
         spinner = view.findViewById(R.id.case_spinner_level);
         tvCmnd = view.findViewById(R.id.case_cmnd_tf);
         lvCase = view.findViewById(R.id.case_recently_lv);
@@ -89,7 +95,7 @@ public class CaseFragment extends Fragment {
         tvSeeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Se all page",Toast.LENGTH_SHORT).show();
+                Utils.replaceFragment(viewCaseFragment);
             }
         });
     }
