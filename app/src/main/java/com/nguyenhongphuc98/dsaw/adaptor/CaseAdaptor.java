@@ -24,7 +24,7 @@ public class CaseAdaptor extends ArrayAdapter {
     List<Case> lsCases;
 
     public CaseAdaptor(@NonNull Context context, List<Case> ls) {
-        super(context, R.layout.custom_news_row,ls);
+        super(context, R.layout.custom_case_row,ls);
         this.context=context;
         lsCases =ls;
     }

@@ -38,5 +38,6 @@
         android:layout_height="20dp"
         android:text="F0"
         android:textColor="#fff"
+        android:textAllCaps="false"
         android:background="@drawable/background_button_f0"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

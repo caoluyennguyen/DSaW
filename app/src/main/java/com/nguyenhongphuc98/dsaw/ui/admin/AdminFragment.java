@@ -29,6 +29,7 @@ public class AdminFragment extends Fragment {
     View viewStatistics;
 
     CaseFragment caseFragment;
+    UserManagerFragment userManagerFragment;
 
     public static AdminFragment newInstance() {
         return new AdminFragment();
@@ -61,6 +62,7 @@ public class AdminFragment extends Fragment {
         viewStatistics = view.findViewById(R.id.item_view_statistics);
 
         caseFragment = new CaseFragment();
+        userManagerFragment = new UserManagerFragment();
     }
 
     private void setupAction() {
@@ -127,6 +129,6 @@ public class AdminFragment extends Fragment {
         Toast.makeText(getContext(),"create post",Toast.LENGTH_SHORT).show();
     }
     public void openStatisticsPage() {
-        Toast.makeText(getContext(),"statistics",Toast.LENGTH_SHORT).show();
+        Utils.replaceFragment(this.userManagerFragment);
     }
 }
