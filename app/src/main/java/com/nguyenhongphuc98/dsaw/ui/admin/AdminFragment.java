@@ -27,6 +27,7 @@ public class AdminFragment extends Fragment {
     View viewSurvey;
     View createPost;
     View viewStatistics;
+    View userManager;
 
     CaseFragment caseFragment;
     UserManagerFragment userManagerFragment;
@@ -38,7 +39,7 @@ public class AdminFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.admin_fragment, container, false);
+        View view =  inflater.inflate(R.layout.fragment_admin, container, false);
 
         setupView(view);
         setupAction();
@@ -60,6 +61,7 @@ public class AdminFragment extends Fragment {
         viewSurvey = view.findViewById(R.id.item_view_survey);
         createPost = view.findViewById(R.id.item_create_post);
         viewStatistics = view.findViewById(R.id.item_view_statistics);
+        userManager = view.findViewById(R.id.item_user_manager);
 
         caseFragment = new CaseFragment();
         userManagerFragment = new UserManagerFragment();
@@ -107,6 +109,14 @@ public class AdminFragment extends Fragment {
                 openStatisticsPage();
             }
         });
+
+        userManager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openUserManagerPage();
+            }
+        });
+        viewStatistics.setEnabled(false);
     }
 
     public void openImportPatientPage() {
@@ -128,7 +138,12 @@ public class AdminFragment extends Fragment {
     public void openCreatePostPage() {
         Toast.makeText(getContext(),"create post",Toast.LENGTH_SHORT).show();
     }
+
     public void openStatisticsPage() {
+        Utils.replaceFragment(this.userManagerFragment);
+    }
+
+    public void openUserManagerPage() {
         Utils.replaceFragment(this.userManagerFragment);
     }
 }
