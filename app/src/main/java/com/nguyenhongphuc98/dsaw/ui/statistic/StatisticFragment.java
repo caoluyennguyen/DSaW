@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.anychart.APIlib;
 import com.anychart.AnyChart;
@@ -28,11 +31,16 @@ import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.nguyenhongphuc98.dsaw.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StatisticFragment extends Fragment {
 
     private StatisticViewModel mViewModel;
+
+    private Spinner spinner;
+    private ArrayAdapter areasAdaptor;
 
     private AnyChartView pieChartView;
     private Pie pieChart;
@@ -80,12 +88,25 @@ public class StatisticFragment extends Fragment {
                         .format("${%Value}{groupsSeparator: }");
             }
         });
+
+        mViewModel.getAreas().observe(this, new Observer<HashMap>() {
+            @Override
+            public void onChanged(HashMap hashMap) {
+                ArrayList<String> keyList = new ArrayList<String>(hashMap.keySet());
+                ArrayAdapter<String> adaptor = new ArrayAdapter<String>(getContext(),R.layout.support_simple_spinner_dropdown_item, keyList);
+                spinner.setAdapter(adaptor);
+            }
+        });
     }
 
     void setupView(View view) {
+
+        spinner = view.findViewById(R.id.statistic_spinner_area);
+
         pieChartView = view.findViewById(R.id.statistic_pie_chart);
+        APIlib.getInstance().setActiveAnyChartView(pieChartView);
         pieChart = AnyChart.pie();
-        pieChart.title("Biểu đồ dịch bệnh (người)");
+        //pieChart.title("Biểu đồ dịch bệnh (người)");
 
         pieChart.labels().position("outside");
 
@@ -103,9 +124,10 @@ public class StatisticFragment extends Fragment {
 
         //column chart
         columnChartView = view.findViewById(R.id.statistic_column_chart);
+        APIlib.getInstance().setActiveAnyChartView(columnChartView);
         cartesian = AnyChart.column();
         cartesian.animation(true);
-        cartesian.title("Thông tin dịch tễ");
+        //cartesian.title("Thông tin dịch tễ");
 
         cartesian.yScale().minimum(0d);
 

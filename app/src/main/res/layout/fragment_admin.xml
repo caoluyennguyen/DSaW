@@ -24,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@id/wellcome_text"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="570dp"
         android:layout_marginTop="30dp">
 
         <LinearLayout

@@ -8,9 +8,14 @@ import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class StatisticViewModel extends ViewModel {
+
+    //areas
+    private HashMap<String,String> areas;
+    private MutableLiveData<HashMap> mAreas;
 
     //pie chart
     private List<DataEntry> caseData;
@@ -21,8 +26,16 @@ public class StatisticViewModel extends ViewModel {
     private MutableLiveData<List<DataEntry>> mDichTeData;
 
     public StatisticViewModel() {
-        mCaseData = new MutableLiveData<>();
 
+        mAreas = new MutableLiveData<>();
+        areas = new HashMap<>();
+        areas.put("Hồ Chí Minh","area1");
+        areas.put("Hà Nội","area2");
+        areas.put("Bến Tre","area3");
+        areas.put("Đà Nẵng","area4");
+        mAreas.setValue(areas);
+
+        mCaseData = new MutableLiveData<>();
         caseData = new ArrayList<>();
         caseData.add(new ValueDataEntry("F0 - Dương tính (10)", 10));
         caseData.add(new ValueDataEntry("F1 - Tiếp xúc F0 (55)", 55));
@@ -38,6 +51,10 @@ public class StatisticViewModel extends ViewModel {
         dichTeData.add(new ValueDataEntry("Tim đập nhanh", 33));
         dichTeData.add(new ValueDataEntry("Khó thở", 152));
         mDichTeData.setValue(dichTeData);
+    }
+
+    public LiveData<HashMap> getAreas() {
+        return mAreas;
     }
 
     public LiveData<List<DataEntry>> getPie() {
