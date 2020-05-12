@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/type_user_normal"
+        android:icon="@drawable/user_48"
+        android:title="Người dùng" />
+
+    <item android:id="@+id/type_user_manager"
+        android:icon="@drawable/manager_48"
+        android:title="Quản lý"/>
+</menu>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/case_item_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nguyễn Hồng Phúc"
+        android:textColor="#000"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/case_item_cmnd"
+        app:layout_constraintTop_toBottomOf="@id/case_item_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="184335348"
+        android:layout_marginLeft="20dp"
+        />
+
+    <Button
+        android:id="@+id/case_item_f"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:text="F0"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:background="@drawable/background_button_f0"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

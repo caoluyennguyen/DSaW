@@ -28,4 +28,9 @@
         android:name="com.nguyenhongphuc98.dsaw.ui.user.UserFragment"
         android:label="@string/title_report"
         tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/navigation_admin"
+        android:name="com.nguyenhongphuc98.dsaw.ui.admin.AdminFragment"
+        android:label="@string/title_admin"
+        tools:layout="@layout/fragment_admin" />
 </navigation>
