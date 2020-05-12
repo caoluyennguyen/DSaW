@@ -29,14 +29,14 @@ public class UserFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mViewModel =
                 ViewModelProviders.of(this).get(UserViewModel.class);
-        View root = inflater.inflate(R.layout.user_fragment, container, false);
-        final TextView textView = root.findViewById(R.id.test);
+        View root = inflater.inflate(R.layout.fragment_user, container, false);
+        /*final TextView textView = root.findViewById(R.id.cmndTitle);
         mViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 
