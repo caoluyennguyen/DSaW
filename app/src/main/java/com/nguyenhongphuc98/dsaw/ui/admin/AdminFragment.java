@@ -17,6 +17,7 @@ import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
 import com.nguyenhongphuc98.dsaw.ui.statistic.StatisticFragment;
+import com.nguyenhongphuc98.dsaw.ui.surveys.AdminSurveyListFragment;
 
 public class AdminFragment extends Fragment {
 
@@ -33,6 +34,7 @@ public class AdminFragment extends Fragment {
     CaseFragment caseFragment;
     UserManagerFragment userManagerFragment;
     StatisticFragment statisticFragment;
+    AdminSurveyListFragment adminSurveyListFragment;
 
     public static AdminFragment newInstance() {
         return new AdminFragment();
@@ -68,6 +70,7 @@ public class AdminFragment extends Fragment {
         caseFragment = new CaseFragment();
         userManagerFragment = new UserManagerFragment();
         statisticFragment = new StatisticFragment();
+        adminSurveyListFragment = new AdminSurveyListFragment();
     }
 
     private void setupAction() {
@@ -133,9 +136,7 @@ public class AdminFragment extends Fragment {
         Toast.makeText(getContext(),"create survey",Toast.LENGTH_SHORT).show();
     }
 
-    public void openViewSurveyPage() {
-        Toast.makeText(getContext(),"view survey",Toast.LENGTH_SHORT).show();
-    }
+    public void openViewSurveyPage() { Utils.replaceFragment(this.adminSurveyListFragment); }
 
     public void openCreatePostPage() {
         Toast.makeText(getContext(),"create post",Toast.LENGTH_SHORT).show();
