@@ -20,6 +20,11 @@ public class UserFragment extends Fragment {
 
     private UserViewModel mViewModel;
 
+    private TextView mTextName;
+    private TextView mTextCMND;
+    private TextView mTextDayofBirth;
+    private TextView mTextContact;
+
     public static UserFragment newInstance() {
         return new UserFragment();
     }
@@ -30,13 +35,8 @@ public class UserFragment extends Fragment {
         mViewModel =
                 ViewModelProviders.of(this).get(UserViewModel.class);
         View root = inflater.inflate(R.layout.fragment_user, container, false);
-        /*final TextView textView = root.findViewById(R.id.cmndTitle);
-        mViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
+        InitComponent(root);
+        RegisterDataLiveListener();
         return root;
     }
 
@@ -47,4 +47,37 @@ public class UserFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    public void InitComponent(View view) {
+        mTextName = view.findViewById(R.id.txtName);
+        mTextCMND = view.findViewById(R.id.txtCMND);
+        mTextDayofBirth = view.findViewById(R.id.txtContact);
+        mTextContact = view.findViewById(R.id.txtDayOfBirth);
+    }
+
+    public void RegisterDataLiveListener() {
+        mViewModel.getName().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                mTextName.setText(String.valueOf(s));
+            }
+        });
+        mViewModel.getCMND().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                mTextCMND.setText(String.valueOf(s));
+            }
+        });
+        mViewModel.getDayOfBirth().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                mTextDayofBirth.setText(String.valueOf(s));
+            }
+        });
+        mViewModel.getContact().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                mTextContact.setText(String.valueOf(s));
+            }
+        });
+    }
 }
