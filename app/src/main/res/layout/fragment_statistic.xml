@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context=".ui.statistic.StatisticFragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/statistic_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Xem thống kê"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/statistic_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Chọn khu vực"
+        android:textColor="#000"
+        android:gravity="left"
+        android:layout_marginLeft="40dp"
+        />
+
+    <Spinner
+        android:id="@+id/statistic_spinner_area"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        style="@style/SpinnerTheme"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="510dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Thông tin nhiễm"
+                android:textColor="#000"
+                android:gravity="left"
+                android:layout_marginLeft="40dp"
+                />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/statistic_pie_chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Thông tin dịch tễ"
+                android:textColor="#000"
+                android:gravity="left"
+                android:layout_marginLeft="40dp"
+                />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/statistic_column_chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

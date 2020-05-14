@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
+import com.nguyenhongphuc98.dsaw.ui.statistic.StatisticFragment;
 
 public class AdminFragment extends Fragment {
 
@@ -31,6 +32,7 @@ public class AdminFragment extends Fragment {
 
     CaseFragment caseFragment;
     UserManagerFragment userManagerFragment;
+    StatisticFragment statisticFragment;
 
     public static AdminFragment newInstance() {
         return new AdminFragment();
@@ -51,7 +53,7 @@ public class AdminFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AdminViewModel.class);
-        // TODO: Use the ViewModel
+
     }
 
     private void setupView(View view) {
@@ -65,6 +67,7 @@ public class AdminFragment extends Fragment {
 
         caseFragment = new CaseFragment();
         userManagerFragment = new UserManagerFragment();
+        statisticFragment = new StatisticFragment();
     }
 
     private void setupAction() {
@@ -116,7 +119,6 @@ public class AdminFragment extends Fragment {
                 openUserManagerPage();
             }
         });
-        viewStatistics.setEnabled(false);
     }
 
     public void openImportPatientPage() {
@@ -140,7 +142,7 @@ public class AdminFragment extends Fragment {
     }
 
     public void openStatisticsPage() {
-        Utils.replaceFragment(this.userManagerFragment);
+        Utils.replaceFragment(this.statisticFragment);
     }
 
     public void openUserManagerPage() {
