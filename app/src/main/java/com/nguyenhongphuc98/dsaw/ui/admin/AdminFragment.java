@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
+import com.nguyenhongphuc98.dsaw.ui.admin_warning.AdminWarning;
 import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
 
 public class AdminFragment extends Fragment {
@@ -31,6 +32,7 @@ public class AdminFragment extends Fragment {
 
     CaseFragment caseFragment;
     UserManagerFragment userManagerFragment;
+    AdminWarning adminWarningFragment;
 
     public static AdminFragment newInstance() {
         return new AdminFragment();
@@ -65,6 +67,7 @@ public class AdminFragment extends Fragment {
 
         caseFragment = new CaseFragment();
         userManagerFragment = new UserManagerFragment();
+        adminWarningFragment = new AdminWarning();
     }
 
     private void setupAction() {
@@ -124,7 +127,7 @@ public class AdminFragment extends Fragment {
     }
 
     public void openCreateWaringPage() {
-        Toast.makeText(getContext(),"create waring",Toast.LENGTH_SHORT).show();
+        Utils.replaceFragment(this.adminWarningFragment);
     }
 
     public void openCreateSurveyPage() {

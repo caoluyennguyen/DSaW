@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.admin.AdminFragment"
-    android:id="@+id/admin_fragment">
+    android:id="@+id/admin_fragment"
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/wellcome_text"
