@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.SurveyAdaptor;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 
@@ -58,7 +59,11 @@ public class AdminSurveyListFragment extends Fragment {
         lvSurvey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"did click at:" + mViewModel.getListSurvey().get(position).getId(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"did click at:" + mViewModel.getListSurvey().get(position).getId(),Toast.LENGTH_SHORT).show();
+                String sid = mViewModel.getListSurvey().get(position).getId();
+                SurveyResultFragment f = new SurveyResultFragment();
+                f.setSurveyId(sid);
+                Utils.replaceFragment(f);
             }
         });
     }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/survey_result_question_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1. Bạn có những triệu chứng nào sau đây?"
+        android:textColor="#000"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:id="@+id/survey_result_frame_subitem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"/>
+</LinearLayout>
