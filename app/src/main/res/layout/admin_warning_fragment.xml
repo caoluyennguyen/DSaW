@@ -91,7 +91,7 @@
             android:id="@+id/stateSwitch"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:checked="true" />
+            android:checked="true"/>
     </LinearLayout>
 
     <LinearLayout

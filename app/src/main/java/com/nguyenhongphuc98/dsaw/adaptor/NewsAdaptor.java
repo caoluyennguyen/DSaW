@@ -16,43 +16,39 @@ import com.nguyenhongphuc98.dsaw.data.model.News;
 
 import java.util.List;
 
-public class NewsAdaptor extends ArrayAdapter {
-
+public class NewsAdaptor extends ArrayAdapter{
     Context context;
     List<News> lsNews;
 
-    public NewsAdaptor(@NonNull Context context, List<News> ls) {
-        super(context, R.layout.custom_news_row,ls);
-        this.context=context;
-        lsNews =ls;
+    public NewsAdaptor(@NonNull Context context, List<News> ls){
+        super(context, R.layout.custom_news_row, ls);
+        this.context = context;
+        lsNews = ls;
     }
-
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater layoutInflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+        LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View viewRow= convertView;
+        View viewRow = convertView;
 
-        if(viewRow==null){
-            viewRow=layoutInflater.inflate(R.layout.custom_news_row,parent,false);
-            ViewHolder holder=new ViewHolder();
-            holder.cover =viewRow.findViewById(R.id.news_item_cover);
+        if (viewRow == null){
+            viewRow = layoutInflater.inflate(R.layout.custom_news_row,parent,false);
+            ViewHolder holder = new ViewHolder();
+            holder.cover = viewRow.findViewById(R.id.news_item_cover);
             holder.cover.setClipToOutline(true);
-            holder.title =viewRow.findViewById(R.id.news_item_title);
-            holder.content =viewRow.findViewById(R.id.news_item_content);
+            holder.title = viewRow.findViewById(R.id.news_item_title);
+            holder.content = viewRow.findViewById(R.id.news_item_content);
 
             viewRow.setTag(holder);
         }
 
-        ViewHolder viewHolder= (ViewHolder) viewRow.getTag();
+        /*ViewHolder viewHolder = (ViewHolder) viewRow.getTag();
 
-        //viewHolder.cover.setImageResource(R.drawable.ninja_avt);
-
-        News e= lsNews.get(position);
+        News e = lsNews.get(position);
         viewHolder.title.setText(e.getTitle());
-        viewHolder.content.setText(e.getContent());
+        viewHolder.content.setText(e.getContent());*/
 
         return viewRow;
     }

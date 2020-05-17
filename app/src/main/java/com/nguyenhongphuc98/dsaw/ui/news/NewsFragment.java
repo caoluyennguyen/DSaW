@@ -15,9 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.NewsAdaptor;
-import com.nguyenhongphuc98.dsaw.data.model.News;
-
-import java.util.List;
 
 public class NewsFragment extends Fragment {
 
