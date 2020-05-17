@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/item_survey_background">
+
+    <TextView
+        android:id="@+id/survey_item_count_tv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="100"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:layout_marginLeft="9dp"
+        android:background="@drawable/count_survey_background"/>
+
+    <TextView
+        android:id="@+id/survey_item_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Khai báo y tế"
+        android:textAlignment="textStart"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"/>
+</LinearLayout>

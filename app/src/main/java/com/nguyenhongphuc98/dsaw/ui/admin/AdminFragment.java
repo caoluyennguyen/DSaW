@@ -17,6 +17,8 @@ import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.ui.admin_warning.AdminWarning;
 import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
+import com.nguyenhongphuc98.dsaw.ui.statistic.StatisticFragment;
+import com.nguyenhongphuc98.dsaw.ui.surveys.AdminSurveyListFragment;
 
 public class AdminFragment extends Fragment {
 
@@ -32,7 +34,8 @@ public class AdminFragment extends Fragment {
 
     CaseFragment caseFragment;
     UserManagerFragment userManagerFragment;
-    AdminWarning adminWarningFragment;
+    StatisticFragment statisticFragment;
+    AdminSurveyListFragment adminSurveyListFragment;
 
     public static AdminFragment newInstance() {
         return new AdminFragment();
@@ -53,7 +56,7 @@ public class AdminFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AdminViewModel.class);
-        // TODO: Use the ViewModel
+
     }
 
     private void setupView(View view) {
@@ -67,7 +70,8 @@ public class AdminFragment extends Fragment {
 
         caseFragment = new CaseFragment();
         userManagerFragment = new UserManagerFragment();
-        adminWarningFragment = new AdminWarning();
+        statisticFragment = new StatisticFragment();
+        adminSurveyListFragment = new AdminSurveyListFragment();
     }
 
     private void setupAction() {
@@ -119,7 +123,6 @@ public class AdminFragment extends Fragment {
                 openUserManagerPage();
             }
         });
-        viewStatistics.setEnabled(false);
     }
 
     public void openImportPatientPage() {
@@ -127,23 +130,21 @@ public class AdminFragment extends Fragment {
     }
 
     public void openCreateWaringPage() {
-        Utils.replaceFragment(this.adminWarningFragment);
+        Toast.makeText(getContext(),"create waring",Toast.LENGTH_SHORT).show();
     }
 
     public void openCreateSurveyPage() {
         Toast.makeText(getContext(),"create survey",Toast.LENGTH_SHORT).show();
     }
 
-    public void openViewSurveyPage() {
-        Toast.makeText(getContext(),"view survey",Toast.LENGTH_SHORT).show();
-    }
+    public void openViewSurveyPage() { Utils.replaceFragment(this.adminSurveyListFragment); }
 
     public void openCreatePostPage() {
         Toast.makeText(getContext(),"create post",Toast.LENGTH_SHORT).show();
     }
 
     public void openStatisticsPage() {
-        Utils.replaceFragment(this.userManagerFragment);
+        Utils.replaceFragment(this.statisticFragment);
     }
 
     public void openUserManagerPage() {

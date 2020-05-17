@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_report"
-        android:name="com.nguyenhongphuc98.dsaw.ui.report.ReportFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.UserSurveyListFragment"
         android:label="@string/title_report"
-        tools:layout="@layout/fragment_report" />
+        tools:layout="@layout/user_survey_list_fragment" />
 
     <fragment
         android:id="@+id/navigation_user"

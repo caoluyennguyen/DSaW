@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.surveys.UserSurveyListFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="#7053AC"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_survey_kbyt"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="Khai báo\n y tế"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:background="@drawable/pink_background"/>
+
+                <TextView
+                    android:id="@+id/tv_survey_kbytnt"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="Khai báo\n người thân"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:background="@drawable/blue_background"/>
+
+                <TextView
+                    android:id="@+id/tv_survey_bc"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="Báo cáo\n"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:background="@drawable/orange_background"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:background="#c4c4c4"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:background="@drawable/survey_background"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <ListView
+            android:id="@+id/user_survey_lv"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="4dp"/>
+    </LinearLayout>
+
+</FrameLayout>
