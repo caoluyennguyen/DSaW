@@ -12,6 +12,7 @@ public class Utils {
     public static void replaceFragment(Fragment newFragment) {
         FragmentTransaction fragmentTransition=activity.getSupportFragmentManager().beginTransaction();
         fragmentTransition.replace(R.id.nav_host_fragment,newFragment);
+        fragmentTransition.addToBackStack(null);
         fragmentTransition.commit();
     }
 }

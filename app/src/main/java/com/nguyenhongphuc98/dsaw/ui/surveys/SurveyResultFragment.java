@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.SurveyResultAdaptor;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class SurveyResultFragment extends Fragment {
             }
         });
 
-        mViewModel.fetchData(this.surveyID);
+        mViewModel.fetchData(DataCenter.surveyID);
     }
 
     private void setupView(View view) {

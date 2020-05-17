@@ -10,7 +10,6 @@
         android:name="com.nguyenhongphuc98.dsaw.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
-
     <fragment
         android:id="@+id/navigation_news"
         android:name="com.nguyenhongphuc98.dsaw.ui.news.NewsFragment"
@@ -33,5 +32,73 @@
         android:id="@+id/navigation_admin"
         android:name="com.nguyenhongphuc98.dsaw.ui.admin.AdminFragment"
         android:label="@string/title_admin"
-        tools:layout="@layout/fragment_admin" />
+        tools:layout="@layout/fragment_admin" >
+
+        <action
+            android:id="@+id/go_to_user_manager"
+            app:destination="@id/userManagerFragment"/>
+
+        <action
+            android:id="@+id/go_to_stat"
+            app:destination="@id/stat_navigation"/>
+
+        <action
+            android:id="@+id/action_navigation_admin_to_caseFragment"
+            app:destination="@id/caseFragment" />
+
+        <action
+            android:id="@+id/action_navigation_admin_to_adminSurveyListFragmnet"
+            app:destination="@+id/adminSurveyListFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/viewCaseFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.cases.ViewCaseFragment"
+        android:label="fragment_user_manager"
+        tools:layout="@layout/fragment_user_manager" />
+
+    <fragment
+        android:id="@+id/userManagerFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.admin.UserManagerFragment"
+        android:label="UserManagerFragment" >
+
+        <action
+            android:id="@+id/go_to_user_tracking"
+            app:destination="@id/routeFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/caseFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment"
+        android:label="fragment_case">
+
+        <action
+            android:id="@+id/go_to_view_case_fragment"
+            app:destination="@id/viewCaseFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/adminSurveyListFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.AdminSurveyListFragment"
+        android:label="Admin Survey List"
+        tools:layout="@layout/fragment_admin_survey_list">
+
+        <action
+            android:id="@+id/go_to_survey_result"
+            app:destination="@id/surveyResultFragment"/>
+    </fragment>
+
+    <include app:graph="@navigation/stat_navigation"/>
+
+    <fragment
+        android:id="@+id/surveyResultFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultFragment"
+        android:label="SurveyResultFragment" />
+
+    <fragment
+        android:id="@+id/routeFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.route.RouteFragment"
+        android:label="fragment_route"
+        tools:layout="@layout/fragment_route" />
+
 </navigation>

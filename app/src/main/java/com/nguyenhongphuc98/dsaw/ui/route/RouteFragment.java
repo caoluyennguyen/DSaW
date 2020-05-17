@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.RouteAdaptor;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class RouteFragment extends Fragment {
             }
         });
 
-        mViewModel.fetchData(this.userID);
+        mViewModel.fetchData(DataCenter.routeUID);
     }
 
     private void setupView(View view) {

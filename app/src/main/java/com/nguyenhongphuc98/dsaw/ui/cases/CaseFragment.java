@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,7 +96,8 @@ public class CaseFragment extends Fragment {
         tvSeeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.replaceFragment(viewCaseFragment);
+                //Utils.replaceFragment(viewCaseFragment);
+                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_view_case_fragment);
             }
         });
     }
