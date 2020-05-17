@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,7 +24,9 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.AccountAdaptor;
+import com.nguyenhongphuc98.dsaw.ui.route.RouteFragment;
 
 public class UserManagerFragment extends Fragment {
 
@@ -107,6 +110,17 @@ public class UserManagerFragment extends Fragment {
                 else
                     mViewModel.filterByRole("manager");
                 return true;
+            }
+        });
+
+        lvUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(),"aaa",Toast.LENGTH_SHORT).show();
+                RouteFragment f = new RouteFragment();
+                String uid = mViewModel.getlsAccount().get(position).getIdentity();
+                f.setUserID(uid);
+                Utils.replaceFragment(f);
             }
         });
     }

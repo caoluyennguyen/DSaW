@@ -8,12 +8,15 @@ public class RouteData {
 
     private String user;
 
+    private String username;
+
     private List<TrackingStatus> status;
 
-    public RouteData(String id, String user, List<TrackingStatus> status) {
+    public RouteData(String id, String user, List<TrackingStatus> status, String username) {
         this.id = id;
         this.user = user;
         this.status = status;
+        this.username = username;
     }
 
     public void addStatus(TrackingStatus st){
@@ -42,5 +45,13 @@ public class RouteData {
 
     public void setStatus(List<TrackingStatus> status) {
         this.status = status;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

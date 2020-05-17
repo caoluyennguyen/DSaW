@@ -30,6 +30,9 @@ public class UserManagerViewModel extends ViewModel {
     public LiveData<AccountAdaptor> getAdaptor() {
         return mAdaptor;
     }
+    public List<Account> getlsAccount() {
+        return lsUsers;
+    }
 
     public void setContext(Context c) {
         this.context = c;
