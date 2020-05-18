@@ -44,11 +44,11 @@ public class NewsAdaptor extends ArrayAdapter{
             viewRow.setTag(holder);
         }
 
-        /*ViewHolder viewHolder = (ViewHolder) viewRow.getTag();
+        ViewHolder viewHolder = (ViewHolder) viewRow.getTag();
 
         News e = lsNews.get(position);
         viewHolder.title.setText(e.getTitle());
-        viewHolder.content.setText(e.getContent());*/
+        viewHolder.content.setText(e.getContent());
 
         return viewRow;
     }

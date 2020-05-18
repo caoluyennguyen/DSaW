@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
-import com.nguyenhongphuc98.dsaw.ui.admin_warning.AdminWarning;
 import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
+import com.nguyenhongphuc98.dsaw.ui.medical_report.PersonallReport;
 import com.nguyenhongphuc98.dsaw.ui.statistic.StatisticFragment;
 import com.nguyenhongphuc98.dsaw.ui.surveys.AdminSurveyListFragment;
 
@@ -36,6 +36,7 @@ public class AdminFragment extends Fragment {
     UserManagerFragment userManagerFragment;
     StatisticFragment statisticFragment;
     AdminSurveyListFragment adminSurveyListFragment;
+    PersonallReport personallReport;
 
     public static AdminFragment newInstance() {
         return new AdminFragment();
@@ -72,6 +73,7 @@ public class AdminFragment extends Fragment {
         userManagerFragment = new UserManagerFragment();
         statisticFragment = new StatisticFragment();
         adminSurveyListFragment = new AdminSurveyListFragment();
+        personallReport = new PersonallReport();
     }
 
     private void setupAction() {
