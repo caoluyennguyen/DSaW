@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +32,6 @@ public class AdminFragment extends Fragment {
     View createPost;
     View viewStatistics;
     View userManager;
-
-    CaseFragment caseFragment;
-    UserManagerFragment userManagerFragment;
-    StatisticFragment statisticFragment;
-    AdminSurveyListFragment adminSurveyListFragment;
-    PersonallReport personallReport;
-
     public static AdminFragment newInstance() {
         return new AdminFragment();
     }
@@ -69,11 +63,6 @@ public class AdminFragment extends Fragment {
         viewStatistics = view.findViewById(R.id.item_view_statistics);
         userManager = view.findViewById(R.id.item_user_manager);
 
-        caseFragment = new CaseFragment();
-        userManagerFragment = new UserManagerFragment();
-        statisticFragment = new StatisticFragment();
-        adminSurveyListFragment = new AdminSurveyListFragment();
-        personallReport = new PersonallReport();
     }
 
     private void setupAction() {
@@ -128,7 +117,8 @@ public class AdminFragment extends Fragment {
     }
 
     public void openImportPatientPage() {
-        Utils.replaceFragment(this.caseFragment);
+        //Utils.replaceFragment(this.caseFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_admin_to_caseFragment);
     }
 
     public void openCreateWaringPage() {
@@ -139,17 +129,22 @@ public class AdminFragment extends Fragment {
         Toast.makeText(getContext(),"create survey",Toast.LENGTH_SHORT).show();
     }
 
-    public void openViewSurveyPage() { Utils.replaceFragment(this.adminSurveyListFragment); }
+    public void openViewSurveyPage() {
+        //Utils.replaceFragment(this.adminSurveyListFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.action_navigation_admin_to_adminSurveyListFragmnet);
+    }
 
     public void openCreatePostPage() {
         Toast.makeText(getContext(),"create post",Toast.LENGTH_SHORT).show();
     }
 
     public void openStatisticsPage() {
-        Utils.replaceFragment(this.statisticFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.go_to_stat);
+        //Utils.replaceFragment(this.statisticFragment);
     }
 
     public void openUserManagerPage() {
-        Utils.replaceFragment(this.userManagerFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.go_to_user_manager);
+       // Utils.replaceFragment(this.userManagerFragment);
     }
 }

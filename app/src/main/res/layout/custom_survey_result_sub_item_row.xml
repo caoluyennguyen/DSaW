@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/survey_result_dot_subitem_tv"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/blue_background"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/survey_result_title_subitem_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ho (89)"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000"/>
+</LinearLayout>

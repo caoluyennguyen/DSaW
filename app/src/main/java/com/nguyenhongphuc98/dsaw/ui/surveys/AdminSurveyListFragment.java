@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.SurveyAdaptor;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
+import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
+
+import java.util.List;
 
 public class AdminSurveyListFragment extends Fragment {
 
@@ -55,7 +61,13 @@ public class AdminSurveyListFragment extends Fragment {
         lvSurvey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"did click at:" + mViewModel.getListSurvey().get(position).getId(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"did click at:" + mViewModel.getListSurvey().get(position).getId(),Toast.LENGTH_SHORT).show();
+                String sid = mViewModel.getListSurvey().get(position).getId();
+//                SurveyResultFragment f = new SurveyResultFragment();
+//                f.setSurveyId(sid);
+//                Utils.replaceFragment(f);
+                DataCenter.surveyID = sid;
+                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_survey_result);
             }
         });
     }

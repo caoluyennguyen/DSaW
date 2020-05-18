@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.AccountAdaptor;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.ui.route.RouteFragment;
 
 public class UserManagerFragment extends Fragment {
@@ -116,11 +118,13 @@ public class UserManagerFragment extends Fragment {
         lvUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"aaa",Toast.LENGTH_SHORT).show();
-                RouteFragment f = new RouteFragment();
+//                Toast.makeText(getContext(),"aaa",Toast.LENGTH_SHORT).show();
+//                RouteFragment f = new RouteFragment();
                 String uid = mViewModel.getlsAccount().get(position).getIdentity();
-                f.setUserID(uid);
-                Utils.replaceFragment(f);
+//                f.setUserID(uid);
+//                Utils.replaceFragment(f);
+                DataCenter.routeUID = uid;
+                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_user_tracking);
             }
         });
     }
