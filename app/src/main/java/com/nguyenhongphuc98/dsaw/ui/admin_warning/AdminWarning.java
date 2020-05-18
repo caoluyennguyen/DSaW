@@ -17,12 +17,8 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import com.nguyenhongphuc98.dsaw.R;
-
-import org.w3c.dom.Text;
 
 public class AdminWarning extends Fragment {
 
@@ -40,12 +36,12 @@ public class AdminWarning extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.admin_warning_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_warning, container, false);
         InitComponent(view);
 
         Log.d("show", "View created");
 
-        return inflater.inflate(R.layout.admin_warning_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_admin_warning, container, false);
     }
 
     @Override
