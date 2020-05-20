@@ -16,6 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,12 +46,12 @@ import java.util.Date;
 import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 
 public class DataManager {
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
     DatabaseReference mDatabaseRef;
-
     StorageReference mStorageRef;
 
     Context mContext;
@@ -358,5 +363,36 @@ public class DataManager {
             }
         });
         return id;
+    }
+
+
+    // Public data part
+    public void SaveStatistic(final PublicData data) {
+
+        //update time format: "2020-05-19T23:00:00.000Z"
+        String date = data.getUpdate_date();
+
+        // Try to get curent static of this date to update
+        Query query = mDatabaseRef.child("PublicData").orderByChild("update_date").equalTo(date);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        mDatabaseRef.child("PublicData").child(snapshot.getKey()).setValue(data);
+                    }
+                } else {
+                    Log.d("TAGGGG", "onDataChange: new update");
+                    mDatabaseRef.child("PublicData").push().setValue(data);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
