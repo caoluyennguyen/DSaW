@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,10 @@ import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
+import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataManager {
     FirebaseAuth mAuth;
@@ -88,6 +93,7 @@ public class DataManager {
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
+
 
     public void TestConnectDB() {
         final DatabaseReference organs_Reference = mDatabase.getReference("message");
@@ -372,6 +378,33 @@ public class DataManager {
         //update time format: "2020-05-19T23:00:00.000Z"
         String date = data.getUpdate_date();
 
+//        PublicData d1 = new PublicData("area1","nil",
+//                "Việt Nam","220",
+//                "5","230",
+//                "2020-05-18T23:00:00.000Z");
+//        mDatabaseRef.child("PublicData").push().setValue(d1);
+//        PublicData d2 = new PublicData("area1","nil",
+//                "Việt Nam","220",
+//                "4","200",
+//                "2020-05-17T23:00:00.000Z");
+//        mDatabaseRef.child("PublicData").push().setValue(d2);
+//        PublicData d3 = new PublicData("area1","nil",
+//                "Việt Nam","100",
+//                "2","90",
+//                "2020-05-16T23:00:00.000Z");
+//        mDatabaseRef.child("PublicData").push().setValue(d3);
+//        PublicData d4 = new PublicData("area1","nil",
+//                "Việt Nam","90",
+//                "2","80",
+//                "2020-05-15T23:00:00.000Z");
+//        mDatabaseRef.child("PublicData").push().setValue(d4);
+//        PublicData d5 = new PublicData("area1","nil",
+//                "Việt Nam","50",
+//                "0","30",
+//                "2020-05-13T23:00:00.000Z");
+//        mDatabaseRef.child("PublicData").push().setValue(d5);
+
+
         // Try to get curent static of this date to update
         Query query = mDatabaseRef.child("PublicData").orderByChild("update_date").equalTo(date);
 
@@ -386,6 +419,34 @@ public class DataManager {
                 } else {
                     Log.d("TAGGGG", "onDataChange: new update");
                     mDatabaseRef.child("PublicData").push().setValue(data);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void fetchPublicData(final MutableLiveData<List<PublicData>> ls) {
+
+        // arrange increate so we get lastest date
+        Query query = mDatabaseRef.child("PublicData").orderByChild("update_date").limitToLast(6);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
+                    List<PublicData> newList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        PublicData p = snapshot.getValue(PublicData.class);
+                        newList.add(p);
+                    }
+
+                    ls.setValue(newList);
                 }
             }
 

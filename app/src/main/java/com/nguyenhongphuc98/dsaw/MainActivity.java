@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         Utils.activity = this;
         DataManager d = DataManager.Instance(getApplicationContext());
-        d.TestConnectDB();
+        //d.TestConnectDB();
 
         //fetch data in background
         DataService.Instance().updateCovidStatistic();
