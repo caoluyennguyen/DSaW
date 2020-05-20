@@ -143,7 +143,7 @@ public class HomeFragment extends Fragment {
                 Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
 
                 Line series1 = cartesian.line(series1Mapping);
-                series1.name("Nhiễm bệnh");
+                series1.name("Nhiễm");
                 series1.color("#FCA903");
                 series1.hovered().markers().enabled(true);
                 series1.hovered().markers()
@@ -169,7 +169,7 @@ public class HomeFragment extends Fragment {
                         .offsetY(5d);
 
                 Line series3 = cartesian.line(series3Mapping);
-                series3.name("Bình phục");
+                series3.name("Hồi phục");
                 series3.color("#04D446");
                 series3.hovered().markers().enabled(true);
                 series3.hovered().markers()

@@ -373,36 +373,53 @@ public class DataManager {
 
 
     // Public data part
-    public void SaveStatistic(final PublicData data) {
+    // area : vn | tg
+    public void SaveStatistic(final PublicData data){
 
         //update time format: "2020-05-19T23:00:00.000Z"
         String date = data.getUpdate_date();
 
-//        PublicData d1 = new PublicData("area1","nil",
-//                "Việt Nam","220",
-//                "5","230",
-//                "2020-05-18T23:00:00.000Z");
+//        PublicData d1 = new PublicData("tg","nil",
+//                "Thế Giới","40",
+//                "10","10",
+//                "2020-05-19T23:00:00.000Z");
 //        mDatabaseRef.child("PublicData").push().setValue(d1);
-//        PublicData d2 = new PublicData("area1","nil",
-//                "Việt Nam","220",
-//                "4","200",
-//                "2020-05-17T23:00:00.000Z");
+//
+//        PublicData d2 = new PublicData("tg","nil",
+//                "Thế Giới","150",
+//                "7","100",
+//                "2020-05-18T23:00:00.000Z");
 //        mDatabaseRef.child("PublicData").push().setValue(d2);
-//        PublicData d3 = new PublicData("area1","nil",
-//                "Việt Nam","100",
-//                "2","90",
-//                "2020-05-16T23:00:00.000Z");
+//
+//        PublicData d3 = new PublicData("tg","nil",
+//                "Thế Giới","158",
+//                "9","110",
+//                "2020-05-17T23:00:00.000Z");
 //        mDatabaseRef.child("PublicData").push().setValue(d3);
-//        PublicData d4 = new PublicData("area1","nil",
-//                "Việt Nam","90",
-//                "2","80",
-//                "2020-05-15T23:00:00.000Z");
+//
+//        PublicData d4 = new PublicData("tg","nil",
+//                "Thế Giới","220",
+//                "5","230",
+//                "2020-05-16T23:00:00.000Z");
 //        mDatabaseRef.child("PublicData").push().setValue(d4);
-//        PublicData d5 = new PublicData("area1","nil",
-//                "Việt Nam","50",
-//                "0","30",
-//                "2020-05-13T23:00:00.000Z");
+//
+//        PublicData d5 = new PublicData("tg","nil",
+//                "Thế Giới","80",
+//                "23","99",
+//                "2020-05-15T23:00:00.000Z");
 //        mDatabaseRef.child("PublicData").push().setValue(d5);
+//
+//        PublicData d6 = new PublicData("tg","nil",
+//                "Thế Giới","220",
+//                "45","44",
+//                "2020-05-14T23:00:00.000Z");
+//        mDatabaseRef.child("PublicData").push().setValue(d6);
+//
+//        PublicData d7 = new PublicData("tg","nil",
+//                "Thế Giới","300",
+//                "20","250",
+//                "2020-05-13T23:00:00.000Z");
+//        mDatabaseRef.child("PublicData").push().setValue(d7);
 
 
         // Try to get curent static of this date to update
@@ -414,10 +431,22 @@ public class DataManager {
                 if (dataSnapshot.exists()) {
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        mDatabaseRef.child("PublicData").child(snapshot.getKey()).setValue(data);
+                        // co ton tai ngay hom nay nhung khong chac la co cua khu vuc can luu hay khong
+                        boolean found = false;
+                        if (snapshot.getValue(PublicData.class).getArea().equals(data.getArea())) {
+                            mDatabaseRef.child("PublicData").child(snapshot.getKey()).setValue(data);
+                            found = true;
+                        }
+
+                        // chua co du lieu ngay nay` cho khu vuc dang xet, chung ta se tao moi
+                        if (found == false) {
+                            Log.d("TAGGGG", "onDataChange: new update");
+                            mDatabaseRef.child("PublicData").push().setValue(data);
+                        }
                     }
                 } else {
                     Log.d("TAGGGG", "onDataChange: new update");
+                    // chua co khu vuc nao co du lieu ngay nay`
                     mDatabaseRef.child("PublicData").push().setValue(data);
                 }
             }
