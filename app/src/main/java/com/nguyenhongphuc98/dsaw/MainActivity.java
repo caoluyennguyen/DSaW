@@ -11,19 +11,20 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 
 public class MainActivity extends AppCompatActivity {
     private int mMenuSet = 2;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("message");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //myRef.setValue("Hello, World!");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Utils.activity = this;
+        DataManager d = DataManager.Instance(getApplicationContext());
+        d.TestConnectDB();
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         if (mMenuSet == 1)
