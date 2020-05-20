@@ -17,6 +17,9 @@ public class PublicData {
 
     private String update_date;
 
+    public PublicData() {
+    }
+
     public PublicData(String area, String id, String location,
                       String num_confirmed, String num_death,
                       String num_recovered, String update_time) {
