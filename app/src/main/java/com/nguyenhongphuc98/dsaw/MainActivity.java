@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.network.DataService;
 
 public class MainActivity extends AppCompatActivity {
     private int mMenuSet = 2;
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         Utils.activity = this;
         DataManager d = DataManager.Instance(getApplicationContext());
         d.TestConnectDB();
+
+        //fetch data in background
+        DataService.Instance().updateCovidStatistic();
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         if (mMenuSet == 1)
