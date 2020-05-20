@@ -40,4 +40,9 @@ dependencies {
 
     //to draw chart
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+
+    //Using json file
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.5.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.5.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.5.3'
 }

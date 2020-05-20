@@ -12,6 +12,7 @@ public class DataService {
     }
 
     public void updateCovidStatistic() {
-        new CodvidStatistic().execute("https://api.apify.com/v2/key-value-stores/EaCBL1JNntjR3EakU/records/LATEST?disableRedirect=true");
+        new CodvidStatistic("vn").execute("https://api.apify.com/v2/key-value-stores/EaCBL1JNntjR3EakU/records/LATEST?disableRedirect=true");
+        new CodvidStatistic("tg").execute("https://api.apify.com/v2/key-value-stores/tVaYRsPHLjNdNBu7S/records/LATEST?disableRedirect=true");
     }
 }
