@@ -55,7 +55,7 @@ public class CreateSurvey extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(CreateSurveyViewModel.class);
         // TODO: Use the ViewModel
-        mViewModel.setContext(this.getContext());
+        mViewModel.setContext(getContext());
         mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
             @Override
             public void onChanged(QuestionAdapter questionAdapter) {

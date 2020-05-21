@@ -142,6 +142,7 @@ public class AdminFragment extends Fragment {
 
     public void openCreatePostPage() {
         Toast.makeText(getContext(),"create post",Toast.LENGTH_SHORT).show();
+        NavHostFragment.findNavController(this).navigate(R.id.createNewsFragment);
     }
 
     public void openStatisticsPage() {

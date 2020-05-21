@@ -121,4 +121,10 @@
         android:name="com.nguyenhongphuc98.dsaw.ui.medical_report.PersonallReport"
         android:label="fragment_personal_report"
         tools:layout="@layout/personal_medical_report_fragment" />
+
+    <fragment
+        android:id="@+id/createNewsFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.news.CreateNewsFragment"
+        android:label="fragment_create_news"
+        tools:layout="@layout/fragment_create_news" />
 </navigation>
