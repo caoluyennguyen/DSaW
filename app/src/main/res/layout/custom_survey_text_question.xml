@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/cutom_question_background">
+    android:background="@drawable/cutom_question_background"
+    android:layout_margin="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/number"
+            android:id="@+id/tqNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -22,7 +23,7 @@
             android:background="@drawable/custom_question_layout_green"/>
 
         <TextView
-            android:id="@+id/question"
+            android:id="@+id/tqQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -32,11 +33,8 @@
             android:padding="5dp"
             android:background="@drawable/custom_question_layout_white"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/list_of_answer"
+    <EditText
+        android:id="@+id/edtAnswer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

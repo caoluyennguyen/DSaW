@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
+import com.nguyenhongphuc98.dsaw.ui.medical_report.CreateSurvey;
 import com.nguyenhongphuc98.dsaw.ui.medical_report.PersonallReport;
 import com.nguyenhongphuc98.dsaw.ui.statistic.StatisticFragment;
 import com.nguyenhongphuc98.dsaw.ui.surveys.AdminSurveyListFragment;
@@ -32,6 +33,8 @@ public class AdminFragment extends Fragment {
     View createPost;
     View viewStatistics;
     View userManager;
+
+    CreateSurvey createSurveyFragment;
     public static AdminFragment newInstance() {
         return new AdminFragment();
     }
@@ -44,7 +47,7 @@ public class AdminFragment extends Fragment {
         setupView(view);
         setupAction();
 
-        return  view;
+        return view;
     }
 
     @Override
@@ -63,6 +66,7 @@ public class AdminFragment extends Fragment {
         viewStatistics = view.findViewById(R.id.item_view_statistics);
         userManager = view.findViewById(R.id.item_user_manager);
 
+        createSurveyFragment = new CreateSurvey();
     }
 
     private void setupAction() {
@@ -123,9 +127,11 @@ public class AdminFragment extends Fragment {
 
     public void openCreateWaringPage() {
         Toast.makeText(getContext(),"create waring",Toast.LENGTH_SHORT).show();
+        NavHostFragment.findNavController(this).navigate(R.id.warningFragment);
     }
 
     public void openCreateSurveyPage() {
+        NavHostFragment.findNavController(this).navigate(R.id.createSurveyFragment);
         Toast.makeText(getContext(),"create survey",Toast.LENGTH_SHORT).show();
     }
 

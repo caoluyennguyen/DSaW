@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,7 +139,8 @@ public class UserSurveyListFragment extends Fragment {
                     else surveys = mViewModel.getlistBC().getValue();
 
                 Toast.makeText(getContext(),"did click at:" + surveys.get(position).getId(),Toast.LENGTH_SHORT).show();
-                Utils.replaceFragment(new PersonallReport());
+                //Utils.replaceFragment(new PersonallReport());
+                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.personalReportFragment);
             }
         });
     }

@@ -48,6 +48,10 @@
         <action
             android:id="@+id/action_navigation_admin_to_adminSurveyListFragmnet"
             app:destination="@+id/adminSurveyListFragment"/>
+
+        <action
+            android:id="@+id/go_to_warning"
+            app:destination="@+id/warningFragment"/>
     </fragment>
 
     <fragment
@@ -100,4 +104,21 @@
         android:label="fragment_route"
         tools:layout="@layout/fragment_route" />
 
+    <fragment
+        android:id="@+id/warningFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.admin_warning.AdminWarning"
+        android:label="fragment_warning"
+        tools:layout="@layout/fragment_admin_warning" />
+
+    <fragment
+        android:id="@+id/createSurveyFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.medical_report.CreateSurvey"
+        android:label="fragment_create_survey"
+        tools:layout="@layout/fragment_create_survey" />
+
+    <fragment
+        android:id="@+id/personalReportFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.medical_report.PersonallReport"
+        android:label="fragment_personal_report"
+        tools:layout="@layout/personal_medical_report_fragment" />
 </navigation>
