@@ -48,10 +48,17 @@ import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
+import com.nguyenhongphuc98.dsaw.data.model.Survey;
+import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DataManager {
     FirebaseAuth mAuth;
@@ -486,4 +493,145 @@ public class DataManager {
             }
         });
     }
+
+    // count number of reponse for special survey of a user
+    int personalSurveyCount = 0;
+    int relativesSurveyCount = 0;
+    int reportSurveyCount = 0;
+    public void fetchCountResponseFor(final MutableLiveData<List<SurveyModel>> ls,
+                                      final List<SurveyModel> newList,
+                                      final SurveyModel model,
+                                      final String userID,
+                                      final int numberOfSurvey,
+                                      final String type) {
+
+        Query query = mDatabaseRef.child("Answers").child(model.getId()).child(userID);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long count = 0;
+                if (dataSnapshot.exists()) {
+                    count = dataSnapshot.getChildrenCount();
+                }
+                model.setCount(String.valueOf(count));
+
+                if (type.equals("personal_medical")) {
+                    personalSurveyCount ++;
+
+                    // has process to last survey
+                    if (personalSurveyCount == numberOfSurvey) {
+                        ls.setValue(newList);
+                        //reset for next fetch
+                        personalSurveyCount = 0;
+                        return;
+                    }
+
+                }
+
+                if (type.equals("relatives_medical")) {
+                    relativesSurveyCount ++;
+
+                    // has process to last survey
+                    if (relativesSurveyCount == numberOfSurvey) {
+                        ls.setValue(newList);
+                        //reset for next fetch
+                        relativesSurveyCount = 0;
+                        return;
+                    }
+                }
+
+                if (type.equals("report")) {
+                    reportSurveyCount ++;
+
+                    // has process to last survey
+                    if (reportSurveyCount == numberOfSurvey) {
+                        ls.setValue(newList);
+                        //reset for next fetch
+                        reportSurveyCount = 0;
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {  }
+        });
+    }
+
+    int countSurveyResposeAdmin = 0;
+    public void fetchCountResponseForAdmin(final MutableLiveData<List<SurveyModel>> ls,
+                                      final List<SurveyModel> newList,
+                                      final SurveyModel model,
+                                      final int numberOfSurvey) {
+
+        Query query = mDatabaseRef.child("Answers").child(model.getId());
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long count = 0;
+                if (dataSnapshot.exists()) {
+                    // get list uid response this survey
+                    Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
+                    //Log.d("TAGGG", "onDataChange: "+ userReponse);
+                    for (String s : userReponse.keySet()) {
+                        ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(s);
+                        count += ls.size();
+                    }
+                }
+                model.setCount(String.valueOf(count));
+
+
+                countSurveyResposeAdmin++;
+
+                // has process to last survey
+                if (countSurveyResposeAdmin == numberOfSurvey) {
+                    ls.setValue(newList);
+                    //reset for next fetch
+                    countSurveyResposeAdmin = 0;
+                    return;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {  }
+        });
+    }
+
+    public void fetchListSurveyByType(final MutableLiveData<List<SurveyModel>> ls, final String type,final String uid) {
+
+        Query query = null;
+        if (uid.equals("admin"))
+            query = mDatabaseRef.child("Survey");
+        else
+            query = mDatabaseRef.child("Survey").orderByChild("type").equalTo(type);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
+                    List<SurveyModel> newList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Survey p = snapshot.getValue(Survey.class);
+                        SurveyModel s = new SurveyModel(p.getId(),"0",p.getName());
+                        newList.add(s);
+
+                        if (uid.equals("admin"))
+                            fetchCountResponseForAdmin(ls,newList,s,(int)dataSnapshot.getChildrenCount());
+                        else
+                            fetchCountResponseFor(ls,newList,s,uid,(int)dataSnapshot.getChildrenCount(), type);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }
