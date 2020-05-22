@@ -11,6 +11,10 @@ public class SurveyModel {
 
     private String name;
 
+    public SurveyModel() {
+
+    }
+
     public SurveyModel(String id, String count, String name) {
         this.id = id;
         this.count = count;

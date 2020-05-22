@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -49,6 +50,18 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+//        A a = new A();
+//        a.s ="aaa";
+//        test(a);
+//        Log.d("TAGGG", "onCreate: s="+ a.s);
     }
 
+//    void test(final A a) {
+//        a.s ="bbb";
+//    }
+//
+//    class A {
+//        String s;
+//    }
 }
