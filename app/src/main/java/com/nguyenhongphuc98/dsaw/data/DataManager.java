@@ -430,19 +430,19 @@ public class DataManager {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
+                    boolean found = false;
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         // co ton tai ngay hom nay nhung khong chac la co cua khu vuc can luu hay khong
-                        boolean found = false;
+
                         if (snapshot.getValue(PublicData.class).getArea().equals(data.getArea())) {
                             mDatabaseRef.child("PublicData").child(snapshot.getKey()).setValue(data);
                             found = true;
                         }
-
-                        // chua co du lieu ngay nay` cho khu vuc dang xet, chung ta se tao moi
-                        if (found == false) {
-                            Log.d("TAGGGG", "onDataChange: new update");
-                            mDatabaseRef.child("PublicData").push().setValue(data);
-                        }
+                    }
+                    // chua co du lieu ngay nay` cho khu vuc dang xet, chung ta se tao moi
+                    if (found == false) {
+                        Log.d("TAGGGG", "onDataChange: new update");
+                        mDatabaseRef.child("PublicData").push().setValue(data);
                     }
                 } else {
                     Log.d("TAGGGG", "onDataChange: new update");
@@ -458,10 +458,10 @@ public class DataManager {
         });
     }
 
-    public void fetchPublicData(final MutableLiveData<List<PublicData>> ls) {
+    public void fetchPublicData(final MutableLiveData<List<PublicData>> ls, final String area) {
 
         // arrange increate so we get lastest date
-        Query query = mDatabaseRef.child("PublicData").orderByChild("update_date").limitToLast(6);
+        Query query = mDatabaseRef.child("PublicData").orderByChild("update_date").limitToLast(12);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -472,7 +472,8 @@ public class DataManager {
                     List<PublicData> newList = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         PublicData p = snapshot.getValue(PublicData.class);
-                        newList.add(p);
+                        if (p.getArea().equals(area))
+                            newList.add(p);
                     }
 
                     ls.setValue(newList);

@@ -55,8 +55,7 @@ public class HomeFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         setupView(root);
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         setupAction();
         setupObserver();
         setupChart();
@@ -116,12 +115,60 @@ public class HomeFragment extends Fragment {
         cartesian.xAxis(0).labels().padding(7d, 7d, 7d, 7d);
         cartesian.yAxis(0).labels().padding(7d, 0d, 7d, 3d);
 
-
-
         cartesian.legend().enabled(true);
         cartesian.legend().fontSize(13d);
         cartesian.legend().padding(0d, 0d, 10d, 0d);
 
+        //fake data and presetup
+        List<DataEntry> seriesData = new ArrayList<>();
+
+        seriesData.add(new CustomDataEntry("",0,0,0));
+
+        final Set set = Set.instantiate();
+
+        set.data(seriesData);
+        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+
+        Line series1 = cartesian.line(series1Mapping);
+        series1.name("Nhiễm");
+        series1.color("#FCA903");
+        series1.hovered().markers().enabled(true);
+        series1.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series1.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+        Line series2 = cartesian.line(series2Mapping);
+        series2.name("Tử vong");
+        series2.color("#FC2003");
+        series2.hovered().markers().enabled(true);
+        series2.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series2.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+        Line series3 = cartesian.line(series3Mapping);
+        series3.name("Hồi phục");
+        series3.color("#04D446");
+        series3.hovered().markers().enabled(true);
+        series3.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series3.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
 
 
          homeViewModel.getData().observe(this, new Observer<List<PublicData>>() {
@@ -136,55 +183,56 @@ public class HomeFragment extends Fragment {
                             Integer.parseInt(p.getNum_recovered())));
                 }
 
-                Set set = Set.instantiate();
+                //Set set = Set.instantiate();
+
                 set.data(seriesData);
-                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-                Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
-                Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+//                Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+//                Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+//                Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+//
+//                Line series1 = cartesian.line(series1Mapping);
+//                series1.name("Nhiễm");
+//                series1.color("#FCA903");
+//                series1.hovered().markers().enabled(true);
+//                series1.hovered().markers()
+//                        .type(MarkerType.CIRCLE)
+//                        .size(4d);
+//                series1.tooltip()
+//                        .position("right")
+//                        .anchor(Anchor.LEFT_CENTER)
+//                        .offsetX(5d)
+//                        .offsetY(5d);
+//
+//                Line series2 = cartesian.line(series2Mapping);
+//                series2.name("Tử vong");
+//                series2.color("#FC2003");
+//                series2.hovered().markers().enabled(true);
+//                series2.hovered().markers()
+//                        .type(MarkerType.CIRCLE)
+//                        .size(4d);
+//                series2.tooltip()
+//                        .position("right")
+//                        .anchor(Anchor.LEFT_CENTER)
+//                        .offsetX(5d)
+//                        .offsetY(5d);
+//
+//                Line series3 = cartesian.line(series3Mapping);
+//                series3.name("Hồi phục");
+//                series3.color("#04D446");
+//                series3.hovered().markers().enabled(true);
+//                series3.hovered().markers()
+//                        .type(MarkerType.CIRCLE)
+//                        .size(4d);
+//                series3.tooltip()
+//                        .position("right")
+//                        .anchor(Anchor.LEFT_CENTER)
+//                        .offsetX(5d)
+//                        .offsetY(5d);
 
-                Line series1 = cartesian.line(series1Mapping);
-                series1.name("Nhiễm");
-                series1.color("#FCA903");
-                series1.hovered().markers().enabled(true);
-                series1.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series1.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                Line series2 = cartesian.line(series2Mapping);
-                series2.name("Tử vong");
-                series2.color("#FC2003");
-                series2.hovered().markers().enabled(true);
-                series2.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series2.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                Line series3 = cartesian.line(series3Mapping);
-                series3.name("Hồi phục");
-                series3.color("#04D446");
-                series3.hovered().markers().enabled(true);
-                series3.hovered().markers()
-                        .type(MarkerType.CIRCLE)
-                        .size(4d);
-                series3.tooltip()
-                        .position("right")
-                        .anchor(Anchor.LEFT_CENTER)
-                        .offsetX(5d)
-                        .offsetY(5d);
-
-                anyChartView.setChart(cartesian);
                 updateTimeTv.setText(publicData.get(publicData.size()-1).getUpdate_time());
             }
         });
+        anyChartView.setChart(cartesian);
     }
 
     public class CustomDataEntry extends ValueDataEntry {

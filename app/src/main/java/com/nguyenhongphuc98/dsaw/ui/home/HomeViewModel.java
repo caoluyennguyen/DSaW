@@ -27,6 +27,7 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<String> mArea;
 
     private String[] areas = {"Việt Nam","Thế giới"};
+    private String[] areasTag = {"vn","tg"};
     private int areaIndex = 0;
 
     private MutableLiveData<List<PublicData>> lsData;
@@ -37,7 +38,7 @@ public class HomeViewModel extends ViewModel {
         mArea.setValue(areas[areaIndex]);
 
         lsData = new MutableLiveData<>();
-        DataManager.Instance().fetchPublicData(lsData);
+        DataManager.Instance().fetchPublicData(lsData,"vn");
     }
 
     public LiveData<String> getArea() {
@@ -48,7 +49,8 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void changeArea() {
-        mArea.setValue(areas[(areaIndex++) % areas.length]);
+        mArea.setValue(areas[(++areaIndex) % areas.length]);
         //Change model chart here
+        DataManager.Instance().fetchPublicData(lsData,areasTag[(areaIndex) % areasTag.length]);
     }
 }
