@@ -56,6 +56,8 @@ import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
+import com.nguyenhongphuc98.dsaw.data.model.Account;
+
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
@@ -678,7 +680,6 @@ public class DataManager {
         return true;
     }
 
-
     public void fetchPhoto(String fileName, final ImageView result) {
         mStorageRef.child("posts/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -687,6 +688,33 @@ public class DataManager {
                         .load(uri)
                         .into(result);
                 Log.e("DB","downloaded a photo:"+uri.getPath());
+            }
+        });
+    }
+
+    public void updateACcount(final Account user) {
+
+        // arrange increate so we get lastest date
+        Query query = mDatabaseRef.child("Account").orderByChild(user.getIdentity());
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
+                    List<PublicData> newList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        //actualu it shoud have just one account match :))
+                        String p = snapshot.getKey();
+                        mDatabaseRef.child("Account").child(p).setValue(user);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
