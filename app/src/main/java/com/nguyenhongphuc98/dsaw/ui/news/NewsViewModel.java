@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.nguyenhongphuc98.dsaw.adaptor.NewsAdaptor;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 
 import java.util.ArrayList;
@@ -14,51 +15,48 @@ import java.util.List;
 
 public class NewsViewModel extends ViewModel {
 
-    private MutableLiveData<NewsAdaptor> mAdaptor;
-
-    private NewsAdaptor adaptor;
-    private List<News> lsNews;
-
-    private Context context;
+    private MutableLiveData<List<News>> lsNews;
 
     public NewsViewModel() {
-        mAdaptor = new MutableLiveData<>();
+        lsNews = new MutableLiveData<>();
+        fetchNews();
     }
 
-    public LiveData<NewsAdaptor> getAdaptor() {
-        return mAdaptor;
+    public LiveData<List<News>> getListNews() {
+        return lsNews;
     }
 
-    public void setContext(Context c) {
-        this.context = c;
-        lsNews = new ArrayList<>();
-        lsNews.add(new News("Phuc",
-                "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
-                "cover",
-                "22:03 - 22/11/2019",
-                "1",
-                "link to post",
-                "THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH COVID-19 TRONG MÙA DỊCH",
-                "link"));
+    public void fetchNews() {
 
-        lsNews.add(new News("Phuc",
-                "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
-                "cover",
-                "22:03 - 22/11/2019",
-                "1",
-                "link to post",
-                "THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH COVID-19 TRONG MÙA DỊCH",
-                "link"));
+//        lsNews = new ArrayList<>();
+//        lsNews.add(new News("Phuc",
+//                "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
+//                "cover",
+//                "22:03 - 22/11/2019",
+//                "1",
+//                "link to post",
+//                "THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH COVID-19 TRONG MÙA DỊCH",
+//                "link"));
+//
+//        lsNews.add(new News("Phuc",
+//                "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
+//                "cover",
+//                "22:03 - 22/11/2019",
+//                "1",
+//                "link to post",
+//                "THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH COVID-19 TRONG MÙA DỊCH",
+//                "link"));
+//
+//        lsNews.add(new News("Phuc",
+//                "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
+//                "cover",
+//                "22:03 - 22/11/2019",
+//                "1",
+//                "link to post",
+//                "THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH COVID-19 TRONG MÙA DỊCH",
+//                "link"));
+//        adaptor = new NewsAdaptor(this.context, lsNews);
 
-        lsNews.add(new News("Phuc",
-                "Khuyến cáo thực hành 7 thói quen nên làm để tránh dịch bệnh giúp cuốc sống sớm ổn định trở lại. Người người, nhà nhà hạnh phúc ấm no...",
-                "cover",
-                "22:03 - 22/11/2019",
-                "1",
-                "link to post",
-                "THỰC HÀNH 7 THÓI QUEN ĐỂ PHÒNG CHỐNG BỆNH COVID-19 TRONG MÙA DỊCH",
-                "link"));
-        adaptor = new NewsAdaptor(this.context, lsNews);
-        mAdaptor.setValue(adaptor);
+        DataManager.Instance().fetchAllPosts(lsNews);
     }
 }
