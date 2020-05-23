@@ -343,9 +343,9 @@ public class DataManager {
 
         try {
 
-            Query query=mDatabaseRef.child("Post");
+            Query query=mDatabaseRef.child("Post").orderByChild("createtime");
 
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
+            query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -374,7 +374,7 @@ public class DataManager {
     }
 
 
-    public void fetchPhotos(String fileName, final ImageView result) {
+    public void fetchPhoto(String fileName, final ImageView result) {
         mStorageRef.child("posts/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

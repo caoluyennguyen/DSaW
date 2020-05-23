@@ -29,9 +29,9 @@ public class NewsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        newsViewModel =
-                ViewModelProviders.of(this).get(NewsViewModel.class);
+        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_news, container, false);
+
         lvNews=root.findViewById(R.id.news_info_lv);
 
         newsViewModel.getListNews().observe(this, new Observer<List<News>>() {
