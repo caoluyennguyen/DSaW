@@ -5,8 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,12 +16,13 @@ import com.nguyenhongphuc98.dsaw.data.model.Question;
 
 import java.util.List;
 
-public class PersonalReportAdaptor extends ArrayAdapter {
+public class MultichoiceQuestionAdaptor extends ArrayAdapter {
     Context context;
     List<Question> lsQuestion;
+    AnswerAdaptor mAdapter;
 
-    public PersonalReportAdaptor(@NonNull Context context, List<Question> ls){
-        super(context, R.layout.custom_survey_question, ls);
+    public MultichoiceQuestionAdaptor(@NonNull Context context, List<Question> ls){
+        super(context, R.layout.custom_survey_multichoice_question, ls);
         this.context = context;
         lsQuestion = ls;
     }
@@ -35,11 +35,11 @@ public class PersonalReportAdaptor extends ArrayAdapter {
         View viewRow = convertView;
 
         if (viewRow == null){
-            viewRow = layoutInflater.inflate(R.layout.custom_survey_question,parent,false);
-            PersonalReportAdaptor.ViewHolder holder = new PersonalReportAdaptor.ViewHolder();
+            viewRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_question,parent,false);
+            MultichoiceQuestionAdaptor.ViewHolder holder = new MultichoiceQuestionAdaptor.ViewHolder();
             holder.number = viewRow.findViewById(R.id.number);
             holder.question = viewRow.findViewById(R.id.question);
-            holder.listOfAnswer = viewRow.findViewById(R.id.list_of_answer);
+            holder.listviewOfAnswer = viewRow.findViewById(R.id.listview_of_answer);
 
             viewRow.setTag(holder);
         }
@@ -51,12 +51,15 @@ public class PersonalReportAdaptor extends ArrayAdapter {
 
         if (!lsQuestion.isEmpty()){
             for (int i=0; i < lsQuestion.get(position).getAnswers().size(); i++){
-                View subRow = layoutInflater.inflate(R.layout.custom_survey_answer,null);
-                CheckedTextView answer = subRow.findViewById(R.id.answer);
-                answer.setText(lsQuestion.get(position).getAnswers().get(i));
-                viewHolder.listOfAnswer.addView(subRow);
+                //View subRow = layoutInflater.inflate(R.layout.custom_survey_answer,null);
+                //CheckedTextView answer = subRow.findViewById(R.id.answer);
+                //answer.setText(lsQuestion.get(position).getAnswers().get(i));
+                //viewHolder.listOfAnswer.addView(subRow);
             }
         }
+
+        mAdapter = new AnswerAdaptor(getContext(), lsQuestion.get(position).getAnswers());
+        viewHolder.listviewOfAnswer.setAdapter(mAdapter);
 
         return viewRow;
     }
@@ -64,6 +67,6 @@ public class PersonalReportAdaptor extends ArrayAdapter {
     public static class ViewHolder{
         TextView number;
         TextView question;
-        LinearLayout listOfAnswer;
+        ListView listviewOfAnswer;
     }
 }

@@ -18,10 +18,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
-import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.SurveyAdaptor;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
-import com.nguyenhongphuc98.dsaw.ui.medical_report.PersonallReport;
 
 import java.util.List;
 
@@ -139,7 +137,7 @@ public class UserSurveyListFragment extends Fragment {
                     else surveys = mViewModel.getlistBC().getValue();
 
                 Toast.makeText(getContext(),"did click at:" + surveys.get(position).getId(),Toast.LENGTH_SHORT).show();
-                //Utils.replaceFragment(new PersonallReport());
+                //Utils.replaceFragment(new SubmitSurvey());
                 NavHostFragment.findNavController(getParentFragment()).navigate(R.id.personalReportFragment);
             }
         });

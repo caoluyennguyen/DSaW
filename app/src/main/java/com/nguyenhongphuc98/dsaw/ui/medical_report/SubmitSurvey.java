@@ -15,29 +15,29 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.nguyenhongphuc98.dsaw.R;
-import com.nguyenhongphuc98.dsaw.adaptor.PersonalReportAdaptor;
+import com.nguyenhongphuc98.dsaw.adaptor.MultichoiceQuestionAdaptor;
 
-public class PersonallReport extends Fragment {
+public class SubmitSurvey extends Fragment {
 
-    private PersonalReportViewModel mViewModel;
+    private SubmitSurveyViewModel mViewModel;
 
     private ListView lvQuestion;
 
-    public static PersonallReport newInstance() {
-        return new PersonallReport();
+    public static SubmitSurvey newInstance() {
+        return new SubmitSurvey();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.personal_medical_report_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_submit_survey, container, false);
         lvQuestion = view.findViewById(R.id.list_of_question);
-        mViewModel = ViewModelProviders.of(this).get(PersonalReportViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(SubmitSurveyViewModel.class);
         mViewModel.setContext(getContext());
-        mViewModel.getAdaptor().observe(this, new Observer<PersonalReportAdaptor>() {
+        mViewModel.getAdaptor().observe(this, new Observer<MultichoiceQuestionAdaptor>() {
             @Override
-            public void onChanged(PersonalReportAdaptor personalReportAdaptor) {
-                lvQuestion.setAdapter(personalReportAdaptor);
+            public void onChanged(MultichoiceQuestionAdaptor multichoiceQuestionAdaptor) {
+                lvQuestion.setAdapter(multichoiceQuestionAdaptor);
             }
         });
         return view;

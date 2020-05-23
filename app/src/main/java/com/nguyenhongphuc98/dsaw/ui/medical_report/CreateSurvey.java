@@ -3,8 +3,6 @@ package com.nguyenhongphuc98.dsaw.ui.medical_report;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,13 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.nguyenhongphuc98.dsaw.R;
-import com.nguyenhongphuc98.dsaw.adaptor.PersonalReportAdaptor;
-import com.nguyenhongphuc98.dsaw.adaptor.QuestionAdapter;
-
-import java.util.EventListener;
+import com.nguyenhongphuc98.dsaw.adaptor.TextQuestionAdapter;
 
 public class CreateSurvey extends Fragment {
 
@@ -56,9 +50,9 @@ public class CreateSurvey extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(CreateSurveyViewModel.class);
         // TODO: Use the ViewModel
         mViewModel.setContext(this.getContext());
-        mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
+        mViewModel.GetAdapter().observe(this, new Observer<TextQuestionAdapter>() {
             @Override
-            public void onChanged(QuestionAdapter questionAdapter) {
+            public void onChanged(TextQuestionAdapter textQuestionAdapter) {
                 lvQuestion.setAdapter(mViewModel.adaptor);
             }
         });

@@ -8,4 +8,12 @@ public class Answer {
     List<String> answerKey;
     String imageFile;
     String textAnswer;
+
+    public Answer(String answer) {
+        this.textAnswer = answer;
+    }
+
+    public String getTextAnswer() {
+        return textAnswer;
+    }
 }

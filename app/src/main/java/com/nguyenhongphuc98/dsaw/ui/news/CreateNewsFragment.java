@@ -1,4 +1,4 @@
-package com.nguyenhongphuc98.dsaw.ui;
+package com.nguyenhongphuc98.dsaw.ui.news;
 
 import androidx.lifecycle.ViewModelProviders;
 

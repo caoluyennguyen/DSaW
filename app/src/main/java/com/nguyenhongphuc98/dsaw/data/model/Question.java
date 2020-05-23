@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class Question {
     String id;
-    ArrayList<String> mAnswer;
+    ArrayList<Answer> mAnswer;
     String survey;
     String title;
     String type;
 
-    public Question(String id, ArrayList<String> lsAnswer, String survey, String title, String type)
+    public Question(String id, ArrayList<Answer> lsAnswer, String survey, String title, String type)
     {
         this.id = id;
         mAnswer = lsAnswer;
@@ -26,7 +26,7 @@ public class Question {
         return title;
     }
 
-    public ArrayList<String> getAnswers() {
+    public ArrayList<Answer> getAnswers() {
         return mAnswer;
     }
 }

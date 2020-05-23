@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,12 +15,12 @@ import com.nguyenhongphuc98.dsaw.data.model.Question;
 
 import java.util.List;
 
-public class QuestionAdapter extends ArrayAdapter {
+public class TextQuestionAdapter extends ArrayAdapter {
     Context context;
     List<Question> lsQuestion;
 
-    public QuestionAdapter(@NonNull Context context, List<Question> ls){
-        super(context, R.layout.custom_survey_question, ls);
+    public TextQuestionAdapter(@NonNull Context context, List<Question> ls){
+        super(context, R.layout.custom_survey_text_question, ls);
         this.context = context;
         lsQuestion = ls;
     }
@@ -36,14 +34,14 @@ public class QuestionAdapter extends ArrayAdapter {
 
         if (viewRow == null){
             viewRow = layoutInflater.inflate(R.layout.custom_survey_text_question,parent,false);
-            QuestionAdapter.ViewHolder holder = new QuestionAdapter.ViewHolder();
+            TextQuestionAdapter.ViewHolder holder = new TextQuestionAdapter.ViewHolder();
             holder.number = viewRow.findViewById(R.id.tqNumber);
             holder.question = viewRow.findViewById(R.id.tqQuestion);
 
             viewRow.setTag(holder);
         }
 
-        QuestionAdapter.ViewHolder viewHolder = (QuestionAdapter.ViewHolder) viewRow.getTag();
+        TextQuestionAdapter.ViewHolder viewHolder = (TextQuestionAdapter.ViewHolder) viewRow.getTag();
         Question e = lsQuestion.get(position);
         viewHolder.number.setText("Câu " + e.getId() + ":");
         viewHolder.question.setText(e.getTitle());
