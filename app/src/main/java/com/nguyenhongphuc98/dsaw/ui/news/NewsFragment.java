@@ -15,10 +15,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.NewsAdaptor;
+import com.nguyenhongphuc98.dsaw.data.model.News;
+
+import java.util.List;
 
 public class NewsFragment extends Fragment {
 
     private NewsViewModel newsViewModel;
+
+    private NewsAdaptor adaptor;
 
     private ListView lvNews;
 
@@ -28,12 +33,12 @@ public class NewsFragment extends Fragment {
                 ViewModelProviders.of(this).get(NewsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_news, container, false);
         lvNews=root.findViewById(R.id.news_info_lv);
-        newsViewModel.setContext(getContext());
 
-        newsViewModel.getAdaptor().observe(this, new Observer<NewsAdaptor>() {
+        newsViewModel.getListNews().observe(this, new Observer<List<News>>() {
             @Override
-            public void onChanged(NewsAdaptor newsAdaptor) {
-                lvNews.setAdapter(newsAdaptor);
+            public void onChanged(List<News> news) {
+                adaptor = new NewsAdaptor(getContext(),news);
+                lvNews.setAdapter(adaptor);
             }
         });
 

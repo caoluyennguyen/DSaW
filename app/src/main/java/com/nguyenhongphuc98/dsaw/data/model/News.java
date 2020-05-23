@@ -11,6 +11,10 @@ public class News {
     private String title;
     private String type;
 
+    public News() {
+
+    }
+
     public News(String author, String content, String cover, String createtime, String id, String link, String title, String type) {
         this.author = author;
         this.content = content;

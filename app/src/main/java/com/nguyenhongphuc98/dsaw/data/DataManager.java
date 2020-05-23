@@ -16,11 +16,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +37,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import com.google.firebase.storage.UploadTask;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.News;
@@ -47,6 +55,8 @@ import java.util.Date;
 import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+
+import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
@@ -100,7 +110,6 @@ public class DataManager {
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
-
 
     public void TestConnectDB() {
         final DatabaseReference organs_Reference = mDatabase.getReference("message");
@@ -599,6 +608,7 @@ public class DataManager {
         });
     }
 
+    // List result depend on uid so we acn using it for fetch in user or admin view
     public void fetchListSurveyByType(final MutableLiveData<List<SurveyModel>> ls, final String type,final String uid) {
 
         Query query = null;
@@ -634,4 +644,50 @@ public class DataManager {
         });
     }
 
+    public Boolean fetchAllPosts(final MutableLiveData<List<News>> lsNews){
+
+        try {
+
+            Query query=mDatabaseRef.child("Post");
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+
+                        List<News> ls = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            News n = snapshot.getValue(News.class);
+                            ls.add(n);
+                        }
+                        lsNews.setValue(ls);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DB","err get posts (news): "+e.getMessage());
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public void fetchPhotos(String fileName, final ImageView result) {
+        mStorageRef.child("posts/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(mContext)
+                        .load(uri)
+                        .into(result);
+                Log.e("DB","downloaded a photo:"+uri.getPath());
+            }
+        });
+    }
 }
