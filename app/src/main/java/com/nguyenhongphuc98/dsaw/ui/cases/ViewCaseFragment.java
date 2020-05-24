@@ -24,6 +24,9 @@ import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.CaseAdaptor;
+import com.nguyenhongphuc98.dsaw.data.model.Case;
+
+import java.util.List;
 
 public class ViewCaseFragment extends Fragment {
 
@@ -33,6 +36,8 @@ public class ViewCaseFragment extends Fragment {
     private ListView lvCases;
 
     PopupMenu popup;
+
+    private CaseAdaptor adaptor;
 
     public static ViewCaseFragment newInstance() {
         return new ViewCaseFragment();
@@ -51,11 +56,18 @@ public class ViewCaseFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ViewCaseViewModel.class);
-        mViewModel.setContext(getContext());
-        mViewModel.getAdaptor().observe(this, new Observer<CaseAdaptor>() {
+
+        adaptor = new CaseAdaptor(getContext(),mViewModel.ls);
+        lvCases.setAdapter(adaptor);
+
+        mViewModel.getListCases().observe(this, new Observer<List<Case>>() {
             @Override
-            public void onChanged(CaseAdaptor caseAdaptor) {
-                lvCases.setAdapter(caseAdaptor);
+            public void onChanged(List<Case> cases) {
+                mViewModel.ls.clear();
+                for (Case a : cases) {
+                    mViewModel.ls.add(a);
+                }
+                adaptor.notifyDataSetChanged();
             }
         });
     }
@@ -93,7 +105,11 @@ public class ViewCaseFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 //Toast.makeText(getContext(),s.toString(),Toast.LENGTH_SHORT).show();
-                mViewModel.filterByNameOrCMND(s.toString());
+                mViewModel.ls.clear();
+                for (Case a : mViewModel.filterByNameOrCMND(s.toString())) {
+                    mViewModel.ls.add(a);
+                }
+                adaptor.notifyDataSetChanged();
             }
         });
 
@@ -101,7 +117,11 @@ public class ViewCaseFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 String f = item.getTitle().toString().split(" ")[1];
-                mViewModel.filterByF(f);
+                mViewModel.ls.clear();
+                for (Case a : mViewModel.filterByF(f)) {
+                    mViewModel.ls.add(a);
+                }
+                adaptor.notifyDataSetChanged();
                 return true;
             }
         });

@@ -41,6 +41,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
+import com.nguyenhongphuc98.dsaw.data.model.Case;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.Post;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
@@ -752,11 +753,11 @@ public class DataManager {
         });
     }
 
-    public void fetchACcountById(final String id, final MutableLiveData<Account> account) {
+    public void fetchAccountById(final String id, final MutableLiveData<Account> account) {
 
         Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(id);
 
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -794,6 +795,33 @@ public class DataManager {
                     }
 
                     lsAccounts.setValue(ls);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // Just manager can process case, and just case of area - which it manager
+    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases, String area) {
+
+        Query query = mDatabaseRef.child("Case").orderByChild("area").equalTo(area);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    List<Case> ls = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Case a = snapshot.getValue(Case.class);
+                        ls.add(a);
+                    }
+
+                    lsCases.setValue(ls);
                 }
             }
 

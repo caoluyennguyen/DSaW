@@ -1,18 +1,19 @@
 package com.nguyenhongphuc98.dsaw;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.network.DataService;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,16 @@ public class MainActivity extends AppCompatActivity {
 
         //fetch data in background
         DataService.Instance().updateCovidStatistic();
+
+        //set current account after login to using later
+        MutableLiveData<Account> user = new MutableLiveData<>();
+        DataManager.Instance().fetchAccountById("184335349",user);
+        user.observe(this, new Observer<Account>() {
+            @Override
+            public void onChanged(Account account) {
+                DataCenter.currentUser = account;
+            }
+        });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
