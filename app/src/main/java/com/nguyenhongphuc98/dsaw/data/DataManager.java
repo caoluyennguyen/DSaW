@@ -69,7 +69,10 @@ import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -816,9 +819,15 @@ public class DataManager {
                 if (dataSnapshot.exists()) {
 
                     List<Case> ls = new ArrayList<>();
+                    //just load case in this time, mean if da lanh benh thi k con nua
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+                    Date date = new Date();
+                    String t = dateFormat.format(date);
+
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Case a = snapshot.getValue(Case.class);
-                        ls.add(a);
+                        if (t.compareTo(a.getBegin_time()) > 0 && t.compareTo(a.getEnd_time()) < 0 )
+                            ls.add(a);
                     }
 
                     lsCases.setValue(ls);
@@ -830,5 +839,10 @@ public class DataManager {
 
             }
         });
+    }
+
+    public void insertCase(final Case aCase) {
+
+        mDatabaseRef.child("Case").push().setValue(aCase);
     }
 }
