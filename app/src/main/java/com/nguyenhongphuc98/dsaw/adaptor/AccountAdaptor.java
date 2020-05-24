@@ -15,11 +15,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.lifecycle.MutableLiveData;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
+import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +31,7 @@ import java.util.Map;
 public class AccountAdaptor extends ArrayAdapter {
     Context context;
     List<Account> lsUsers;
-    Map<String,String> lsAreas;
+    public MutableLiveData<List<Area>> lsAreas;
 
     PopupMenu menu;
 
@@ -37,28 +41,39 @@ public class AccountAdaptor extends ArrayAdapter {
         super(context, R.layout.custom_case_row,ls);
         this.context=context;
         lsUsers =ls;
+        lsAreas = new MutableLiveData<>();
+        fillData();
     }
     
     //call this method before setup anything else
-    public void fillData(View view) {
+    public void fillData() {
         //load all area from db
-        lsAreas = new HashMap<>();
-        lsAreas.put("Hà Tĩnh","area1");
-        lsAreas.put("Đà Nẵng","area2");
-        lsAreas.put("Bến Tre","area3");
-        lsAreas.put("Hà Nội","area4");
-        lsAreas.put("Hà Giang","area5");
-        lsAreas.put("Sơn Tĩnh","area6");
+        DataManager.Instance().fetchAllAreas(lsAreas);
+    }
 
+    public void setupMenu(View view) {
         menu = new PopupMenu(context, view);
-        for (Map.Entry me : lsAreas.entrySet()) {
-            menu.getMenu().add(me.getKey().toString()); // menus items
+        int i = 0;
+        for (Area a : lsAreas.getValue()) {
+
+            //menu.getMenu().add(a.getName()); // menus items
+            menu.getMenu().add(Menu.NONE, Menu.NONE, i++,a.getName());
         }
 
         menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(context,"did assign: "+selectedUserID+ "for "+lsAreas.get(item.getTitle()),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "did assign: " + selectedUserID + "for " + lsAreas.getValue().get(item.getItemId()).getId(), Toast.LENGTH_SHORT).show();
+                for (Account e: lsUsers) {
+                    if (e.getIdentity().equals(selectedUserID)) {
+                        //user or manager
+                        if (e.getRole().equals("user")) {
+                            e.setRole("manager");
+                            e.setArea_management(lsAreas.getValue().get(item.getOrder()).getId());
+                            DataManager.Instance().updateACcount(e);
+                        }
+                    }
+                }
                 return true;
             }
         });
@@ -101,8 +116,14 @@ public class AccountAdaptor extends ArrayAdapter {
         viewHolder.action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                menu.show();
-                selectedUserID = e.getIdentity();
+                if (e.getRole().equals("manager")) {
+                    e.setRole("user");
+                    e.setArea_management("null");
+                    DataManager.Instance().updateACcount(e);
+                } else {
+                    menu.show();
+                    selectedUserID = e.getIdentity();
+                }
             }
         });
 

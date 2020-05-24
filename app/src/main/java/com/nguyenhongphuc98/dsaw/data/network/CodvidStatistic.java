@@ -83,6 +83,8 @@ public class CodvidStatistic extends AsyncTask<String, String, String> {
         super.onPostExecute(result);
         //save to firebase here
 
+        if (result == null)
+            return;
         JSONObject json = null;
         try {
 

@@ -28,7 +28,12 @@ import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.AccountAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
+import com.nguyenhongphuc98.dsaw.data.model.Account;
+import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.ui.route.RouteFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserManagerFragment extends Fragment {
 
@@ -37,6 +42,7 @@ public class UserManagerFragment extends Fragment {
     private EditText etSearch;
     private ListView lvUsers;
 
+    private AccountAdaptor adaptor;
     PopupMenu popup;
 
     public static UserManagerFragment newInstance() {
@@ -55,13 +61,26 @@ public class UserManagerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mViewModel = ViewModelProviders.of(this).get(UserManagerViewModel.class);
-        mViewModel.setContext(getContext());
-        mViewModel.getAdaptor().observe(this, new Observer<AccountAdaptor>() {
+        adaptor = new AccountAdaptor(getContext(), mViewModel.lsUsers);
+        lvUsers.setAdapter(adaptor);
+
+        adaptor.lsAreas.observe(getParentFragment(), new Observer<List<Area>>() {
             @Override
-            public void onChanged(AccountAdaptor accountAdaptor) {
-                accountAdaptor.fillData(etSearch);
-                lvUsers.setAdapter(accountAdaptor);
+            public void onChanged(List<Area> areas) {
+                adaptor.setupMenu(etSearch);
+            }
+        });
+
+        mViewModel.getLisAccount().observe(this, new Observer<List<Account>>() {
+            @Override
+            public void onChanged(List<Account> accounts) {
+                mViewModel.lsUsers.clear();
+                for (Account a : accounts) {
+                    mViewModel.lsUsers.add(a);
+                }
+                adaptor.notifyDataSetChanged();
             }
         });
 
@@ -99,7 +118,11 @@ public class UserManagerFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 //Toast.makeText(getContext(),s.toString(),Toast.LENGTH_SHORT).show();
-                mViewModel.filterByNameOrCMND(s.toString());
+                mViewModel.lsUsers.clear();
+                for (Account a : mViewModel.filterByNameOrCMND(s.toString())) {
+                    mViewModel.lsUsers.add(a);
+                }
+                adaptor.notifyDataSetChanged();
             }
         });
 
@@ -107,10 +130,20 @@ public class UserManagerFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 String role = item.getTitle().toString();
-                if (role.equals("Người dùng"))
-                    mViewModel.filterByRole("user");
-                else
-                    mViewModel.filterByRole("manager");
+                mViewModel.lsUsers.clear();
+
+                if (role.equals("Người dùng")) {
+                    for (Account a : mViewModel.filterByRole("user")) {
+                        mViewModel.lsUsers.add(a);
+                    }
+                } else {
+                    for (Account a : mViewModel.filterByRole("manager")) {
+                        mViewModel.lsUsers.add(a);
+                    }
+                }
+
+                adaptor.notifyDataSetChanged();
+
                 return true;
             }
         });
@@ -120,7 +153,7 @@ public class UserManagerFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(getContext(),"aaa",Toast.LENGTH_SHORT).show();
 //                RouteFragment f = new RouteFragment();
-                String uid = mViewModel.getlsAccount().get(position).getIdentity();
+                String uid = mViewModel.getLisAccount().getValue().get(position).getIdentity();
 //                f.setUserID(uid);
 //                Utils.replaceFragment(f);
                 DataCenter.routeUID = uid;

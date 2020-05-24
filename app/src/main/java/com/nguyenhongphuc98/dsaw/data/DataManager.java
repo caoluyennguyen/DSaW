@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
+import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
@@ -389,9 +390,9 @@ public class DataManager {
     public void updateACcount(final Account user) {
 
         // arrange increate so we get lastest date
-        Query query = mDatabaseRef.child("Account").orderByChild(user.getIdentity());
+        Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(user.getIdentity());
 
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -403,6 +404,90 @@ public class DataManager {
                         String p = snapshot.getKey();
                         mDatabaseRef.child("Account").child(p).setValue(user);
                     }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void fetchAllAreas(final MutableLiveData<List<Area>> lsAreas){
+
+        Query query = mDatabaseRef.child("Area").orderByChild("name");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    // get list area
+//                        Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
+//                        for (String s : userReponse.keySet()) {
+//                            ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(s);
+//                            count += ls.size();
+//                        }
+
+                    List<Area> ls = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Area n = snapshot.getValue(Area.class);
+                        ls.add(n);
+                    }
+                    lsAreas.setValue(ls);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void fetchACcountById(final String id, final MutableLiveData<Account> account) {
+
+        Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(id);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        // We expect one account match
+                        Account a = snapshot.getValue(Account.class);
+                        account.setValue(a);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void fetchAllAccount(final MutableLiveData<List<Account>> lsAccounts) {
+
+        Query query = mDatabaseRef.child("Account");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    List<Account> ls = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        // We expect one account match
+                        Account a = snapshot.getValue(Account.class);
+                        ls.add(a);
+                    }
+
+                    lsAccounts.setValue(ls);
                 }
             }
 
