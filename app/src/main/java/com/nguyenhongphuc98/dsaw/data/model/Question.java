@@ -29,4 +29,8 @@ public class Question {
     public ArrayList<Answer> getAnswers() {
         return mAnswer;
     }
+
+    public String getType() {
+        return type;
+    }
 }

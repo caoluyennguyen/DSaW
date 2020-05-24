@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.adaptor.QuestionAdapter;
 import com.nguyenhongphuc98.dsaw.adaptor.TextQuestionAdapter;
 
 public class CreateSurvey extends Fragment {
@@ -50,9 +51,9 @@ public class CreateSurvey extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(CreateSurveyViewModel.class);
         // TODO: Use the ViewModel
         mViewModel.setContext(this.getContext());
-        mViewModel.GetAdapter().observe(this, new Observer<TextQuestionAdapter>() {
+        mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
             @Override
-            public void onChanged(TextQuestionAdapter textQuestionAdapter) {
+            public void onChanged(QuestionAdapter questionAdapter) {
                 lvQuestion.setAdapter(mViewModel.adaptor);
             }
         });

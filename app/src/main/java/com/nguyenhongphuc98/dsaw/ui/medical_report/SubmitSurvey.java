@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.MultichoiceQuestionAdaptor;
+import com.nguyenhongphuc98.dsaw.adaptor.QuestionAdapter;
 
 public class SubmitSurvey extends Fragment {
 
@@ -34,10 +35,10 @@ public class SubmitSurvey extends Fragment {
         lvQuestion = view.findViewById(R.id.list_of_question);
         mViewModel = ViewModelProviders.of(this).get(SubmitSurveyViewModel.class);
         mViewModel.setContext(getContext());
-        mViewModel.getAdaptor().observe(this, new Observer<MultichoiceQuestionAdaptor>() {
+        mViewModel.getAdaptor().observe(this, new Observer<QuestionAdapter>() {
             @Override
-            public void onChanged(MultichoiceQuestionAdaptor multichoiceQuestionAdaptor) {
-                lvQuestion.setAdapter(multichoiceQuestionAdaptor);
+            public void onChanged(QuestionAdapter questionAdaptor) {
+                lvQuestion.setAdapter(questionAdaptor);
             }
         });
         return view;

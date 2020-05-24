@@ -51,7 +51,7 @@ public class MultichoiceQuestionAdaptor extends ArrayAdapter {
 
         if (!lsQuestion.isEmpty()){
             for (int i=0; i < lsQuestion.get(position).getAnswers().size(); i++){
-                //View subRow = layoutInflater.inflate(R.layout.custom_survey_answer,null);
+                //View subRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_answer,null);
                 //CheckedTextView answer = subRow.findViewById(R.id.answer);
                 //answer.setText(lsQuestion.get(position).getAnswers().get(i));
                 //viewHolder.listOfAnswer.addView(subRow);

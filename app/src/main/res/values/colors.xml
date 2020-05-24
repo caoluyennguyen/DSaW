@@ -3,4 +3,8 @@
     <color name="colorPrimary">#04D446</color>
     <color name="colorPrimaryDark">#FC3996</color>
     <color name="colorAccent">#D81B60</color>
+    
+    <color name="disable_foreground_grey">#f1f1f1</color>
+    <color name="disable_thumb_grey">#f1f1f1</color>
+    <color name="enable_thumb_green">#2FD740</color>
 </resources>

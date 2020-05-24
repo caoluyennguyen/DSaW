@@ -45,16 +45,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/SpinnerTheme"/>
+
+        <ListView
+            android:id="@+id/listview_of_new_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+        </ListView>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listview_of_new_question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/survey_type_layout"
-        android:layout_margin="10dp">
-    </ListView>
+
 
     <Button
         android:id="@+id/btn_choose_type_question"

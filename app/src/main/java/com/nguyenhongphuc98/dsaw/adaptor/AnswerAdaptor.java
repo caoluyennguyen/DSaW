@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,9 +18,10 @@ import java.util.List;
 public class AnswerAdaptor extends ArrayAdapter {
     Context context;
     List<Answer> lsAnswer;
+    String typeOfQuestion;
 
     public AnswerAdaptor(@NonNull Context context, List<Answer> ls){
-        super(context, R.layout.custom_survey_answer, ls);
+        super(context, R.layout.custom_survey_multichoice_answer, ls);
         this.context = context;
         lsAnswer = ls;
     }
@@ -34,7 +34,7 @@ public class AnswerAdaptor extends ArrayAdapter {
         View viewRow = convertView;
 
         if (viewRow == null){
-            viewRow = layoutInflater.inflate(R.layout.custom_survey_answer,parent,false);
+            viewRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_answer,parent,false);
             AnswerAdaptor.ViewHolder holder = new AnswerAdaptor.ViewHolder();
             holder.answer = viewRow.findViewById(R.id.answer);
 
