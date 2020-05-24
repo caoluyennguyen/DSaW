@@ -1,9 +1,15 @@
 package com.nguyenhongphuc98.dsaw.ui.admin_warning;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -51,6 +57,7 @@ public class AdminWarning extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d("show", "View created");
         super.onActivityCreated(savedInstanceState);
+        createNotificationChannel();
         mViewModel = ViewModelProviders.of(this).get(AdminWarningViewModel.class);
         // TODO: Use the ViewModel
         RegisterDataLiveListener();
@@ -71,6 +78,23 @@ public class AdminWarning extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Button is clicked",Toast.LENGTH_SHORT).show();
+                /*Notification notification = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
+                        .setSmallIcon(R.drawable.warning_icon)
+                        .setContentTitle("Canh bao tu luyenprocool")
+                        .setContentText(mTextContent.getText())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .build();*/
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
+                        .setSmallIcon(R.drawable.warning_icon)
+                        .setContentTitle("Cảnh báo nguy hiểm")
+                        .setContentText(mTextContent.getText())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+
+                // notificationId is a unique int for each notification that you must define
+                notificationManager.notify(1, builder.build());
+                Log.d("show", "Warning created");
             }
         });
 
@@ -98,4 +122,21 @@ public class AdminWarning extends Fragment {
             }
         });*/
     }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }

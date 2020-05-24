@@ -13,6 +13,8 @@
     <string name="gui_ngay">Gửi ngay</string>
     <string name="title_admin">Admin</string>
     <string name="see_all"> <u>Xem tất cả</u>.</string>
+    <string name="channel_name"> <u>Xem tất cả</u>.</string>
+    <string name="channel_description"> <u>Xem tất cả</u>.</string>
 
     <string-array name="case_array">
         <item>Chọn đối tượng</item>

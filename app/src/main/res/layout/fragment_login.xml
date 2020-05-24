@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/login_icon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tài khoản đăng nhập (SĐT/CMND)"
+            android:textColor="#4CAF50"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_margin="20dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_margin="20dp"
+            android:outlineSpotShadowColor="#4CAF50"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50"
+            android:layout_margin="20dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="end"
+            android:text="Quên mật khẩu?"
+            android:textStyle="bold"
+            android:textColor="#A39E9E" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Đăng nhập"
+            android:textColor="#FFF"
+            android:background="@drawable/button_green"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chưa có tài khoản? Nhấn vào đây!"
+        android:textSize="15dp"
+        android:textColor="#464646" />
+</LinearLayout>
