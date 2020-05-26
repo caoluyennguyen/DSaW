@@ -28,6 +28,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.Warning;
 
 public class AdminWarning extends Fragment {
     private AdminWarningViewModel mViewModel;
@@ -78,6 +80,12 @@ public class AdminWarning extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Button is clicked",Toast.LENGTH_SHORT).show();
+
+                mViewModel.setContent(mTextContent.getText().toString());
+                Warning warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString());
+
+                mViewModel.CreateWarning(warning);
+
                 /*Notification notification = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
                         .setSmallIcon(R.drawable.warning_icon)
                         .setContentTitle("Canh bao tu luyenprocool")
@@ -89,11 +97,10 @@ public class AdminWarning extends Fragment {
                         .setContentTitle("Cảnh báo nguy hiểm")
                         .setContentText(mTextContent.getText())
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
-
                 // notificationId is a unique int for each notification that you must define
                 notificationManager.notify(1, builder.build());
+
                 Log.d("show", "Warning created");
             }
         });
@@ -109,7 +116,7 @@ public class AdminWarning extends Fragment {
     }
 
     public void RegisterDataLiveListener() {
-        /*mViewModel.getContent().observe(this, new Observer<String>() {
+        mViewModel.getContent().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 mTextContent.setText(String.valueOf(s));
@@ -120,7 +127,7 @@ public class AdminWarning extends Fragment {
             public void onChanged(String s) {
                 mTextCmnd.setText(String.valueOf(s));
             }
-        });*/
+        });
     }
 
     private void createNotificationChannel() {

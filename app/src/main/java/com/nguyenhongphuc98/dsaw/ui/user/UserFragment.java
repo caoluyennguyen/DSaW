@@ -12,9 +12,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 
 public class UserFragment extends Fragment {
 
@@ -24,6 +26,7 @@ public class UserFragment extends Fragment {
     private TextView mTextCMND;
     private TextView mTextDayofBirth;
     private TextView mTextContact;
+    private Button mBtnUpdate;
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -34,8 +37,10 @@ public class UserFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mViewModel =
                 ViewModelProviders.of(this).get(UserViewModel.class);
+        mViewModel.GetUser("manager");
         View root = inflater.inflate(R.layout.fragment_user, container, false);
         InitComponent(root);
+        InitEvent();
         RegisterDataLiveListener();
         return root;
     }
@@ -50,8 +55,23 @@ public class UserFragment extends Fragment {
     public void InitComponent(View view) {
         mTextName = view.findViewById(R.id.txtName);
         mTextCMND = view.findViewById(R.id.txtCMND);
-        mTextDayofBirth = view.findViewById(R.id.txtContact);
-        mTextContact = view.findViewById(R.id.txtDayOfBirth);
+        mTextDayofBirth = view.findViewById(R.id.txtDayOfBirth);
+        mTextContact = view.findViewById(R.id.txtContact);
+        mBtnUpdate = view.findViewById(R.id.user_update_btn);
+    }
+
+    public void InitEvent()
+    {
+        mBtnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.setmName(mTextName.getText().toString());
+                mViewModel.setmCMND(mTextCMND.getText().toString());
+                mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
+                mViewModel.setmContact(mTextContact.getText().toString());
+                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
+            }
+        });
     }
 
     public void RegisterDataLiveListener() {

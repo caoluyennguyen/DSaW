@@ -20,6 +20,8 @@ public class Account {
 
     private String area_management;
 
+    public Account() {};
+
     public Account(String account1_key, String birthday, String identity, String password, String phonenumber, String role, String username, String area, String area_management) {
         this.account1_key = account1_key;
         this.birthday = birthday;
