@@ -19,6 +19,7 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
     TextView cbQuestion;
     TextView txtQuestion;
     CreateQuestionDialog createQuestionDialog;
+    Bundle args;
 
     @Nullable
     @Override
@@ -52,6 +53,9 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
             public void onClick(View v) {
                 createQuestionDialog = new CreateQuestionDialog();
                 createQuestionDialog.show(getFragmentManager(), "Create new question");
+                args = new Bundle();
+                args.putString("type", "MT");
+                createQuestionDialog.setArguments(args);
                 getDialog().dismiss();
             }
         });
@@ -61,6 +65,9 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
             public void onClick(View v) {
                 createQuestionDialog = new CreateQuestionDialog();
                 createQuestionDialog.show(getFragmentManager(), "Create new question");
+                args = new Bundle();
+                args.putString("type", "text");
+                createQuestionDialog.setArguments(args);
                 getDialog().dismiss();
             }
         });

@@ -3,6 +3,7 @@ package com.nguyenhongphuc98.dsaw.data;
 import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -171,11 +172,9 @@ public class DataManager {
         }
     }
 
-    public void AddNewQuestion(String question, ArrayList<String> lsAnswer)
+    public void AddNewQuestion(String question, ArrayList<String> lsAnswer, String type)
     {
-        ArrayList<String> lsAns = new ArrayList<>();
-        lsAns.add("choice1");
-        Question newQues = new Question("4", lsAns, "survey1_key", question, "text");
+        Question newQues = new Question("4", lsAnswer, "survey1_key", question, type);
         //mDatabaseRef.child("Question").child("question4_key").setValue(newQues);
 
         try{

@@ -54,7 +54,7 @@ public class CreateSurvey extends Fragment {
         mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
             @Override
             public void onChanged(QuestionAdapter questionAdapter) {
-                lvQuestion.setAdapter(mViewModel.adaptor);
+                lvQuestion.setAdapter(questionAdapter);
             }
         });
     }

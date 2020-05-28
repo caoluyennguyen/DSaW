@@ -18,7 +18,6 @@ import java.util.List;
 public class AnswerAdaptor extends ArrayAdapter {
     Context context;
     List<String> lsAnswer;
-    String typeOfQuestion;
 
     public AnswerAdaptor(@NonNull Context context, List<String> ls){
         super(context, R.layout.custom_survey_multichoice_answer, ls);
