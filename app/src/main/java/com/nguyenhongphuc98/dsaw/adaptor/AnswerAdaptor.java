@@ -17,10 +17,10 @@ import java.util.List;
 
 public class AnswerAdaptor extends ArrayAdapter {
     Context context;
-    List<Answer> lsAnswer;
+    List<String> lsAnswer;
     String typeOfQuestion;
 
-    public AnswerAdaptor(@NonNull Context context, List<Answer> ls){
+    public AnswerAdaptor(@NonNull Context context, List<String> ls){
         super(context, R.layout.custom_survey_multichoice_answer, ls);
         this.context = context;
         lsAnswer = ls;
@@ -42,8 +42,8 @@ public class AnswerAdaptor extends ArrayAdapter {
         }
 
         AnswerAdaptor.ViewHolder viewHolder = (AnswerAdaptor.ViewHolder) viewRow.getTag();
-        Answer e = lsAnswer.get(position);
-        viewHolder.answer.setText(e.getTextAnswer());
+        String choice = lsAnswer.get(position);
+        viewHolder.answer.setText(choice);
         return viewRow;
     }
 

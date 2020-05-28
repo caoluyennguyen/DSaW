@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
@@ -37,19 +39,20 @@ public class UserFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         mViewModel =
                 ViewModelProviders.of(this).get(UserViewModel.class);
-        mViewModel.GetUser("manager");
+
         View root = inflater.inflate(R.layout.fragment_user, container, false);
         InitComponent(root);
         InitEvent();
         RegisterDataLiveListener();
+        UnfocusElement();
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         // TODO: Use the ViewModel
+        mViewModel.GetUser("manager", mTextName, mTextCMND, mTextDayofBirth, mTextContact);
     }
 
     public void InitComponent(View view) {
@@ -70,6 +73,8 @@ public class UserFragment extends Fragment {
                 mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
                 mViewModel.setmContact(mTextContact.getText().toString());
                 mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
+                Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
+                UnfocusElement();
             }
         });
     }
@@ -99,5 +104,25 @@ public class UserFragment extends Fragment {
                 mTextContact.setText(String.valueOf(s));
             }
         });
+    }
+
+    public void UnfocusElement()
+    {
+        mTextName.setFocusableInTouchMode(false);
+        mTextName.setFocusable(false);
+        mTextName.setFocusableInTouchMode(true);
+        mTextName.setFocusable(true);
+        mTextCMND.setFocusableInTouchMode(false);
+        mTextCMND.setFocusable(false);
+        mTextCMND.setFocusableInTouchMode(true);
+        mTextCMND.setFocusable(true);
+        mTextDayofBirth.setFocusableInTouchMode(false);
+        mTextDayofBirth.setFocusable(false);
+        mTextDayofBirth.setFocusableInTouchMode(true);
+        mTextDayofBirth.setFocusable(true);
+        mTextContact.setFocusableInTouchMode(false);
+        mTextContact.setFocusable(false);
+        mTextContact.setFocusableInTouchMode(true);
+        mTextContact.setFocusable(true);
     }
 }

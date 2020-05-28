@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw.ui.user;
 
 import android.app.Application;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -56,9 +57,9 @@ public class UserViewModel extends ViewModel {
         this.mContact.setValue(mContact);
     }
 
-    public void GetUser(String id)
+    public void GetUser(String id, TextView name, TextView identity, TextView birthday, TextView phonenumber)
     {
-        DataManager.Instance().GetUserData(id);
+        DataManager.Instance().GetUserData(id, name, identity, birthday, phonenumber);
     }
 
     public void UpdateUser(String name, String identity, String birthday, String phoneNumber)

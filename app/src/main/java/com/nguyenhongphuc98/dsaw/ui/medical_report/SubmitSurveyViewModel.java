@@ -16,10 +16,8 @@ import java.util.List;
 
 public class SubmitSurveyViewModel extends ViewModel {
     // TODO: Implement the ViewModel
-    //private MutableLiveData<MultichoiceQuestionAdaptor> mAdaptor;
     private MutableLiveData<QuestionAdapter> mAdaptor;
 
-    //private MultichoiceQuestionAdaptor adaptor;
     private QuestionAdapter adaptor;
     private List<Question> lsQuestion;
 
@@ -33,11 +31,11 @@ public class SubmitSurveyViewModel extends ViewModel {
         this.context = c;
         lsQuestion = new ArrayList<>();
 
-        ArrayList<Answer> lsAnswer1 = new ArrayList<>();
-        lsAnswer1.add(new Answer("Đau đầu"));
-        lsAnswer1.add(new Answer("Khó thở"));
-        lsAnswer1.add(new Answer("Tim dập nhanh"));
-        lsAnswer1.add(new Answer("Viêm màng túi"));
+        ArrayList<String> lsAnswer1 = new ArrayList<>();
+        lsAnswer1.add("Đau đầu");
+        lsAnswer1.add("Khó thở");
+        lsAnswer1.add("Tim dập nhanh");
+        lsAnswer1.add("Viêm màng túi");
         lsQuestion.add(new Question("1", lsAnswer1,"survey1_key", "Các triệu chứng gần đây của bạn?", "MT"));
 
         lsQuestion.add(new Question("2", null, "survey1_key","Thông tin thêm bạn muốn gửi:", "Text"));

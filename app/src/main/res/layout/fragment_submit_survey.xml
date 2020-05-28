@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/go_back_btn"
             android:layout_width="100px"
             android:layout_height="100px"
             app:srcCompat="@drawable/left_arrow"

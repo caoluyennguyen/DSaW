@@ -6,14 +6,14 @@ public class Answer {
     String surveyKey;
     String accountKey;
     List<String> answerKey;
-    String imageFile;
-    String textAnswer;
+    String image_file;
+    String text_answer;
 
     public Answer(String answer) {
-        this.textAnswer = answer;
+        this.text_answer = answer;
     }
 
     public String getTextAnswer() {
-        return textAnswer;
+        return text_answer;
     }
 }

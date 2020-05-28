@@ -8,10 +8,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.nguyenhongphuc98.dsaw.R;
@@ -22,6 +25,7 @@ public class SubmitSurvey extends Fragment {
 
     private SubmitSurveyViewModel mViewModel;
 
+    private ImageView btnBack;
     private ListView lvQuestion;
 
     public static SubmitSurvey newInstance() {
@@ -32,7 +36,10 @@ public class SubmitSurvey extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_submit_survey, container, false);
-        lvQuestion = view.findViewById(R.id.list_of_question);
+
+        InitView(view);
+        InitEvent();
+
         mViewModel = ViewModelProviders.of(this).get(SubmitSurveyViewModel.class);
         mViewModel.setContext(getContext());
         mViewModel.getAdaptor().observe(this, new Observer<QuestionAdapter>() {
@@ -49,5 +56,21 @@ public class SubmitSurvey extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // TODO: Use the ViewModel
 
+    }
+
+    public void InitView(View view)
+    {
+        lvQuestion = view.findViewById(R.id.list_of_question);
+        btnBack = view.findViewById(R.id.go_back_btn);
+    }
+
+    public void InitEvent()
+    {
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.navigation_report);
+            }
+        });
     }
 }

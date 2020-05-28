@@ -27,11 +27,11 @@ public class CreateSurveyViewModel extends ViewModel {
         this.context = c;
         lsQuestion = new ArrayList<>();
 
-        ArrayList<Answer> lsAnswer1 = new ArrayList<>();
-        lsAnswer1.add(new Answer("Đau đầu"));
-        lsAnswer1.add(new Answer("Khó thở"));
-        lsAnswer1.add(new Answer("Tim dập nhanh"));
-        lsAnswer1.add(new Answer("Viêm màng túi"));
+        ArrayList<String> lsAnswer1 = new ArrayList<>();
+        lsAnswer1.add("Đau đầu");
+        lsAnswer1.add("Khó thở");
+        lsAnswer1.add("Tim dập nhanh");
+        lsAnswer1.add("Viêm màng túi");
         lsQuestion.add(new Question("1", lsAnswer1, "1", "Câu hỏi đầu tiên:", "MT"));
 
         //lsQuestion.add(new Question("2", null, "1", "Câu hỏi đầu tiên:", "text"));

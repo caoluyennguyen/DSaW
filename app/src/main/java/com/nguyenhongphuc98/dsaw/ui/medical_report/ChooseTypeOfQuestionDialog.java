@@ -52,6 +52,16 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
             public void onClick(View v) {
                 createQuestionDialog = new CreateQuestionDialog();
                 createQuestionDialog.show(getFragmentManager(), "Create new question");
+                getDialog().dismiss();
+            }
+        });
+
+        txtQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createQuestionDialog = new CreateQuestionDialog();
+                createQuestionDialog.show(getFragmentManager(), "Create new question");
+                getDialog().dismiss();
             }
         });
     }
