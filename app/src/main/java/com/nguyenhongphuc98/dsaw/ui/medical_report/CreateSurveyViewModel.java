@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.nguyenhongphuc98.dsaw.adaptor.QuestionAdapter;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Answer;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
 
@@ -27,14 +28,16 @@ public class CreateSurveyViewModel extends ViewModel {
         this.context = c;
         lsQuestion = new ArrayList<>();
 
-        ArrayList<String> lsAnswer1 = new ArrayList<>();
+        /*ArrayList<String> lsAnswer1 = new ArrayList<>();
         lsAnswer1.add("Đau đầu");
         lsAnswer1.add("Khó thở");
         lsAnswer1.add("Tim dập nhanh");
         lsAnswer1.add("Viêm màng túi");
-        lsQuestion.add(new Question("1", lsAnswer1, "1", "Câu hỏi đầu tiên:", "MT"));
+        lsQuestion.add(new Question(lsAnswer1, "1", "1", "Câu hỏi đầu tiên:", "MT"));
 
-        //lsQuestion.add(new Question("2", null, "1", "Câu hỏi đầu tiên:", "text"));
+        lsQuestion.add(new Question(null, "2", "1", "Câu hỏi đầu tiên:", "text"));*/
+
+        DataManager.Instance().GetAllQuestion(lsQuestion);
 
         adaptor = new QuestionAdapter(this.context, lsQuestion);
         mAdaptor.setValue(adaptor);

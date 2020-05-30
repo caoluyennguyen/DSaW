@@ -93,6 +93,7 @@ public class CreateQuestionDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mViewModel.getLsAnswer().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu trả lời!", Toast.LENGTH_LONG).show();
+                else if (edtQuestion.getText().toString().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu hỏi!", Toast.LENGTH_LONG).show();
                 else {
                     if (lsNewAnswer.getVisibility() == View.GONE) DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), null, "text");
                     else DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), mViewModel.getLsAnswer(), "MT");
@@ -105,8 +106,7 @@ public class CreateQuestionDialog extends DialogFragment {
         addAnsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtQuestion.getText().toString().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu hỏi!", Toast.LENGTH_LONG).show();
-                else if (edtAnswer.getText().toString().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu trả lời!", Toast.LENGTH_LONG).show();
+                if (edtAnswer.getText().toString().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu trả lời!", Toast.LENGTH_LONG).show();
                 else mViewModel.AddNewAnswer(edtAnswer.getText().toString());
             }
         });

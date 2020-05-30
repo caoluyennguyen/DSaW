@@ -3,6 +3,8 @@ package com.nguyenhongphuc98.dsaw.ui.news;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,20 +13,24 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 
 public class CreateNewsFragment extends Fragment {
-
+    final int CODE_OPEN_DOCUMENT = 22;
     private CreateNewsViewModel mViewModel;
 
     ImageButton btnUploadCover;
+    Uri coverImg;
     EditText edtTitle;
     EditText edtContent;
     Button btnPost;
@@ -38,7 +44,7 @@ public class CreateNewsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_news, container, false);
         InitComponent(view);
-        //InitEvent();
+        InitEvent();
         return view;
     }
 
@@ -50,16 +56,42 @@ public class CreateNewsFragment extends Fragment {
         RegisterLiveData();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //show image on avatar
+        Uri selectedFile = data.getData();
+        coverImg = selectedFile;
+        Toast.makeText(getContext(), "Tải ảnh bìa thành công", Toast.LENGTH_LONG).show();
+        btnUploadCover.setImageURI(coverImg);
+    }
+
     public void InitComponent(View view)
     {
         btnUploadCover = view.findViewById(R.id.btn_upload_cover);
         edtTitle = view.findViewById(R.id.edtTitle);
         edtContent = view.findViewById(R.id.edtContent);
+        btnPost = view.findViewById(R.id.button_post);
     }
 
     public void InitEvent()
     {
-        edtTitle.addTextChangedListener(new TextWatcher() {
+        btnUploadCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentOpenFile=new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intentOpenFile,"Choose image"),CODE_OPEN_DOCUMENT);
+            }
+        });
+        btnPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataManager.Instance().AddNewPost(edtTitle.getText().toString(), edtContent.getText().toString(), DataManager.Instance().UploadFileToFirebase("posts/", coverImg));
+                Toast.makeText(getContext(), "Đăng bài viết thành công", Toast.LENGTH_LONG).show();
+
+            }
+        });
+        /*edtTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -88,7 +120,7 @@ public class CreateNewsFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 mViewModel.setContent(edtContent.getText().toString());
             }
-        });
+        });*/
     }
 
     public void RegisterLiveData()
@@ -96,13 +128,13 @@ public class CreateNewsFragment extends Fragment {
         mViewModel.getTitle().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                edtTitle.setText(String.valueOf(s));
+                edtTitle.setText(s);
             }
         });
         mViewModel.getContent().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                edtContent.setText(String.valueOf(s));
+                edtContent.setText(s);
             }
         });
     }

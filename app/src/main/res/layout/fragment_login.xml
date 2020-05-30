@@ -27,12 +27,15 @@
             android:textColor="#4CAF50"
             android:textSize="15dp"
             android:textStyle="bold"
-            android:layout_margin="20dp"/>
+            android:layout_margin="10dp"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_margin="20dp"
+            android:layout_margin="10dp"
+            android:hint="Tài khoản đăng nhập (SĐT/CMND)"
+            android:textColor="#4CAF50"
+            android:textSize="15dp"
             android:outlineSpotShadowColor="#4CAF50"/>
 
         <TextView
@@ -42,14 +45,14 @@
             android:textSize="15dp"
             android:textStyle="bold"
             android:textColor="#4CAF50"
-            android:layout_margin="20dp"/>
+            android:layout_margin="10dp"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
         <TextView
             android:layout_width="match_parent"

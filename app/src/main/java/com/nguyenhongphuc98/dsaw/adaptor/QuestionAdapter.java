@@ -1,10 +1,12 @@
 package com.nguyenhongphuc98.dsaw.adaptor;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,7 +37,9 @@ public class QuestionAdapter extends ArrayAdapter {
         View viewRow = convertView;
 
         if (viewRow == null){
-            if (lsQuestion.get(position).getType() == "MT")
+            int numOfQuestion = position + 1;
+            Log.e("DataManager","Title of question was found is " + lsQuestion.get(position).getType());
+            if (lsQuestion.get(position).getType().equals("MT"))
             {
                 viewRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_question,parent,false);
                 QuestionAdapter.ViewHolder holder = new QuestionAdapter.ViewHolder();
@@ -47,23 +51,31 @@ public class QuestionAdapter extends ArrayAdapter {
 
                 ViewHolder viewHolder = (ViewHolder) viewRow.getTag();
                 Question e = lsQuestion.get(position);
-                viewHolder.number.setText("Câu " + e.getId() + ":");
+                viewHolder.number.setText("Câu " + numOfQuestion + ":");
                 viewHolder.question.setText(e.getTitle());
                 mAdapter = new AnswerAdaptor(getContext(), lsQuestion.get(position).getAnswers());
                 viewHolder.listviewOfAnswer.setAdapter(mAdapter);
+                Log.e("DataManager","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
             }
             else {
                 viewRow = layoutInflater.inflate(R.layout.custom_survey_text_question,parent,false);
                 QuestionAdapter.ViewHolder holder = new QuestionAdapter.ViewHolder();
                 holder.number = viewRow.findViewById(R.id.tqNumber);
                 holder.question = viewRow.findViewById(R.id.tqQuestion);
+                holder.answer = viewRow.findViewById(R.id.edtAnswer);
 
                 viewRow.setTag(holder);
 
                 ViewHolder viewHolder = (ViewHolder) viewRow.getTag();
                 Question e = lsQuestion.get(position);
-                viewHolder.number.setText("Câu " + e.getId() + ":");
+                viewHolder.number.setText("Câu " + numOfQuestion + ":");
                 viewHolder.question.setText(e.getTitle());
+                Log.e("DataManager","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
+                Log.e("DataManager","Câu " + numOfQuestion + " co cau tra loi la " + lsQuestion.get(position).getAnswers());
+                holder.answer.setFocusableInTouchMode(false);
+                holder.answer.setFocusable(false);
+                holder.answer.setFocusableInTouchMode(true);
+                holder.answer.setFocusable(true);
             }
         }
 
@@ -84,6 +96,6 @@ public class QuestionAdapter extends ArrayAdapter {
         TextView number;
         TextView question;
         ListView listviewOfAnswer;
-        TextView answer;
+        EditText answer;
     }
 }

@@ -37,9 +37,6 @@ public class SubmitSurvey extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_submit_survey, container, false);
 
-        InitView(view);
-        InitEvent();
-
         mViewModel = ViewModelProviders.of(this).get(SubmitSurveyViewModel.class);
         mViewModel.setContext(getContext());
         mViewModel.getAdaptor().observe(this, new Observer<QuestionAdapter>() {
@@ -48,6 +45,10 @@ public class SubmitSurvey extends Fragment {
                 lvQuestion.setAdapter(questionAdaptor);
             }
         });
+
+        InitView(view);
+        InitEvent();
+
         return view;
     }
 
@@ -55,7 +56,13 @@ public class SubmitSurvey extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // TODO: Use the ViewModel
-
+        mViewModel.setContext(getContext());
+        mViewModel.getAdaptor().observe(this, new Observer<QuestionAdapter>() {
+            @Override
+            public void onChanged(QuestionAdapter questionAdaptor) {
+                lvQuestion.setAdapter(questionAdaptor);
+            }
+        });
     }
 
     public void InitView(View view)

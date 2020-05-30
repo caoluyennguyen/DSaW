@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.nguyenhongphuc98.dsaw.adaptor.MultichoiceQuestionAdaptor;
 import com.nguyenhongphuc98.dsaw.adaptor.QuestionAdapter;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Answer;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
 
@@ -31,14 +32,16 @@ public class SubmitSurveyViewModel extends ViewModel {
         this.context = c;
         lsQuestion = new ArrayList<>();
 
-        ArrayList<String> lsAnswer1 = new ArrayList<>();
+        /*ArrayList<String> lsAnswer1 = new ArrayList<>();
         lsAnswer1.add("Đau đầu");
         lsAnswer1.add("Khó thở");
         lsAnswer1.add("Tim dập nhanh");
         lsAnswer1.add("Viêm màng túi");
-        lsQuestion.add(new Question("1", lsAnswer1,"survey1_key", "Các triệu chứng gần đây của bạn?", "MT"));
+        lsQuestion.add(new Question(lsAnswer1,"1","survey1_key", "Các triệu chứng gần đây của bạn?", "MT"));
 
-        lsQuestion.add(new Question("2", null, "survey1_key","Thông tin thêm bạn muốn gửi:", "Text"));
+        lsQuestion.add(new Question(null,"2","survey1_key","Thông tin thêm bạn muốn gửi:", "Text"));*/
+
+        DataManager.Instance().GetAllQuestion(lsQuestion);
 
         adaptor = new QuestionAdapter(this.context, lsQuestion);
         mAdaptor.setValue(adaptor);
