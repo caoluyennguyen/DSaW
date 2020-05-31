@@ -15,11 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
-import com.nguyenhongphuc98.dsaw.Utils;
-import com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment;
-import com.nguyenhongphuc98.dsaw.ui.medical_report.PersonallReport;
-import com.nguyenhongphuc98.dsaw.ui.statistic.StatisticFragment;
-import com.nguyenhongphuc98.dsaw.ui.surveys.AdminSurveyListFragment;
 
 public class AdminFragment extends Fragment {
 

@@ -22,17 +22,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
-import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.AccountAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
-import com.nguyenhongphuc98.dsaw.ui.route.RouteFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserManagerFragment extends Fragment {
