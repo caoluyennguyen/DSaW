@@ -885,4 +885,39 @@ public class DataManager {
             }
         });
     }
+
+    // featch all case to statitis (for admin) so we don't care about area. get all :v
+    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases) {
+
+        Query query = mDatabaseRef.child("Case");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    List<Case> ls = new ArrayList<>();
+                    //just load case in this time, mean if da lanh benh thi k con nua
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+                    Date date = new Date();
+                    String t = dateFormat.format(date);
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Case a = snapshot.getValue(Case.class);
+
+                        // mean endtime = zzz moi lay :v
+                        if (t.compareTo(a.getBegin_time()) > 0 && t.compareTo(a.getEnd_time()) < 0 )
+                            ls.add(a);
+                    }
+
+                    lsCases.setValue(ls);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

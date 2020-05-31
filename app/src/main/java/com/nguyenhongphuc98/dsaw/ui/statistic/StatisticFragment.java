@@ -20,6 +20,7 @@ import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
 import com.anychart.core.cartesian.series.Column;
@@ -31,6 +32,7 @@ import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
+import com.nguyenhongphuc98.dsaw.data.model.Case;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,11 +69,44 @@ public class StatisticFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(StatisticViewModel.class);
 
-        mViewModel.getPie().observe(this, new Observer<List<DataEntry>>() {
+//        mViewModel.getPie().observe(this, new Observer<List<DataEntry>>() {
+//            @Override
+//            public void onChanged(List<DataEntry> dataEntries) {
+//                APIlib.getInstance().setActiveAnyChartView(pieChartView);
+//                pieChart.data(dataEntries);
+//            }
+//        });
+
+        mViewModel.getListCases().observe(this, new Observer<List<Case>>() {
             @Override
-            public void onChanged(List<DataEntry> dataEntries) {
+            public void onChanged(List<Case> cases) {
+
+                // bat dau dem :p
+                int f0 = 0;
+                int f1 = 0;
+                int f2 = 0;
+                int f3 = 0;
+
+                for (Case c : cases) {
+                    if (c.getF().equals("F0"))
+                        f0++;
+                    if (c.getF().equals("F1"))
+                        f1++;
+                    if (c.getF().equals("F2"))
+                        f2++;
+                    if (c.getF().equals("F3"))
+                        f3++;
+                }
+
+                List<DataEntry> caseData;
+                caseData = new ArrayList<>();
+                caseData.add(new ValueDataEntry("F0 - Dương tính (" + f0 + ")", f0));
+                caseData.add(new ValueDataEntry("F1 - Tiếp xúc F0 (" + f1 + ")", f1));
+                caseData.add(new ValueDataEntry("F2 - Di chuyển từ vùng dịch (" + f2 + ")", f2));
+                caseData.add(new ValueDataEntry("F3 - Tiếp xúc F1 (" + f3 + ")", f3));
+
                 APIlib.getInstance().setActiveAnyChartView(pieChartView);
-                pieChart.data(dataEntries);
+                pieChart.data(caseData);
             }
         });
 

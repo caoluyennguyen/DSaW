@@ -8,6 +8,7 @@ import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
+import com.nguyenhongphuc98.dsaw.data.model.Case;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class StatisticViewModel extends ViewModel {
     //pie chart
     private List<DataEntry> caseData;
     private MutableLiveData<List<DataEntry>> mCaseData;
+    private MutableLiveData<List<Case>> listCases;
 
     //column chart
     List<DataEntry> dichTeData;
@@ -29,7 +31,10 @@ public class StatisticViewModel extends ViewModel {
     public StatisticViewModel() {
 
         lsAreas = new MutableLiveData<>();
+        listCases = new MutableLiveData<>();
+
         DataManager.Instance().fetchAllAreas(lsAreas);
+        DataManager.Instance().fetchAllCase(listCases);
 
         mCaseData = new MutableLiveData<>();
         caseData = new ArrayList<>();
@@ -59,5 +64,9 @@ public class StatisticViewModel extends ViewModel {
 
     public LiveData<List<Area>> getListAreas() {
         return lsAreas;
+    }
+
+    public LiveData<List<Case>> getListCases() {
+        return listCases;
     }
 }
