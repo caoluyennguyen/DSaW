@@ -55,6 +55,8 @@ public class CaseFragment extends Fragment {
 
     String fx;
 
+    String lastUIDInserted = "notyetinserted";
+
     public static CaseFragment newInstance() {
         return new CaseFragment();
     }
@@ -66,12 +68,7 @@ public class CaseFragment extends Fragment {
         setupView(view);
 
         setupACtion();
-        return view;
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(CaseViewModel.class);
 
         adaptor = new CaseAdaptor(getContext(), lsCases);
@@ -81,24 +78,43 @@ public class CaseFragment extends Fragment {
             @Override
             public void onChanged(Account account) {
 
+                if (account.getIdentity().equals(lastUIDInserted))
+                    return;
+
+                if (account.getIdentity().equals("null")) {
+                    Toast.makeText(getContext(),"User not found",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
                 Date date = new Date();
+                date.setMinutes(date.getMinutes() - 1);
                 String t = dateFormat.format(date);
                 Log.d("TAGGG", "onChanged: date"+ t);
 
                 Case c = new Case(account.getArea(),
                         t,
                         "zzzzzzzzzzzzzzzzzz",
-                         fx,
-                        "case01",
+                        fx,
+                        "setlater",
                         "22356,44426",
-                         account.getIdentity(),
-                         account.getUsername());
+                        account.getIdentity(),
+                        account.getUsername());
+
                 DataManager.Instance().insertCase(c);
                 lsCases.add(c);
                 adaptor.notifyDataSetChanged();
+                lastUIDInserted = account.getIdentity();
             }
         });
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
 
 //        mViewModel.getliveListCases().observe(this, new Observer<List<Case>>() {
 //            @Override
