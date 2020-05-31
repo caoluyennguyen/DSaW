@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -51,6 +52,10 @@ public class StatisticFragment extends Fragment {
     private AnyChartView columnChartView;
     private Cartesian cartesian;
 
+    // list name area to dropdown
+    ArrayList<String> areasname = new ArrayList<>();
+
+    String xemtatca = "Xem tất cả";
 
     public static StatisticFragment newInstance() {
         return new StatisticFragment();
@@ -61,6 +66,7 @@ public class StatisticFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistic, container, false);
         setupView(view);
+        setupAction();
         return view;
     }
 
@@ -128,7 +134,8 @@ public class StatisticFragment extends Fragment {
         mViewModel.getListAreas().observe(this, new Observer<List<Area>>() {
             @Override
             public void onChanged(List<Area> areas) {
-                ArrayList<String> areasname = new ArrayList<>();
+                areasname.clear();
+                areasname.add(xemtatca);
                 for (Area a: areas) {
                     areasname.add(a.getName());
                 }
@@ -179,5 +186,30 @@ public class StatisticFragment extends Fragment {
         cartesian.xAxis(0).title("Biểu hiện");
         cartesian.yAxis(0).title("Số lượng (người)");
         columnChartView.setChart(cartesian);
+    }
+
+    void setupAction() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String areaName = parent.getItemAtPosition(position).toString();
+                if(areaName.equals(xemtatca))
+                {
+                    mViewModel.fetchPieDataAllArea();
+                } else {
+                    for (Area a : mViewModel.getListAreas().getValue()) {
+                        if (a.getName().equals(areaName)) {
+                            mViewModel.fetchPieDataFor(a.getId());
+                            return;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }
