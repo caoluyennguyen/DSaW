@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set current account after login to using later
         MutableLiveData<Account> user = new MutableLiveData<>();
-        DataManager.Instance().fetchAccountById("184335349",user);
+        DataManager.Instance().fetchAccountById("184331234",user);
         user.observe(this, new Observer<Account>() {
             @Override
             public void onChanged(Account account) {

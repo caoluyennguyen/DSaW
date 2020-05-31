@@ -465,7 +465,12 @@ public class DataManager {
                         account.setValue(a);
                         return;
                     }
+                } else {
+                    Account temp = new Account();
+                    temp.setIdentity("null");
+                    account.setValue(temp);
                 }
+
             }
 
             @Override
@@ -537,6 +542,41 @@ public class DataManager {
 
     public void insertCase(final Case aCase) {
 
-        mDatabaseRef.child("Case").push().setValue(aCase);
+        // check if exist need update status before
+        // if exist id user in any case mean we have to update old and insert new
+        Query query = mDatabaseRef.child("Case").orderByChild("user").equalTo(aCase.getUser());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+                    Date date = new Date();
+                    String t = dateFormat.format(date);
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        // end time = zzz thi moi la cai can update
+                        Case a = snapshot.getValue(Case.class);
+                        if (a.getEnd_time().contains("zzzzzzz") ) {
+                            a.setEnd_time(t);
+                            mDatabaseRef.child("Case").child(snapshot.getKey()).setValue(a);
+                        }
+
+                    }
+                }
+
+                // cho du co ton tai truoc do hay khong thi van phai them moi nhu thuong
+                // de trong nay de dam bao la kiem tra truoc khi insert, k la no xu ly cai vua insert thi chet toi :v
+                String key = mDatabaseRef.child("Case").push().getKey();
+                aCase.setId(key);
+                mDatabaseRef.child("Case").child(key).setValue(aCase);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
