@@ -30,6 +30,7 @@ import com.anychart.enums.LegendLayout;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.model.Area;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,12 +90,16 @@ public class StatisticFragment extends Fragment {
             }
         });
 
-        mViewModel.getAreas().observe(this, new Observer<HashMap>() {
+        mViewModel.getListAreas().observe(this, new Observer<List<Area>>() {
             @Override
-            public void onChanged(HashMap hashMap) {
-                ArrayList<String> keyList = new ArrayList<String>(hashMap.keySet());
-                ArrayAdapter<String> adaptor = new ArrayAdapter<String>(getContext(),R.layout.support_simple_spinner_dropdown_item, keyList);
-                spinner.setAdapter(adaptor);
+            public void onChanged(List<Area> areas) {
+                ArrayList<String> areasname = new ArrayList<>();
+                for (Area a: areas) {
+                    areasname.add(a.getName());
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),R.layout.support_simple_spinner_dropdown_item,areasname);
+                spinner.setAdapter(adapter);
             }
         });
     }

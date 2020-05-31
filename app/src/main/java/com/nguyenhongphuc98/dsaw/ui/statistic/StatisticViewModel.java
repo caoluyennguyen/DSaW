@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.Area;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +16,7 @@ import java.util.List;
 public class StatisticViewModel extends ViewModel {
 
     //areas
-    private HashMap<String,String> areas;
-    private MutableLiveData<HashMap> mAreas;
+    public MutableLiveData<List<Area>> lsAreas;
 
     //pie chart
     private List<DataEntry> caseData;
@@ -27,13 +28,8 @@ public class StatisticViewModel extends ViewModel {
 
     public StatisticViewModel() {
 
-        mAreas = new MutableLiveData<>();
-        areas = new HashMap<>();
-        areas.put("Hồ Chí Minh","area1");
-        areas.put("Hà Nội","area2");
-        areas.put("Bến Tre","area3");
-        areas.put("Đà Nẵng","area4");
-        mAreas.setValue(areas);
+        lsAreas = new MutableLiveData<>();
+        DataManager.Instance().fetchAllAreas(lsAreas);
 
         mCaseData = new MutableLiveData<>();
         caseData = new ArrayList<>();
@@ -53,15 +49,15 @@ public class StatisticViewModel extends ViewModel {
         mDichTeData.setValue(dichTeData);
     }
 
-    public LiveData<HashMap> getAreas() {
-        return mAreas;
-    }
-
     public LiveData<List<DataEntry>> getPie() {
         return mCaseData;
     }
 
     public LiveData<List<DataEntry>> getColumn() {
         return mDichTeData;
+    }
+
+    public LiveData<List<Area>> getListAreas() {
+        return lsAreas;
     }
 }
