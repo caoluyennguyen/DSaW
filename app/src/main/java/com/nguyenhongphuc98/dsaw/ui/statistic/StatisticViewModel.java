@@ -34,16 +34,16 @@ public class StatisticViewModel extends ViewModel {
         listCases = new MutableLiveData<>();
 
         DataManager.Instance().fetchAllAreas(lsAreas);
-        DataManager.Instance().fetchAllCase(listCases);
+        fetchPieDataAllArea();
 
-        mCaseData = new MutableLiveData<>();
-        caseData = new ArrayList<>();
-        caseData.add(new ValueDataEntry("F0 - Dương tính (10)", 10));
-        caseData.add(new ValueDataEntry("F1 - Tiếp xúc F0 (55)", 55));
-        caseData.add(new ValueDataEntry("F2 - Di chuyển từ vùng dịch (365)", 365));
-        caseData.add(new ValueDataEntry("F3 - Tiếp xúc F1 (256)", 256));
-        caseData.add(new ValueDataEntry("F4 - Tiếp xúc F2 (20)", 20));
-        mCaseData.setValue(caseData);
+//        mCaseData = new MutableLiveData<>();
+//        caseData = new ArrayList<>();
+//        caseData.add(new ValueDataEntry("F0 - Dương tính (10)", 10));
+//        caseData.add(new ValueDataEntry("F1 - Tiếp xúc F0 (55)", 55));
+//        caseData.add(new ValueDataEntry("F2 - Di chuyển từ vùng dịch (365)", 365));
+//        caseData.add(new ValueDataEntry("F3 - Tiếp xúc F1 (256)", 256));
+//        caseData.add(new ValueDataEntry("F4 - Tiếp xúc F2 (20)", 20));
+//        mCaseData.setValue(caseData);
 
         mDichTeData = new MutableLiveData<>();
         dichTeData  = new ArrayList<>();
@@ -52,6 +52,14 @@ public class StatisticViewModel extends ViewModel {
         dichTeData.add(new ValueDataEntry("Tim đập nhanh", 33));
         dichTeData.add(new ValueDataEntry("Khó thở", 152));
         mDichTeData.setValue(dichTeData);
+    }
+
+    public void fetchPieDataAllArea() {
+        DataManager.Instance().fetchAllCase(listCases);
+    }
+
+    public void fetchPieDataFor(String areaID) {
+        DataManager.Instance().fetchAllCase(listCases, areaID);
     }
 
     public LiveData<List<DataEntry>> getPie() {

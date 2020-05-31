@@ -821,9 +821,8 @@ public class DataManager {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Case> ls = new ArrayList<>();
                 if (dataSnapshot.exists()) {
-
-                    List<Case> ls = new ArrayList<>();
                     //just load case in this time, mean if da lanh benh thi k con nua
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
                     Date date = new Date();
@@ -834,9 +833,8 @@ public class DataManager {
                         if (t.compareTo(a.getBegin_time()) > 0 && t.compareTo(a.getEnd_time()) < 0 )
                             ls.add(a);
                     }
-
-                    lsCases.setValue(ls);
                 }
+                lsCases.setValue(ls);
             }
 
             @Override
