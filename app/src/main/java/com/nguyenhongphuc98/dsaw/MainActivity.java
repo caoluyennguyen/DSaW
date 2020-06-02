@@ -62,6 +62,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Account account) {
                 DataCenter.currentUser = account;
+                locationTrack = new LocationTrack(MainActivity.this);
+
+                if (locationTrack.canGetLocation()) {
+
+                    double longitude = locationTrack.getLongitude();
+                    double latitude = locationTrack.getLatitude();
+
+                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
+                    Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
+                } else {
+
+                    locationTrack.showSettingsAlert();
+                }
             }
         });
 
@@ -87,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         ///Test get name of location
-        GeoHandle handle = new GeoHandle();
-        Geo.getAddressFromLocation(10.877898, 106.807128,getApplicationContext(),handle);
+        //GeoHandle handle = new GeoHandle();
+        //Geo.getAddressFromLocation(10.877898, 106.807128,getApplicationContext(),handle);
 
         /// Location tracking =======================================================================
         permissions.add(ACCESS_FINE_LOCATION);
@@ -104,22 +117,6 @@ public class MainActivity extends AppCompatActivity {
             if (permissionsToRequest.size() > 0)
                 requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
-
-
-        locationTrack = new LocationTrack(MainActivity.this);
-
-        if (locationTrack.canGetLocation()) {
-
-            double longitude = locationTrack.getLongitude();
-            double latitude = locationTrack.getLatitude();
-
-            Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
-            Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
-        } else {
-
-            locationTrack.showSettingsAlert();
-        }
-
     }
 
     private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {

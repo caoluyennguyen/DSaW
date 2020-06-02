@@ -12,6 +12,9 @@ public class RouteData {
 
     private List<TrackingStatus> status;
 
+    public RouteData() {
+    }
+
     public RouteData(String id, String user, List<TrackingStatus> status, String username) {
         this.id = id;
         this.user = user;
