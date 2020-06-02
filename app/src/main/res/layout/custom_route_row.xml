@@ -34,7 +34,7 @@
         android:textAlignment="textStart"
         android:gravity="center"
         android:textColor="#000"
-        android:lines="2"
+        android:lines="0"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="20dp"/>
 </LinearLayout>

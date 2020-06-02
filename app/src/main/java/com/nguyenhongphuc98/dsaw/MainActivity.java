@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if (locationTrack.canGetLocation()) {
 
-                    double longitude = locationTrack.getLongitude();
-                    double latitude = locationTrack.getLatitude();
+                    //double longitude = locationTrack.getLongitude();
+                    //double latitude = locationTrack.getLatitude();
 
-                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
-                    Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
+                    //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
+                    //Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
                 } else {
 
                     locationTrack.showSettingsAlert();
