@@ -958,4 +958,30 @@ public class DataManager {
             }
         });
     }
+
+
+    /// Fetch route for special user
+    public void fetchRouteOf(final MutableLiveData<RouteData> routeData, String uid) {
+
+        Query query = mDatabaseRef.child("RouteData").orderByChild("user").equalTo(uid);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        RouteData a = snapshot.getValue(RouteData.class);
+                        routeData.setValue(a);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
