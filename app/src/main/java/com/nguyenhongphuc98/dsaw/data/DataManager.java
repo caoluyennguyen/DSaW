@@ -27,6 +27,7 @@ import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
+import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
@@ -603,6 +604,45 @@ public class DataManager {
                     }
 
                     lsCases.setValue(ls);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /// Update status route data of secial user
+    // if exists, update, else create new
+    public void updateRouteData(final RouteData routeData) {
+
+        // check exist route of this user
+        Query query = mDatabaseRef.child("RouteData").orderByChild("user").equalTo(routeData.getUser());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
+                    // just update status tracking
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        //actualy it shoud have just one route match :))
+                        String routeKey = snapshot.getKey();
+                        RouteData r = snapshot.getValue(RouteData.class);
+                        r.addStatus(routeData.getStatus().get(0));
+                        mDatabaseRef.child("RouteData").child(routeKey).setValue(r);
+//                        String keyOfStatus = mDatabaseRef.child("RouteData").child(routeKey).child("status").push().getKey();
+//                        mDatabaseRef.child("RouteData").child(routeKey).child("status").child(keyOfStatus).setValue(routeData.getStatus());
+                        return;
+                    }
+                } else {
+                    // insert new data new user :)
+                    String routeKey = mDatabaseRef.child("RouteData").push().getKey();
+                    routeData.setId(routeKey);
+                    mDatabaseRef.child("RouteData").child(routeKey).setValue(routeData);
                 }
             }
 

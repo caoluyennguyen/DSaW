@@ -18,6 +18,10 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
+import com.nguyenhongphuc98.dsaw.data.model.RouteData;
+import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
+
 public class LocationTrack extends Service implements LocationListener {
 
     private final Context mContext;
@@ -201,6 +205,12 @@ public class LocationTrack extends Service implements LocationListener {
     public void onLocationChanged(Location location) {
         // update location to db here :v
         Log.e("LOCATION", "onLocationChanged: "+ location.getLongitude() + ":" + location.getLatitude());
+
+        // get address from google map
+        GeoHandle handle = new GeoHandle();
+        Geo.getAddressFromLocation(location.getLatitude(), location.getLongitude(),mContext,handle);
+
+        // update status tracking when receive name of address in handler :v
     }
 
     @Override

@@ -7,6 +7,17 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.RouteData;
+import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class GeoHandle extends Handler {
 
     @Override
@@ -21,5 +32,20 @@ public class GeoHandle extends Handler {
                 locationAddress = null;
         }
         Log.e("location Address=", locationAddress);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+        Date date = new Date();
+        String t = dateFormat.format(date);
+
+        TrackingStatus status = new TrackingStatus(locationAddress,t);
+        List<TrackingStatus> l = new ArrayList<>();
+        l.add(status);
+
+        RouteData routeData = new RouteData("set later",
+                DataCenter.currentUser.getIdentity(),
+                l,
+                DataCenter.currentUser.getUsername());
+
+        DataManager.Instance().updateRouteData(routeData);
     }
 }
