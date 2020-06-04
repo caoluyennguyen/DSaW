@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -666,10 +667,12 @@ public class DataManager {
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         RouteData a = snapshot.getValue(RouteData.class);
+                        Collections.reverse(a.getStatus());
                         routeData.setValue(a);
                         return;
                     }
                 }
+                routeData.setValue(new RouteData());
             }
 
             @Override
