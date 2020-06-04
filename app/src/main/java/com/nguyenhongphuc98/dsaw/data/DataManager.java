@@ -23,14 +23,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
+import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
+import com.nguyenhongphuc98.dsaw.data.model.Question;
 import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
+import com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +46,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.security.auth.login.LoginException;
 
 public class DataManager {
 
@@ -673,6 +678,126 @@ public class DataManager {
                     }
                 }
                 routeData.setValue(new RouteData());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    /// Lay ra cau tra loi cua tat cua user nam trong khu vuc duoc chi dinh
+
+
+    /// Lay ra thong ke cau tra loi cua cac cau hoi trong 1 survey
+    public void fetchAnswerFor(final MutableLiveData<List<AnswerViewModel>> answersResult, final String surveyid) {
+
+        Query query = mDatabaseRef.child("Answers").child(surveyid);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    // key = account id
+                    // value list instance of a answer
+                    Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
+
+
+                    /// map <questionID - hashMap<answer mau id, count checked>>
+                    final HashMap<String, HashMap<Long,Long>> result = new HashMap<>();
+
+                    // duyet tat ca account da tra loi survey nay
+                    for (String accountID : userReponse.keySet()) {
+
+                        ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
+
+                        // submit cuoi cung la submit gan day nhat va han anh dung nhat cho thong ke hien tai
+                        Map<String,Object> lastSubmitAnswer = ls.get(ls.size() - 1);
+
+                        /// key - question key
+                        /// value -list caclua chon da duoc tick cho mutichoice Q
+                        Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
+                        
+                        // duyet het tat ca cau hoi trong phan tra loi
+                        for(Map.Entry<String, List<Long>> entry : ansewerMutilChoices.entrySet()) {
+                            String key = entry.getKey();
+                            List<Long> answerSelected = entry.getValue();
+
+                            if (result.get(key) == null) {
+                                // neu day la lan dau count cau tl cho cau hoi nay
+                                // <key dc check - count>
+                                HashMap ans = new HashMap<Long, Long>();
+                                for (Long i : answerSelected) {
+                                    ans.put(i, (long)1);
+                                }
+
+                                result.put(key, ans);
+                            } else {
+                                // neu day la lan thu 2+ thi phai count len 1 neu tim thay
+                                for (Long i : answerSelected) {
+                                    // chua co ai tick cau tra loi nay ca
+                                    if (result.get(key).get(i) == null)
+                                        result.get(key).put(i, (long) 1);
+                                    else
+                                        result.get(key).put(i,(Long) (result.get(key).get(i) + 1));
+                                }
+
+                            }
+                        }
+                    }
+
+                    final List<AnswerViewModel> answers = new ArrayList<>();
+                    /// sau khi thong ke xong can map cu the cau hoi do la gi va cac cau tra loi
+                    Query query = mDatabaseRef.child("Question").orderByChild("survey").equalTo(surveyid);
+
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    Question q = snapshot.getValue(Question.class);
+                                    AnswerViewModel a = new AnswerViewModel();
+                                    a.setQuestionTitle(q.getTitle());
+
+                                    List<String> mAnswers = new ArrayList<>();
+                                    // lay ra tat ca cau tra loi goi y va gan so luong submit (checked)
+                                    for (int i = 0; i < q.getAnswers().size(); i++) {
+                                        // co the la chua ai check cai nay ca moi dau ne. vay thi cho no = 0
+                                        // neu cau hoi nay k co thi cung  = 0 luon, ma thuc ra la phai co chu :v
+                                        if (result.get(q.getId()) != null
+                                                && result.get(q.getId()).get((Long)(long) i) != null)
+                                            mAnswers.add(q.getAnswers().get(i) + "(" + result.get(q.getId()).get((Long)(long) i) +")");
+                                        else
+                                            mAnswers.add(q.getAnswers().get(i) + "(0)");
+                                    }
+
+                                    if (mAnswers.size() == 0)
+                                        mAnswers.add("Chưa có người trả lời");
+
+                                    a.setAnswers(mAnswers);
+                                    answers.add(a);
+                                }
+                            }
+                            answersResult.setValue(answers);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        RouteData a = snapshot.getValue(RouteData.class);
+//                        Collections.reverse(a.getStatus());
+//                        routeData.setValue(a);
+//                        return;
+//                    }
+                } else
+                    answersResult.setValue(new ArrayList<AnswerViewModel>());
             }
 
             @Override
