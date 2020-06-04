@@ -85,6 +85,10 @@
         <action
             android:id="@+id/go_to_survey_result"
             app:destination="@id/surveyResultFragment"/>
+
+        <action
+            android:id="@+id/go_to_report_result"
+            app:destination="@id/reportResultFragment"/>
     </fragment>
 
     <include app:graph="@navigation/stat_navigation"/>
@@ -99,5 +103,10 @@
         android:name="com.nguyenhongphuc98.dsaw.ui.route.RouteFragment"
         android:label="fragment_route"
         tools:layout="@layout/fragment_route" />
+
+    <fragment
+        android:id="@+id/reportResultFragment"
+        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.ReportResultFragment"
+        android:label="ReportResultFragment" />
 
 </navigation>
