@@ -9,12 +9,15 @@ public class Question {
     String title;
     String type;
 
-    public Question(){}
 
-    public Question(ArrayList<String> lsAnswer, String id, String survey, String title, String type)
+    public Question() {
+        answers = new ArrayList<>();
+    }
+
+    public Question(String id, ArrayList<String> lsAnswer, String survey, String title, String type)
     {
         this.id = id;
-        this.answers = lsAnswer;
+        answers = lsAnswer;
         this.survey = survey;
         this.title = title;
         this.type = type;
@@ -26,6 +29,14 @@ public class Question {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setAnswers(ArrayList<String> answers) {
+        this.answers = answers;
     }
 
     public ArrayList<String> getAnswers() {
@@ -40,9 +51,6 @@ public class Question {
         return type;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setSurvey(String survey) {
         this.survey = survey;

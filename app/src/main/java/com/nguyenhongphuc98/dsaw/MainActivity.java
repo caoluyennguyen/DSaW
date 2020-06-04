@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
+import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 import com.nguyenhongphuc98.dsaw.data.network.DataService;
 import com.nguyenhongphuc98.dsaw.utils.Geo;
 import com.nguyenhongphuc98.dsaw.utils.GeoHandle;
@@ -27,6 +28,7 @@ import com.nguyenhongphuc98.dsaw.utils.LocationTrack;
 import com.nguyenhongphuc98.dsaw.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -117,6 +119,11 @@ public class MainActivity extends AppCompatActivity {
             if (permissionsToRequest.size() > 0)
                 requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
+
+
+        /// Test fetch answers
+//        MutableLiveData<List<AnswerViewModel>> answers = new MutableLiveData<>();
+//        DataManager.Instance().fetchAnswerFor(answers,"survey1_key");
     }
 
     private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {

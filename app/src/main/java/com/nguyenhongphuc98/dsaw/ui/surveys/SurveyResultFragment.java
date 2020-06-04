@@ -19,6 +19,7 @@ import com.nguyenhongphuc98.dsaw.adaptor.SurveyResultAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SurveyResultFragment extends Fragment {
@@ -30,6 +31,8 @@ public class SurveyResultFragment extends Fragment {
     private SurveyResultAdaptor adaptor;
 
     private String surveyID;
+
+    private List<AnswerViewModel> lsAnswers = new ArrayList<>();
 
     public static SurveyResultFragment newInstance() {
         return new SurveyResultFragment();
@@ -48,11 +51,21 @@ public class SurveyResultFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(SurveyResultViewModel.class);
 
+        adaptor = new SurveyResultAdaptor(getContext(),lsAnswers);
+        lv.setAdapter(adaptor);
+
         mViewModel.getlistAnswers().observe(this, new Observer<List<AnswerViewModel>>() {
             @Override
             public void onChanged(List<AnswerViewModel> answerViewModels) {
-                adaptor = new SurveyResultAdaptor(getContext(),answerViewModels);
-                lv.setAdapter(adaptor);
+                lsAnswers.clear();
+                for (AnswerViewModel a : answerViewModels) {
+                    lsAnswers.add(a);
+                }
+
+                if (lsAnswers.size() == 0)
+                    lsAnswers.add(new AnswerViewModel("Tạm thời chưa có câu trả lời", new ArrayList<String>()));
+
+                adaptor.notifyDataSetChanged();
             }
         });
 
