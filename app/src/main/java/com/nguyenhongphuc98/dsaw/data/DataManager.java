@@ -640,7 +640,7 @@ public class DataManager {
                     List<SurveyModel> newList = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Survey p = snapshot.getValue(Survey.class);
-                        SurveyModel s = new SurveyModel(p.getId(),"0",p.getName());
+                        SurveyModel s = new SurveyModel(p.getId(),"0",p.getName(), p.getType());
                         newList.add(s);
 
                         if (uid.equals("admin"))
@@ -1096,12 +1096,6 @@ public class DataManager {
 
                         }
                     });
-//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        RouteData a = snapshot.getValue(RouteData.class);
-//                        Collections.reverse(a.getStatus());
-//                        routeData.setValue(a);
-//                        return;
-//                    }
                 } else
                     answersResult.setValue(new ArrayList<AnswerViewModel>());
             }

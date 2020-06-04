@@ -64,9 +64,13 @@ public class AdminSurveyListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(),"did click at:" + mViewModel.getLsSurvey().getValue().get(position).getId(),Toast.LENGTH_SHORT).show();
-                String sid = mViewModel.getLsSurvey().getValue().get(position).getId();
-                DataCenter.surveyID = sid;
-                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_survey_result);
+                SurveyModel survey= mViewModel.getLsSurvey().getValue().get(position);
+                DataCenter.surveyID = survey.getId();
+
+                if (survey.getType().equals("report"))
+                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_report_result);
+                else
+                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_survey_result);
             }
         });
     }
