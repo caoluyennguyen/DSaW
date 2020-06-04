@@ -25,8 +25,6 @@
         android:id="@+id/report_result_img"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/news_cover"/>
+        android:padding="15dp"
+        android:scaleType="centerCrop"/>
 </LinearLayout>

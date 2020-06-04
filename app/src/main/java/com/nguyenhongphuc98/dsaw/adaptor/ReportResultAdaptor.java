@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 import com.nguyenhongphuc98.dsaw.data.model.ReportModel;
 import com.nguyenhongphuc98.dsaw.ui.report.ReportViewModel;
@@ -56,7 +57,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
         int p = position + 1;
         viewHolder.tvQuestion.setText("Câu trả lời thứ "+ p);
 
-
+        viewHolder.answerListLayout.removeAllViews();
         for(int i = 0; i< answers.get(position).getLsAnswers().size(); i++) {
 //            View subRow = layoutInflater.inflate(R.layout.custom_survey_result_sub_item_row,null);
 //
@@ -71,7 +72,8 @@ public class ReportResultAdaptor extends ArrayAdapter {
             viewHolder.answerListLayout.addView(answeri);
         }
 
-        viewHolder.imageView.setImageResource(R.drawable.manager_48);
+        //viewHolder.imageView.setImageResource(R.drawable.manager_48);
+        DataManager.Instance().fetchPhoto(answers.get(position).getImageUrl(), viewHolder.imageView,"report");
 
         return viewRow;
     }
