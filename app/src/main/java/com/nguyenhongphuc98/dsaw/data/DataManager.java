@@ -64,6 +64,7 @@ import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
+import com.nguyenhongphuc98.dsaw.data.model.ReportModel;
 import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
@@ -692,8 +693,9 @@ public class DataManager {
         return true;
     }
 
-    public void fetchPhoto(String fileName, final ImageView result) {
-        mStorageRef.child("posts/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+    // folder = posts or report
+    public void fetchPhoto(String fileName, final ImageView result, String folder) {
+        mStorageRef.child(folder+"/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(mContext)
@@ -1098,6 +1100,82 @@ public class DataManager {
                     });
                 } else
                     answersResult.setValue(new ArrayList<AnswerViewModel>());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+    /// Fetch cau tra loi danh rieng cho survey co cau truc report
+    public void fetchAnswerForReport(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid) {
+
+        Query query = mDatabaseRef.child("Answers").child(surveyid);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final List<ReportModel> listAnswers = new ArrayList<>();
+
+                if (dataSnapshot.exists()) {
+
+                    // key = account id
+                    // value list instance of a answer
+                    Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
+
+                    // duyet tat ca account da tra loi survey nay
+                    for (String accountID : userReponse.keySet()) {
+
+                        ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
+                        for (Map map : ls) {
+                            List<String> oneAnswer = new ArrayList<>();
+                            ReportModel model = new ReportModel();
+                            for (Object qid : map.keySet()) {
+                                if (map.get(qid).toString().charAt(0) == '>')
+                                {
+                                    String[] imageName = map.get(qid).toString().split(">");
+                                    model.setImageUrl(imageName[1]);
+                                }  else
+                                    oneAnswer.add(qid + ": "+ map.get(qid));
+                            }
+                            model.setLsAnswers(oneAnswer);
+                            listAnswers.add(model);
+                        }
+                    }
+                }
+
+                // replace question key by title of question
+                Query query = mDatabaseRef.child("Question").orderByChild("survey").equalTo(surveyid);
+
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Question q = snapshot.getValue(Question.class);
+                                for (ReportModel r : listAnswers) {
+                                    List<String> newAnswers= new ArrayList<>();
+                                    for (String s : r.getLsAnswers()) {
+                                        String t = s.replace(q.getId(),q.getTitle());
+                                        newAnswers.add(t);
+                                    }
+                                    r.setLsAnswers(newAnswers);
+                                }
+                            }
+                        }
+                        answersResult.setValue(listAnswers);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+
+
             }
 
             @Override
