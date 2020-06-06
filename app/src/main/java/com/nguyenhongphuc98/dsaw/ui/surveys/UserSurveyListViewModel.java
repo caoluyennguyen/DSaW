@@ -33,11 +33,11 @@ public class UserSurveyListViewModel extends ViewModel {
 
     public void fetchData() {
 
-        DataManager.Instance().fetchListSurveyByType(mSurveyKBYT,"personal_medical", DataCenter.userID);
+        DataManager.Instance().fetchListSurveyByType(mSurveyKBYT,"personal_medical", DataCenter.currentUser.getIdentity());
 
-        DataManager.Instance().fetchListSurveyByType(mSurveyKBNT,"relatives_medical", DataCenter.userID);
+        DataManager.Instance().fetchListSurveyByType(mSurveyKBNT,"relatives_medical", DataCenter.currentUser.getIdentity());
 
-        DataManager.Instance().fetchListSurveyByType(mSurveyBC,"report", DataCenter.userID);
+        DataManager.Instance().fetchListSurveyByType(mSurveyBC,"report", DataCenter.currentUser.getIdentity());
 
     }
 
