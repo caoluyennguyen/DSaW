@@ -8,8 +8,10 @@ public class Case {
     private String f;
     private String id;
     private String location;
-    private String user;
-    private String name;
+    private String user; //identity
+    private String name; // name of user
+
+    public Case() {}
 
     public Case(String area, String begin_time, String end_time, String f, String id, String location, String user, String name) {
         this.area = area;

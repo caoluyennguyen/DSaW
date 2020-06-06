@@ -8,6 +8,8 @@ public class Survey {
 
     private String type;
 
+    public Survey() {}
+
     public Survey(String id, String name, String type) {
         this.id = id;
         this.name = name;

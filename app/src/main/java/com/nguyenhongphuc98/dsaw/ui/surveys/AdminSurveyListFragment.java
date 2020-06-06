@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
-import com.nguyenhongphuc98.dsaw.Utils;
 import com.nguyenhongphuc98.dsaw.adaptor.SurveyAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
@@ -30,6 +29,8 @@ public class AdminSurveyListFragment extends Fragment {
     private AdminSurveyListViewModel mViewModel;
 
     private ListView lvSurvey;
+
+    private SurveyAdaptor adaptor;
 
     public static AdminSurveyListFragment newInstance() {
         return new AdminSurveyListFragment();
@@ -48,11 +49,12 @@ public class AdminSurveyListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(AdminSurveyListViewModel.class);
-        mViewModel.setContext(getContext());
-        mViewModel.getAdaptor().observe(this, new Observer<SurveyAdaptor>() {
+
+        mViewModel.getLsSurvey().observe(this, new Observer<List<SurveyModel>>() {
             @Override
-            public void onChanged(SurveyAdaptor surveyAdaptor) {
-                lvSurvey.setAdapter(surveyAdaptor);
+            public void onChanged(List<SurveyModel> surveyModels) {
+                adaptor = new SurveyAdaptor(getContext(), surveyModels);
+                lvSurvey.setAdapter(adaptor);
             }
         });
     }
@@ -61,13 +63,14 @@ public class AdminSurveyListFragment extends Fragment {
         lvSurvey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getContext(),"did click at:" + mViewModel.getListSurvey().get(position).getId(),Toast.LENGTH_SHORT).show();
-                String sid = mViewModel.getListSurvey().get(position).getId();
-//                SurveyResultFragment f = new SurveyResultFragment();
-//                f.setSurveyId(sid);
-//                Utils.replaceFragment(f);
-                DataCenter.surveyID = sid;
-                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_survey_result);
+                Toast.makeText(getContext(),"did click at:" + mViewModel.getLsSurvey().getValue().get(position).getId(),Toast.LENGTH_SHORT).show();
+                SurveyModel survey= mViewModel.getLsSurvey().getValue().get(position);
+                DataCenter.surveyID = survey.getId();
+
+                if (survey.getType().equals("report"))
+                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_report_result);
+                else
+                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_survey_result);
             }
         });
     }

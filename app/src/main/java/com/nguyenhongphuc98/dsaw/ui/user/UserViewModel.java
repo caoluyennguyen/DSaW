@@ -19,10 +19,10 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<String> mContact = new MutableLiveData<>();
 
     public UserViewModel() {
-        mName.setValue(DataCenter.userName);
-        mCMND.setValue(DataCenter.identity);
-        mDayOfBirth.setValue(DataCenter.birthday);
-        mContact.setValue(DataCenter.phoneNumber);
+        mName.setValue(DataCenter.currentUser.getUsername());
+        mCMND.setValue(DataCenter.currentUser.getIdentity());
+        mDayOfBirth.setValue(DataCenter.currentUser.getBirthday());
+        mContact.setValue(DataCenter.currentUser.getPhonenumber());
     }
 
     public MutableLiveData<String> getName() {

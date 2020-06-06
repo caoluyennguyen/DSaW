@@ -18,8 +18,10 @@ import android.widget.TextView;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.RouteAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
+import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RouteFragment extends Fragment {
@@ -33,6 +35,8 @@ public class RouteFragment extends Fragment {
     RouteAdaptor adaptor;
 
     private String userID;
+
+    private List<TrackingStatus> lsTracking = new ArrayList<>();
 
     public static RouteFragment newInstance() {
         return new RouteFragment();
@@ -52,11 +56,31 @@ public class RouteFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(RouteViewModel.class);
 
-        mViewModel.getlistTrackig().observe(this, new Observer<List<TrackingStatus>>() {
+//        mViewModel.getlistTrackig().observe(this, new Observer<List<TrackingStatus>>() {
+//            @Override
+//            public void onChanged(List<TrackingStatus> trackingStatuses) {
+//                adaptor = new RouteAdaptor(getContext(),trackingStatuses);
+//                lvTracking.setAdapter(adaptor);
+//            }
+//        });
+
+        adaptor = new RouteAdaptor(getContext(),lsTracking);
+        lvTracking.setAdapter(adaptor);
+
+        mViewModel.getRoutedata().observe(this, new Observer<RouteData>() {
             @Override
-            public void onChanged(List<TrackingStatus> trackingStatuses) {
-                adaptor = new RouteAdaptor(getContext(),trackingStatuses);
-                lvTracking.setAdapter(adaptor);
+            public void onChanged(RouteData routeData) {
+                lsTracking.clear();
+                for (TrackingStatus t : routeData.getStatus()) {
+                    String location = t.getLocation().split("]")[1];
+                    t.setLocation(location);
+                    lsTracking.add(t);
+                }
+
+                if (lsTracking.size() == 0)
+                    lsTracking.add(new TrackingStatus("Location not yet update for this user","Notify"));
+
+                adaptor.notifyDataSetChanged();
             }
         });
 

@@ -8,6 +8,8 @@ public class AnswerViewModel {
 
     private List<String> answers;
 
+    public AnswerViewModel() {}
+
     public AnswerViewModel(String questionTitle, List<String> answers) {
         this.questionTitle = questionTitle;
         this.answers = answers;

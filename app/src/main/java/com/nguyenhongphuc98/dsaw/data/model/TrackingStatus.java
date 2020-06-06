@@ -6,6 +6,8 @@ public class TrackingStatus {
 
     private String update_time;
 
+    public TrackingStatus() {}
+
     public TrackingStatus(String location, String update_time) {
         this.location = location;
         this.update_time = update_time;
