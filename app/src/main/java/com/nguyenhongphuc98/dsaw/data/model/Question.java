@@ -9,7 +9,6 @@ public class Question {
     String title;
     String type;
 
-
     public Question() {
         answers = new ArrayList<>();
     }

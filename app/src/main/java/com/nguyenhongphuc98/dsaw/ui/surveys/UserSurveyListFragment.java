@@ -143,6 +143,7 @@ public class UserSurveyListFragment extends Fragment {
 
                 DataCenter.surveyID = surveys.get(position).getId();
                 NavHostFragment.findNavController(getParentFragment()).navigate(R.id.personalReportFragment);
+
             }
         });
     }

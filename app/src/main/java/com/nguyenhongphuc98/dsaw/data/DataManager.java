@@ -24,6 +24,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
+import android.provider.ContactsContract;
+import android.util.Log;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
@@ -37,6 +45,33 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nguyenhongphuc98.dsaw.data.model.Account;
+import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
+import com.nguyenhongphuc98.dsaw.data.model.Area;
+import com.nguyenhongphuc98.dsaw.data.model.Case;
+import com.nguyenhongphuc98.dsaw.data.model.News;
+import com.nguyenhongphuc98.dsaw.data.model.PublicData;
+import com.nguyenhongphuc98.dsaw.data.model.Question;
+import com.nguyenhongphuc98.dsaw.data.model.ReportModel;
+import com.nguyenhongphuc98.dsaw.data.model.RouteData;
+import com.nguyenhongphuc98.dsaw.data.model.Survey;
+import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
+import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
+import com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultViewModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.security.auth.login.LoginException;
 
 import com.google.firebase.storage.UploadTask;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
@@ -123,6 +158,7 @@ public class DataManager {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
+
         mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
@@ -318,7 +354,8 @@ public class DataManager {
 
     public void AddNewQuestion(String question, ArrayList<String> lsAnswer, String type)
     {
-        Question newQues = new Question(lsAnswer,"4", "survey1_key", question, type);
+        String survey = "survey1_key";
+        Question newQues = new Question("setLater",lsAnswer, survey, question, type);
         //mDatabaseRef.child("Question").child("question4_key").setValue(newQues);
 
         try{
@@ -455,6 +492,7 @@ public class DataManager {
 
         // Try to get curent static of this date to update
         Query query = mDatabaseRef.child("PublicData").orderByChild("update_date").equalTo(date);
+
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

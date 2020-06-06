@@ -18,7 +18,6 @@ public class Account {
 
     private String area_management;
 
-
     public Account() {}
 
     public Account(String birthday, String identity, String password, String phonenumber, String role, String username, String area, String area_management) {

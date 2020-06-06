@@ -131,6 +131,7 @@
         android:name="com.nguyenhongphuc98.dsaw.ui.news.CreateNewsFragment"
         android:label="fragment_create_news"
         tools:layout="@layout/fragment_create_news" />
+
     <fragment
         android:id="@+id/reportResultFragment"
         android:name="com.nguyenhongphuc98.dsaw.ui.surveys.ReportResultFragment"
