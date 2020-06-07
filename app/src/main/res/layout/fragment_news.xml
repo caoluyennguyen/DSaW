@@ -10,10 +10,12 @@
         app:layout_constraintTop_toTopOf="@id/news_parent"
         app:layout_constraintLeft_toLeftOf="@id/news_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="580dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:scrollbars="none"/>
+        android:scrollbars="none"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

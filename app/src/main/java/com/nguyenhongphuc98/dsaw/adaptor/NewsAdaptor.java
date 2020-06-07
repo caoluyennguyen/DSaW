@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class NewsAdaptor extends ArrayAdapter{
         News e = lsNews.get(position);
         viewHolder.title.setText(e.getTitle());
         viewHolder.content.setText(e.getContent());
+        DataManager.Instance().fetchPhoto(e.getCover(), viewHolder.cover,"posts");
 
         return viewRow;
     }

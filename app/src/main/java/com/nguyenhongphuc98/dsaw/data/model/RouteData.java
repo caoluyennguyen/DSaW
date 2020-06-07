@@ -1,5 +1,6 @@
 package com.nguyenhongphuc98.dsaw.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RouteData {
@@ -11,6 +12,10 @@ public class RouteData {
     private String username;
 
     private List<TrackingStatus> status;
+
+    public RouteData() {
+        status = new ArrayList<>();
+    }
 
     public RouteData(String id, String user, List<TrackingStatus> status, String username) {
         this.id = id;

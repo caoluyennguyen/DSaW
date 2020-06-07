@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -29,6 +30,8 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,16 +48,17 @@ public class HomeFragment extends Fragment {
     private TextView areaTv;
     private TextView updateTimeTv;
 
+    Cartesian cartesian;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         setupView(root);
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         setupAction();
         setupObserver();
-
+        setupChart();
         return root;
     }
 
@@ -89,21 +93,112 @@ public class HomeFragment extends Fragment {
                 areaTv.setText(s);
             }
         });
-
-        homeViewModel.getUpdateTime().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                updateTimeTv.setText(s);
-            }
-        });
-
-        homeViewModel.getcartesian().observe(this, new Observer<Cartesian>() {
-            @Override
-            public void onChanged(@Nullable Cartesian c) {
-                anyChartView.setChart(c);
-            }
-        });
     }
 
+    public void setupChart() {
 
+        cartesian = AnyChart.line();
+        cartesian.animation(true);
+        cartesian.padding(10d, 20d, 5d, 10d);
+
+        cartesian.crosshair().enabled(true);
+        cartesian.crosshair()
+                .yLabel(true)
+                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+        cartesian.title("Biều đồ diễn biến dịch bệnh.");
+
+        cartesian.yAxis(0).title("Số lượng (người)");
+        cartesian.xAxis(0).title("Thời gian (ngày)");
+        cartesian.xAxis(0).labels().padding(7d, 7d, 7d, 7d);
+        cartesian.yAxis(0).labels().padding(7d, 0d, 7d, 3d);
+
+        cartesian.legend().enabled(true);
+        cartesian.legend().fontSize(13d);
+        cartesian.legend().padding(0d, 0d, 10d, 0d);
+
+        //fake data and presetup
+        List<DataEntry> seriesData = new ArrayList<>();
+
+        seriesData.add(new CustomDataEntry("",0,0,0));
+
+        final Set set = Set.instantiate();
+
+        set.data(seriesData);
+        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+
+        Line series1 = cartesian.line(series1Mapping);
+        series1.name("Nhiễm");
+        series1.color("#FCA903");
+        series1.hovered().markers().enabled(true);
+        series1.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series1.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+        Line series2 = cartesian.line(series2Mapping);
+        series2.name("Tử vong");
+        series2.color("#FC2003");
+        series2.hovered().markers().enabled(true);
+        series2.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series2.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+        Line series3 = cartesian.line(series3Mapping);
+        series3.name("Hồi phục");
+        series3.color("#04D446");
+        series3.hovered().markers().enabled(true);
+        series3.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series3.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+
+         homeViewModel.getData().observe(this, new Observer<List<PublicData>>() {
+            @Override
+            public void onChanged(List<PublicData> publicData) {
+                List<DataEntry> seriesData = new ArrayList<>();
+
+                for (PublicData p : publicData) {
+                    seriesData.add(new CustomDataEntry(p.getUpdate_date().split("-")[2],
+                            Integer.parseInt(p.getNum_confirmed()),
+                            Integer.parseInt(p.getNum_death()),
+                            Integer.parseInt(p.getNum_recovered())));
+                }
+
+                set.data(seriesData);
+
+
+                updateTimeTv.setText(publicData.get(publicData.size()-1).getUpdate_time());
+            }
+        });
+        anyChartView.setChart(cartesian);
+    }
+
+    public class CustomDataEntry extends ValueDataEntry {
+
+        CustomDataEntry(String x, Number value, Number value2, Number value3) {
+            super(x, value);
+            setValue("value2", value2);
+            setValue("value3", value3);
+        }
+
+    }
 }

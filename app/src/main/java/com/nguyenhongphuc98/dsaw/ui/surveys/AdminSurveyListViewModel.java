@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.nguyenhongphuc98.dsaw.adaptor.SurveyAdaptor;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 
 import java.util.ArrayList;
@@ -14,30 +15,16 @@ import java.util.List;
 
 public class AdminSurveyListViewModel extends ViewModel {
 
-    private MutableLiveData<SurveyAdaptor> mAdaptor;
-
-    private SurveyAdaptor adaptor;
-    private List<SurveyModel> lsSurvey;
-
-    private Context context;
+    private MutableLiveData<List<SurveyModel>> lsSurvey;
 
     public AdminSurveyListViewModel() {
-        mAdaptor = new MutableLiveData<>();
+        lsSurvey = new MutableLiveData<>();
+        fetchData();
     }
 
-    public void setContext(Context c) {
-        this.context = c;
-        lsSurvey = new ArrayList<>();
-        lsSurvey.add(new SurveyModel("s1","152","Khai báo y tế"));
-        lsSurvey.add(new SurveyModel("s2","34","Báo ca nhiễm"));
-        lsSurvey.add(new SurveyModel("s3","152","Báo cáo vi phạm"));
-        adaptor = new SurveyAdaptor(this.context, lsSurvey);
-        mAdaptor.setValue(adaptor);
+    public void fetchData() {
+        DataManager.Instance().fetchListSurveyByType(lsSurvey,"not_importance","admin");
     }
 
-    public LiveData<SurveyAdaptor> getAdaptor() {
-        return mAdaptor;
-    }
-
-    public List<SurveyModel> getListSurvey() {return  lsSurvey; }
+    public MutableLiveData<List<SurveyModel>> getLsSurvey() {return  lsSurvey; }
 }

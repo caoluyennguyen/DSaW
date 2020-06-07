@@ -1,9 +1,11 @@
-package com.nguyenhongphuc98.dsaw;
+package com.nguyenhongphuc98.dsaw.utils;
 
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.nguyenhongphuc98.dsaw.R;
 
 public class Utils {
 
