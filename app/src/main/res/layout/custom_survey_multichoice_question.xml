@@ -35,6 +35,13 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="vertical"
+        android:visibility="gone"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/list_of_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
 </LinearLayout>

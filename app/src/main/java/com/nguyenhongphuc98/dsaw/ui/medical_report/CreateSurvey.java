@@ -41,7 +41,15 @@ public class CreateSurvey extends Fragment {
 
         InitComponent(view);
         InitEvent();
-
+        mViewModel = ViewModelProviders.of(this).get(CreateSurveyViewModel.class);
+        // TODO: Use the ViewModel
+        mViewModel.setContext(this.getContext());
+        mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
+            @Override
+            public void onChanged(QuestionAdapter questionAdapter) {
+                lvQuestion.setAdapter(questionAdapter);
+            }
+        });
         return view;
     }
 

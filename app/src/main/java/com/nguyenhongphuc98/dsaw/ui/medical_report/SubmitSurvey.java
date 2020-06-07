@@ -13,9 +13,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.MultichoiceQuestionAdaptor;
@@ -27,6 +29,7 @@ public class SubmitSurvey extends Fragment {
 
     private ImageView btnBack;
     private ListView lvQuestion;
+    private Button btnSubmit;
 
     public static SubmitSurvey newInstance() {
         return new SubmitSurvey();
@@ -37,15 +40,6 @@ public class SubmitSurvey extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_submit_survey, container, false);
 
-        mViewModel = ViewModelProviders.of(this).get(SubmitSurveyViewModel.class);
-        mViewModel.setContext(getContext());
-        mViewModel.getAdaptor().observe(this, new Observer<QuestionAdapter>() {
-            @Override
-            public void onChanged(QuestionAdapter questionAdaptor) {
-                lvQuestion.setAdapter(questionAdaptor);
-            }
-        });
-
         InitView(view);
         InitEvent();
 
@@ -55,6 +49,8 @@ public class SubmitSurvey extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(SubmitSurveyViewModel.class);
+
         // TODO: Use the ViewModel
         mViewModel.setContext(getContext());
         mViewModel.getAdaptor().observe(this, new Observer<QuestionAdapter>() {
@@ -69,6 +65,7 @@ public class SubmitSurvey extends Fragment {
     {
         lvQuestion = view.findViewById(R.id.list_of_question);
         btnBack = view.findViewById(R.id.go_back_btn);
+        btnSubmit = view.findViewById(R.id.summit_button);
     }
 
     public void InitEvent()
@@ -77,6 +74,18 @@ public class SubmitSurvey extends Fragment {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(getParentFragment()).navigate(R.id.navigation_report);
+            }
+        });
+        lvQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
+            }
+        });
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Submit survey", Toast.LENGTH_LONG).show();
             }
         });
     }
