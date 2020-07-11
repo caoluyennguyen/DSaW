@@ -13,6 +13,14 @@ public class Answer {
         this.text_answer = answer;
     }
 
+    public List<String> getAnswerKey() {
+        return answerKey;
+    }
+
+    public void setAnswerKey(List<String> answerKey) {
+        this.answerKey = answerKey;
+    }
+
     public String getTextAnswer() {
         return text_answer;
     }

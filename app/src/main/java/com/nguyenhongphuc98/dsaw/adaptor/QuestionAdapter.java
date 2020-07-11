@@ -2,6 +2,7 @@ package com.nguyenhongphuc98.dsaw.adaptor;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.anychart.charts.Resource;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
 
@@ -37,10 +39,10 @@ public class QuestionAdapter extends ArrayAdapter {
         LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View viewRow = convertView;
+        View subRow;
 
         if (lsQuestion.get(position).getType().equals("MT")){
             if (viewRow == null) {
-                Log.e("DataManager", "Title of question was found is " + lsQuestion.get(position).getType());
                 viewRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_question,parent,false);
 
                 QuestionAdapter.ViewHolder holder = new QuestionAdapter.ViewHolder();
@@ -59,15 +61,26 @@ public class QuestionAdapter extends ArrayAdapter {
             viewHolder.question.setText(e.getTitle());
             //mAdapter = new AnswerAdaptor(getContext(), lsQuestion.get(position).getAnswers());
             //viewHolder.listviewOfAnswer.setAdapter(mAdapter);
-            for(int i = 0; i< lsQuestion.get(position).getAnswers().size(); i++) {
-                View subRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_answer,null);
+            viewHolder.listOfAnswer.removeAllViews();
+
+            TypedValue value = new TypedValue();
+            // you'll probably want to use your activity as context here:
+            context.getTheme().resolveAttribute(android.R.attr.listChoiceIndicatorMultiple, value, true);
+            // context.getTheme().resolveAttribute(android.R.attr.checkMark, value, true);
+            int checkMarkDrawableResId = value.resourceId;
+
+            for(int i = 0; i < lsQuestion.get(position).getAnswers().size(); i++) {
+                /*subRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_answer,null);
 
                 CheckedTextView answer = subRow.findViewById(R.id.answer);
 
+                answer.setText(lsQuestion.get(position).getAnswers().get(i));*/
+                CheckedTextView answer = new CheckedTextView(context);
                 answer.setText(lsQuestion.get(position).getAnswers().get(i));
-                //viewHolder.listOfAnswer.addView(subRow);
+                answer.setCheckMarkDrawable(checkMarkDrawableResId);
+                viewHolder.listOfAnswer.addView(answer);
             }
-            Log.e("DataManager","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
+            Log.e("QuestionAdapter","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
         }
         else{
             if (viewRow == null) {
@@ -84,8 +97,8 @@ public class QuestionAdapter extends ArrayAdapter {
             Question e = lsQuestion.get(position);
             viewHolder.number.setText("Câu " + numOfQuestion + ":");
             viewHolder.question.setText(e.getTitle());
-            Log.e("DataManager","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
-            Log.e("DataManager","Câu " + numOfQuestion + " co cau tra loi la " + lsQuestion.get(position).getAnswers());
+            Log.e("QuestionAdapter","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
+            Log.e("QuestionAdapter","Câu " + numOfQuestion + " co cau tra loi la " + lsQuestion.get(position).getAnswers());
         }
 
         return viewRow;

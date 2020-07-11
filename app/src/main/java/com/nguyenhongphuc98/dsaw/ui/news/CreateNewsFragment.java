@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 
+import java.io.IOException;
+
 public class CreateNewsFragment extends Fragment {
     final int CODE_OPEN_DOCUMENT = 22;
     private CreateNewsViewModel mViewModel;
@@ -60,10 +62,18 @@ public class CreateNewsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //show image on avatar
-        Uri selectedFile = data.getData();
-        coverImg = selectedFile;
-        Toast.makeText(getContext(), "Tải ảnh bìa thành công", Toast.LENGTH_LONG).show();
-        btnUploadCover.setImageURI(coverImg);
+        try {
+            if(data!=null)
+            {
+                Uri selectedFile = data.getData();
+                coverImg = selectedFile;
+                Toast.makeText(getContext(), "Tải ảnh bìa thành công", Toast.LENGTH_LONG).show();
+                btnUploadCover.setImageURI(coverImg);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void InitComponent(View view)
@@ -79,8 +89,13 @@ public class CreateNewsFragment extends Fragment {
         btnUploadCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentOpenFile=new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intentOpenFile,"Choose image"),CODE_OPEN_DOCUMENT);
+                try {
+                    Intent intentOpenFile=new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intentOpenFile,"Choose image"),CODE_OPEN_DOCUMENT);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    // Potentially direct the user to the Market with a Dialog
+                    Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnPost.setOnClickListener(new View.OnClickListener() {
@@ -91,36 +106,6 @@ public class CreateNewsFragment extends Fragment {
 
             }
         });
-        /*edtTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mViewModel.setTitle(edtTitle.getText().toString());
-            }
-        });
-        edtContent.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mViewModel.setContent(edtContent.getText().toString());
-            }
-        });*/
     }
 
     public void RegisterLiveData()

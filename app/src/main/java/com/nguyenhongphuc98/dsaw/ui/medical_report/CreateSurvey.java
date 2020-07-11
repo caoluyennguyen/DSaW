@@ -3,12 +3,14 @@ package com.nguyenhongphuc98.dsaw.ui.medical_report;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +18,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.QuestionAdapter;
 import com.nguyenhongphuc98.dsaw.adaptor.TextQuestionAdapter;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.Question;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateSurvey extends Fragment {
 
     private CreateSurveyViewModel mViewModel;
+    private List<Question> lsQuestion = new ArrayList<>();
 
     Spinner typeOfSurvey;
     Button chooseTypeQuestion;
+    Button saveSurvey;
     ListView lvQuestion;
     ChooseTypeOfQuestionDialog typeOfQuestionDialog;
+    CreateQuestionDialog createQuestionDialog;
 
     public static CreateSurvey newInstance() {
         return new CreateSurvey();
@@ -41,15 +52,6 @@ public class CreateSurvey extends Fragment {
 
         InitComponent(view);
         InitEvent();
-        mViewModel = ViewModelProviders.of(this).get(CreateSurveyViewModel.class);
-        // TODO: Use the ViewModel
-        mViewModel.setContext(this.getContext());
-        mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
-            @Override
-            public void onChanged(QuestionAdapter questionAdapter) {
-                lvQuestion.setAdapter(questionAdapter);
-            }
-        });
         return view;
     }
 
@@ -59,12 +61,30 @@ public class CreateSurvey extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(CreateSurveyViewModel.class);
         // TODO: Use the ViewModel
         mViewModel.setContext(this.getContext());
-        mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
+        /*mViewModel.GetAdapter().observe(this, new Observer<QuestionAdapter>() {
             @Override
             public void onChanged(QuestionAdapter questionAdapter) {
                 lvQuestion.setAdapter(questionAdapter);
             }
-        });
+        });*/
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            String editQuestionString = data.getStringExtra("EDIT_QUESTION");
+            ArrayList<String> editAnswerString = data.getStringArrayListExtra("EDIT_ANSWER");
+            Log.d("Create survey", "Question get: " + editQuestionString);
+            Log.d("Create survey", "Answer get: " + editAnswerString);
+
+            Question newQues = new Question("", editAnswerString, "", "", "MT");
+            newQues.setAnswers(editAnswerString);
+            lsQuestion.add(newQues);
+            QuestionAdapter newQuesAdapter = new QuestionAdapter(getContext(), lsQuestion);
+            lvQuestion.setAdapter(newQuesAdapter);
+        }
     }
 
     public void InitComponent(View view){
@@ -76,14 +96,41 @@ public class CreateSurvey extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         typeOfSurvey.setAdapter(adapter);
+        saveSurvey = view.findViewById(R.id.save_survey);
     }
 
     public void InitEvent(){
         chooseTypeQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                typeOfQuestionDialog = new ChooseTypeOfQuestionDialog();
-                typeOfQuestionDialog.show(getFragmentManager(), "Type of question");
+                int spinner_pos = typeOfSurvey.getSelectedItemPosition();
+                if (spinner_pos > 1) {
+                    typeOfQuestionDialog = new ChooseTypeOfQuestionDialog();
+                    typeOfQuestionDialog.show(getFragmentManager(), "Type of question");
+                    typeOfQuestionDialog.setTargetFragment(CreateSurvey.this, 0);
+                }
+                else {
+                    Log.e("Create survey", "Spinner position: " + spinner_pos);
+                    createQuestionDialog = new CreateQuestionDialog();
+                    createQuestionDialog.show(getFragmentManager(), "Type of question");
+                    createQuestionDialog.setTargetFragment(CreateSurvey.this, 0);
+                    Bundle args = new Bundle();
+                    args.putString("type", "MT");
+                    createQuestionDialog.setArguments(args);
+                }
+            }
+        });
+
+        saveSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int spinner_pos = typeOfSurvey.getSelectedItemPosition();
+
+                if (spinner_pos == 0) DataManager.Instance().AddNewSurvey("personal_medical");
+                else if (spinner_pos == 1) DataManager.Instance().AddNewSurvey("relatives_medical");
+                else DataManager.Instance().AddNewSurvey("report");
+
+                Toast.makeText(getContext(), "Tạo khảo sát thành công", Toast.LENGTH_LONG).show();
             }
         });
     }

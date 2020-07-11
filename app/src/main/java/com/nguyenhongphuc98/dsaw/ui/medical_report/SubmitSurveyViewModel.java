@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw.ui.medical_report;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,38 +22,24 @@ public class SubmitSurveyViewModel extends ViewModel {
 
     private QuestionAdapter adaptor;
     private List<Question> lsQuestion;
+    private MutableLiveData<List<Question>> mListQuestion;
 
-    private Context context;
-
-    public SubmitSurveyViewModel() {
+    public SubmitSurveyViewModel()
+    {
         mAdaptor = new MutableLiveData<>();
+        mListQuestion = new MutableLiveData<>();
     }
 
-    public void setContext(Context c) {
-        this.context = c;
-        lsQuestion = new ArrayList<>();
-
-        /*ArrayList<String> lsAnswer1 = new ArrayList<>();
-        lsAnswer1.add("Đau đầu");
-        lsAnswer1.add("Khó thở");
-        lsAnswer1.add("Tim dập nhanh");
-        lsAnswer1.add("Viêm màng túi");
-        lsQuestion.add(new Question(lsAnswer1,"1","survey1_key", "Các triệu chứng gần đây của bạn?", "MT"));
-
-        lsQuestion.add(new Question(null,"2","survey1_key","Thông tin thêm bạn muốn gửi:", "Text"));*/
-
-        DataManager.Instance().GetAllQuestion(lsQuestion);
-
-        adaptor = new QuestionAdapter(this.context, lsQuestion);
-        mAdaptor.setValue(adaptor);
+    public void FetchData()
+    {
+        DataManager.Instance().GetAllQuestion(mListQuestion);
     }
 
-    /*public LiveData<MultichoiceQuestionAdaptor> getAdaptor() {
-        return mAdaptor;
-    }*/
     public LiveData<QuestionAdapter> getAdaptor() {
         return mAdaptor;
     }
 
-    public List<Question> getListQuestion() {return  lsQuestion; }
+    public MutableLiveData<List<Question>> getmListQuestion() {
+        return mListQuestion;
+    }
 }
