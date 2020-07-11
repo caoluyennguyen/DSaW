@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw.ui.medical_report;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,7 +80,7 @@ public class CreateQuestionDialog extends DialogFragment {
         typeOfQuestion = mArgs.getString("type");
         Log.d("Type of question", "Type of question is: " + typeOfQuestion);
 
-        if (typeOfQuestion.equalsIgnoreCase("text")){
+        if (!typeOfQuestion.equalsIgnoreCase("MT")){
             addAnsBtn.setVisibility(View.GONE);
             lsNewAnswer.setVisibility(View.GONE);
             title.setVisibility(View.GONE);
@@ -95,8 +96,28 @@ public class CreateQuestionDialog extends DialogFragment {
                 if (mViewModel.getLsAnswer().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu trả lời!", Toast.LENGTH_LONG).show();
                 else if (edtQuestion.getText().toString().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu hỏi!", Toast.LENGTH_LONG).show();
                 else {
-                    if (lsNewAnswer.getVisibility() == View.GONE) DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), null, "text");
-                    else DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), mViewModel.getLsAnswer(), "MT");
+                    if (typeOfQuestion.equalsIgnoreCase("text")) {
+                        //DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), null, "text");
+                        Intent intent = new Intent();
+                        intent.putExtra("EDIT_QUESTION", edtQuestion.getText().toString());
+                        getTargetFragment().onActivityResult(
+                                getTargetRequestCode(), 0, intent);
+                    }
+                    else if (typeOfQuestion.equalsIgnoreCase("MT")) {
+                        //DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), mViewModel.getLsAnswer(), "MT");
+                        Intent intent = new Intent();
+                        intent.putExtra("EDIT_QUESTION", edtQuestion.getText().toString());
+                        intent.putStringArrayListExtra("EDIT_ANSWER", mViewModel.getLsAnswer());
+                        getTargetFragment().onActivityResult(
+                                getTargetRequestCode(), 0, intent);
+                    }
+                    else {
+                        //DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), mViewModel.getLsAnswer(), "image");
+                        Intent intent = new Intent();
+                        intent.putExtra("EDIT_QUESTION", edtQuestion.getText().toString());
+                        getTargetFragment().onActivityResult(
+                                getTargetRequestCode(), 0, intent);
+                    }
                     Toast.makeText(getContext(), "Bạn vừa mới tạo môt câu hỏi mới", Toast.LENGTH_LONG).show();
                     getDialog().dismiss();
                 }

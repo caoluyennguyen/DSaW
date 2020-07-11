@@ -63,7 +63,7 @@ public class SurveyResultFragment extends Fragment {
                 }
 
                 if (lsAnswers.size() == 0)
-                    lsAnswers.add(new AnswerViewModel("Tạm thời chưa có câu trả lời", new ArrayList<String>()));
+                    lsAnswers.add(new AnswerViewModel("Tạm thời chưa có câu hỏi", new ArrayList<String>()));
 
                 adaptor.notifyDataSetChanged();
             }

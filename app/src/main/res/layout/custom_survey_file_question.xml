@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/cutom_question_background"
@@ -12,7 +10,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tqNumber"
+            android:id="@+id/tqfNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -23,7 +21,7 @@
             android:background="@drawable/custom_question_layout_green"/>
 
         <TextView
-            android:id="@+id/tqQuestion"
+            android:id="@+id/tqfQuestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -33,9 +31,24 @@
             android:padding="5dp"
             android:background="@drawable/custom_question_layout_white"/>
     </LinearLayout>
-    <EditText
-        android:id="@+id/edtAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/attach_file_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/attachment_button"/>
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="15dp"
+            android:text="File đính kèm" />
+    </LinearLayout>
+
 
 </LinearLayout>

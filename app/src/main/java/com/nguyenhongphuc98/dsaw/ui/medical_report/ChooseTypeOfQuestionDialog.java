@@ -2,7 +2,9 @@ package com.nguyenhongphuc98.dsaw.ui.medical_report;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,10 @@ import androidx.fragment.app.DialogFragment;
 
 import com.nguyenhongphuc98.dsaw.R;
 
+import java.util.ArrayList;
+
 public class ChooseTypeOfQuestionDialog extends DialogFragment {
-    TextView cbQuestion;
+    TextView imgQuestion;
     TextView txtQuestion;
     CreateQuestionDialog createQuestionDialog;
     Bundle args;
@@ -40,21 +44,34 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            String editQuestionString = data.getStringExtra("EDIT_QUESTION");
+            Log.d("Create survey", "Question get: " + editQuestionString);
+            Intent intent = new Intent();
+            intent.putExtra("EDIT_QUESTION", editQuestionString);
+            getTargetFragment().onActivityResult(
+                    getTargetRequestCode(), 0, intent);
+        }
+    }
+
     public void InitComponent(View view)
     {
-        cbQuestion = view.findViewById(R.id.cbQuestion);
+        imgQuestion = view.findViewById(R.id.cbQuestion);
         txtQuestion = view.findViewById(R.id.txtQuestion);
     }
 
     public void InitEvent()
     {
-        cbQuestion.setOnClickListener(new View.OnClickListener() {
+        imgQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createQuestionDialog = new CreateQuestionDialog();
                 createQuestionDialog.show(getFragmentManager(), "Create new question");
+                createQuestionDialog.setTargetFragment(ChooseTypeOfQuestionDialog.this, 0);
                 args = new Bundle();
-                args.putString("type", "MT");
+                args.putString("type", "image");
                 createQuestionDialog.setArguments(args);
                 getDialog().dismiss();
             }
@@ -65,6 +82,7 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
             public void onClick(View v) {
                 createQuestionDialog = new CreateQuestionDialog();
                 createQuestionDialog.show(getFragmentManager(), "Create new question");
+                createQuestionDialog.setTargetFragment(ChooseTypeOfQuestionDialog.this, 0);
                 args = new Bundle();
                 args.putString("type", "text");
                 createQuestionDialog.setArguments(args);

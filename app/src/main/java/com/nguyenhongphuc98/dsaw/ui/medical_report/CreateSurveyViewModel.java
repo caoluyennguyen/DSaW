@@ -18,9 +18,14 @@ public class CreateSurveyViewModel extends ViewModel {
     MutableLiveData<QuestionAdapter> mAdaptor;
     QuestionAdapter adaptor;
     Context context;
+    private MutableLiveData<List<Question>> mListQuestion;
 
     // TODO: Implement the ViewModel
-    public CreateSurveyViewModel() { mAdaptor = new MutableLiveData<>();}
+    public CreateSurveyViewModel()
+    {
+        mAdaptor = new MutableLiveData<>();
+        mListQuestion = new MutableLiveData<>();
+    }
 
     public MutableLiveData<QuestionAdapter> GetAdapter() {return mAdaptor;}
 
