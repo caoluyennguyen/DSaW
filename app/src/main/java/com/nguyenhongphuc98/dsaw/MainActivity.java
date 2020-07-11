@@ -22,6 +22,7 @@ import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 import com.nguyenhongphuc98.dsaw.data.network.DataService;
+import com.nguyenhongphuc98.dsaw.utils.CurrentLocation;
 import com.nguyenhongphuc98.dsaw.utils.Geo;
 import com.nguyenhongphuc98.dsaw.utils.GeoHandle;
 import com.nguyenhongphuc98.dsaw.utils.LocationTrack;
@@ -68,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (locationTrack.canGetLocation()) {
 
-                    //double longitude = locationTrack.getLongitude();
-                    //double latitude = locationTrack.getLatitude();
+                    double longitude = locationTrack.getLongitude();
+                    double latitude = locationTrack.getLatitude();
+
+                    DataCenter.currentLocation = new CurrentLocation(latitude, longitude);
 
                     //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
                     //Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
