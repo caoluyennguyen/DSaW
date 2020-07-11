@@ -1024,6 +1024,17 @@ public class DataManager {
         });
     }
 
+    public void markWellCase(final Case aCase) {
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+        Date date = new Date();
+        String t = dateFormat.format(date);
+
+        mDatabaseRef.child("Case").child(aCase.getId()).child("end_time").setValue(t);
+
+        Toast.makeText(mContext, "did well: "+ aCase.getId(), Toast.LENGTH_SHORT).show();
+    }
+
     // featch all case to statitis (for admin) so we don't care about area. get all :v
     public void fetchAllCase(final MutableLiveData<List<Case>> lsCases) {
 

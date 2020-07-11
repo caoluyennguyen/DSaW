@@ -10,23 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.lifecycle.MutableLiveData;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
-import com.nguyenhongphuc98.dsaw.data.model.Case;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AccountAdaptor extends ArrayAdapter {
     Context context;
@@ -38,7 +32,7 @@ public class AccountAdaptor extends ArrayAdapter {
     String selectedUserID = "";
 
     public AccountAdaptor(@NonNull Context context, List<Account> ls) {
-        super(context, R.layout.custom_case_row,ls);
+        super(context, R.layout.custom_account_row,ls);
         this.context=context;
         lsUsers =ls;
         lsAreas = new MutableLiveData<>();
@@ -88,11 +82,11 @@ public class AccountAdaptor extends ArrayAdapter {
         View viewRow= convertView;
 
         if(viewRow==null){
-            viewRow=layoutInflater.inflate(R.layout.custom_case_row,parent,false);
+            viewRow=layoutInflater.inflate(R.layout.custom_account_row,parent,false);
             AccountAdaptor.ViewHolder holder = new AccountAdaptor.ViewHolder();
-            holder.name = viewRow.findViewById(R.id.case_item_name);
-            holder.cmnd = viewRow.findViewById(R.id.case_item_cmnd);
-            holder.action =viewRow.findViewById(R.id.case_item_f);
+            holder.name = viewRow.findViewById(R.id.account_item_name);
+            holder.cmnd = viewRow.findViewById(R.id.account_item_cmnd);
+            holder.action =viewRow.findViewById(R.id.account_item_role);
 
             viewRow.setTag(holder);
         }

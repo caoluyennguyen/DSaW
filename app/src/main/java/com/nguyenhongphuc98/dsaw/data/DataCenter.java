@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw.data;
 
 import com.nguyenhongphuc98.dsaw.data.model.Account;
+import com.nguyenhongphuc98.dsaw.utils.CurrentLocation;
 
 public class DataCenter {
 
@@ -16,4 +17,5 @@ public class DataCenter {
 
     public static Account currentUser;
 
+    public static CurrentLocation currentLocation;
 }
