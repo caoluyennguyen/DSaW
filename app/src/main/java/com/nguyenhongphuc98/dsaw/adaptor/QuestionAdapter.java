@@ -82,6 +82,22 @@ public class QuestionAdapter extends ArrayAdapter {
             }
             Log.e("QuestionAdapter","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
         }
+        else if (lsQuestion.get(position).getType().equals("image")){
+            if (viewRow == null) {
+                viewRow = layoutInflater.inflate(R.layout.custom_survey_file_question,parent,false);
+                QuestionAdapter.ViewHolder holder = new QuestionAdapter.ViewHolder();
+                holder.number = viewRow.findViewById(R.id.tqfNumber);
+                holder.question = viewRow.findViewById(R.id.tqfQuestion);
+
+                viewRow.setTag(holder);
+            }
+            int numOfQuestion = position + 1;
+            ViewHolder viewHolder = (ViewHolder) viewRow.getTag();
+            Question e = lsQuestion.get(position);
+            viewHolder.number.setText("Câu " + numOfQuestion + ":");
+            viewHolder.question.setText(e.getTitle());
+            Log.e("QuestionAdapter","Câu " + numOfQuestion + " loai " + lsQuestion.get(position).getType());
+        }
         else{
             if (viewRow == null) {
                 viewRow = layoutInflater.inflate(R.layout.custom_survey_text_question,parent,false);

@@ -386,12 +386,12 @@ public class DataManager {
         }
     }
 
-    public void AddNewSurvey(String type)
+    public void AddNewSurvey(String type, List<Question> lsQuestion, String name)
     {
         try{
             //create new node event
             String key = mDatabaseRef.child("Survey").push().getKey();
-            Survey newSurvey = new Survey(key, "Khảo sát mới", type);
+            Survey newSurvey = new Survey(key, name, type);
             newSurvey.setId(key);
 
             //save to firebase
@@ -408,25 +408,25 @@ public class DataManager {
                     Log.d("DataManager","Create new survey success");
                 }
             });
+
+            for (int i = 0; i < lsQuestion.size(); i++) {
+                AddNewQuestion(lsQuestion.get(i).getTitle(), lsQuestion.get(i).getAnswers(), lsQuestion.get(i).getType(), key);
+            }
         }
         catch (Exception e){
             Log.d("DataManager",e.toString());
         }
     }
 
-    public void AddNewQuestion(String question, ArrayList<String> lsAnswer, String type)
+    public void AddNewQuestion(String question, ArrayList<String> lsAnswer, String type, String survey)
     {
-        String survey = "survey1_key"; // add survey key here
-        Question newQues = new Question("setLater",lsAnswer, survey, question, type);
+        Question newQues = new Question("setLater", lsAnswer, survey, question, type);
         //mDatabaseRef.child("Question").child("question4_key").setValue(newQues);
 
         try{
             //create new node event
             String key=mDatabaseRef.child("Question").push().getKey();
             newQues.setId(key);
-            newQues.setSurvey("survey1_key");
-
-
 
             //save to firebase
             Task task= mDatabaseRef.child("Question").child(key).setValue(newQues);

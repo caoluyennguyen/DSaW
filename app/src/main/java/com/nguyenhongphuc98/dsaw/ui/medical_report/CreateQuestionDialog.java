@@ -100,6 +100,7 @@ public class CreateQuestionDialog extends DialogFragment {
                         //DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), null, "text");
                         Intent intent = new Intent();
                         intent.putExtra("EDIT_QUESTION", edtQuestion.getText().toString());
+                        intent.putExtra("TYPE_QUESTION", typeOfQuestion);
                         getTargetFragment().onActivityResult(
                                 getTargetRequestCode(), 0, intent);
                     }
@@ -108,6 +109,7 @@ public class CreateQuestionDialog extends DialogFragment {
                         Intent intent = new Intent();
                         intent.putExtra("EDIT_QUESTION", edtQuestion.getText().toString());
                         intent.putStringArrayListExtra("EDIT_ANSWER", mViewModel.getLsAnswer());
+                        intent.putExtra("TYPE_QUESTION", typeOfQuestion);
                         getTargetFragment().onActivityResult(
                                 getTargetRequestCode(), 0, intent);
                     }
@@ -115,6 +117,7 @@ public class CreateQuestionDialog extends DialogFragment {
                         //DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), mViewModel.getLsAnswer(), "image");
                         Intent intent = new Intent();
                         intent.putExtra("EDIT_QUESTION", edtQuestion.getText().toString());
+                        intent.putExtra("TYPE_QUESTION", typeOfQuestion);
                         getTargetFragment().onActivityResult(
                                 getTargetRequestCode(), 0, intent);
                     }

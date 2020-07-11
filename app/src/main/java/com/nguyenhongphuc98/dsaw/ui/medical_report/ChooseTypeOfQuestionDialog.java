@@ -48,9 +48,11 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0) {
             String editQuestionString = data.getStringExtra("EDIT_QUESTION");
+            String questionType = data.getStringExtra("TYPE_QUESTION");
             Log.d("Create survey", "Question get: " + editQuestionString);
             Intent intent = new Intent();
             intent.putExtra("EDIT_QUESTION", editQuestionString);
+            intent.putExtra("TYPE_QUESTION", questionType);
             getTargetFragment().onActivityResult(
                     getTargetRequestCode(), 0, intent);
         }
@@ -58,7 +60,7 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
 
     public void InitComponent(View view)
     {
-        imgQuestion = view.findViewById(R.id.cbQuestion);
+        imgQuestion = view.findViewById(R.id.fileQuestion);
         txtQuestion = view.findViewById(R.id.txtQuestion);
     }
 

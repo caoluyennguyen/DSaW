@@ -35,6 +35,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Tên khảo sát"
+            android:textSize="18dp"
+            android:textColor="#000"/>
+
+        <EditText
+            android:id="@+id/name_of_survey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Nhập tên khảo sát"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Chọn loại khảo sát"
             android:textSize="18dp"

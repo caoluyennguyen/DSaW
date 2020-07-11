@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.QuestionAdapter;
 import com.nguyenhongphuc98.dsaw.adaptor.TextQuestionAdapter;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
 
@@ -38,6 +40,7 @@ public class CreateSurvey extends Fragment {
     Button chooseTypeQuestion;
     Button saveSurvey;
     ListView lvQuestion;
+    EditText nameOfSurvey;
     ChooseTypeOfQuestionDialog typeOfQuestionDialog;
     CreateQuestionDialog createQuestionDialog;
 
@@ -76,11 +79,19 @@ public class CreateSurvey extends Fragment {
         if (requestCode == 0) {
             String editQuestionString = data.getStringExtra("EDIT_QUESTION");
             ArrayList<String> editAnswerString = data.getStringArrayListExtra("EDIT_ANSWER");
+            String questionType = data.getStringExtra("TYPE_QUESTION");
             Log.d("Create survey", "Question get: " + editQuestionString);
             Log.d("Create survey", "Answer get: " + editAnswerString);
+            Log.d("Create survey", "Question type: " + questionType);
 
-            Question newQues = new Question("", editAnswerString, "", "", "MT");
-            newQues.setAnswers(editAnswerString);
+            Question newQues;
+            if (questionType.equalsIgnoreCase("MT")) {
+                newQues = new Question("", editAnswerString, "", editQuestionString, "MT");
+                newQues.setAnswers(editAnswerString);
+            }
+            else {
+                newQues = new Question("", editAnswerString, "", editQuestionString, questionType);
+            }
             lsQuestion.add(newQues);
             QuestionAdapter newQuesAdapter = new QuestionAdapter(getContext(), lsQuestion);
             lvQuestion.setAdapter(newQuesAdapter);
@@ -97,6 +108,7 @@ public class CreateSurvey extends Fragment {
         // Apply the adapter to the spinner
         typeOfSurvey.setAdapter(adapter);
         saveSurvey = view.findViewById(R.id.save_survey);
+        nameOfSurvey = view.findViewById(R.id.name_of_survey);
     }
 
     public void InitEvent(){
@@ -126,9 +138,9 @@ public class CreateSurvey extends Fragment {
             public void onClick(View v) {
                 int spinner_pos = typeOfSurvey.getSelectedItemPosition();
 
-                if (spinner_pos == 0) DataManager.Instance().AddNewSurvey("personal_medical");
-                else if (spinner_pos == 1) DataManager.Instance().AddNewSurvey("relatives_medical");
-                else DataManager.Instance().AddNewSurvey("report");
+                if (spinner_pos == 0) DataManager.Instance().AddNewSurvey("personal_medical", lsQuestion, nameOfSurvey.getText().toString());
+                else if (spinner_pos == 1) DataManager.Instance().AddNewSurvey("relatives_medical", lsQuestion, nameOfSurvey.getText().toString());
+                else DataManager.Instance().AddNewSurvey("report", lsQuestion, nameOfSurvey.getText().toString());
 
                 Toast.makeText(getContext(), "Tạo khảo sát thành công", Toast.LENGTH_LONG).show();
             }
