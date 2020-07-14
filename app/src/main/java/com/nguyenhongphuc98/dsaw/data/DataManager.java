@@ -357,7 +357,7 @@ public class DataManager {
     public void GetAllQuestion(final MutableLiveData<List<Question>> mListQuestion)
     {
         try {
-            Query query = mDatabase.getReference("Question").orderByChild("survey").equalTo("survey1_key");
+            Query query = mDatabase.getReference("Question").orderByChild("survey").equalTo(DataCenter.surveyID);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -463,11 +463,42 @@ public class DataManager {
                 }
                 // save new answer here
                 Map<String, Object> map = new HashMap<>();
+                for (int i = 0; i < questionList.size(); i++)
+                {
+                    if (questionList.get(i).getType().equalsIgnoreCase("image")) map.put(questionList.get(i).getId(), ">" + answerList.get(i));
+                    else map.put(questionList.get(i).getId(), answerList.get(i));
+                }
+                mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).updateChildren(map);
+                Log.e("Data manager", "Add new answer successful");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage());
+            }
+        });
+    }
+
+    public void AddNewMultipleAnswer(final String surveyKey, final String userId, final List<Question> questionList, final ArrayList<ArrayList<String>> answerList)
+    {
+        Query query = mDatabaseRef.child("Answers").child(surveyKey).child(userId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 0;
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                    {
+                        count++;
+                    }
+                }
+                // save new answer here
+                Map<String, Object> map = new HashMap<>();
                 for (int i = 0; i < answerList.size(); i++)
                 {
                     map.put(questionList.get(i).getId(), answerList.get(i));
                 }
-                mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).updateChildren(map);
+                mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).child("answer_key").updateChildren(map);
                 Log.e("Data manager", "Add new answer successful");
             }
 
@@ -527,10 +558,32 @@ public class DataManager {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.e("DTM","save image suscess");
+                Log.e("Data manager","save image suscess");
             }
         });
         return id;
+    }
+
+    public void UploadImageToReport(String id, String folder, Uri uriOfImage)
+    {
+        String child = folder + id;
+        StorageReference childRef = mStorageRef.child(child);
+
+        UploadTask uploadTask = childRef.putFile(uriOfImage);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.e("Data manager","save image suscess");
+            }
+        });
+        //return id;
     }
 
     // Public data part

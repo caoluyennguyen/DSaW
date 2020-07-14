@@ -3,8 +3,123 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:gravity="center_horizontal"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="10dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/login_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Họ và tên"
+            android:textColor="#4CAF50"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_margin="10dp"
+            android:hint="Tài khoản đăng nhập (SĐT/CMND)"
+            android:textColor="#4CAF50"
+            android:textSize="15dp"
+            android:outlineSpotShadowColor="#4CAF50"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/user_password"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CMND"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/user_identity"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/user_phone"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày tháng năm sinh"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/user_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/create_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Tạo tài khoản"
+            android:textColor="#FFF"
+            android:background="@drawable/button_green"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -136,13 +136,21 @@ public class CreateSurvey extends Fragment {
         saveSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int spinner_pos = typeOfSurvey.getSelectedItemPosition();
+                if (nameOfSurvey.getText().toString().isEmpty()) {
 
-                if (spinner_pos == 0) DataManager.Instance().AddNewSurvey("personal_medical", lsQuestion, nameOfSurvey.getText().toString());
-                else if (spinner_pos == 1) DataManager.Instance().AddNewSurvey("relatives_medical", lsQuestion, nameOfSurvey.getText().toString());
-                else DataManager.Instance().AddNewSurvey("report", lsQuestion, nameOfSurvey.getText().toString());
+                    Toast.makeText(getContext(), "Không dược bỏ trống tên khảo sát", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    lvQuestion.removeAllViewsInLayout();
+                    int spinner_pos = typeOfSurvey.getSelectedItemPosition();
 
-                Toast.makeText(getContext(), "Tạo khảo sát thành công", Toast.LENGTH_LONG).show();
+                    if (spinner_pos == 0) DataManager.Instance().AddNewSurvey("personal_medical", lsQuestion, nameOfSurvey.getText().toString());
+                    else if (spinner_pos == 1) DataManager.Instance().AddNewSurvey("relatives_medical", lsQuestion, nameOfSurvey.getText().toString());
+                    else DataManager.Instance().AddNewSurvey("report", lsQuestion, nameOfSurvey.getText().toString());
+
+                    nameOfSurvey.setText("");
+                    Toast.makeText(getContext(), "Tạo khảo sát thành công", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
