@@ -27,6 +27,7 @@ import com.nguyenhongphuc98.dsaw.adaptor.CaseAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
+import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -54,6 +55,8 @@ public class CaseFragment extends Fragment {
     String fx;
 
     String lastUIDInserted = "notyetinserted";
+
+    Account tempCaseAccount;
 
     public static CaseFragment newInstance() {
         return new CaseFragment();
@@ -84,25 +87,46 @@ public class CaseFragment extends Fragment {
                     return;
                 }
 
+               // Wait to get last location and insert case at that time
+                DataManager.Instance().fetchLastLocationOfUser(mViewModel.lastLocation, account.getIdentity());
+
+                tempCaseAccount = account;
+            }
+        });
+
+        mViewModel.getLastLocation().observe(this, new Observer<TrackingStatus>() {
+            @Override
+            public void onChanged(TrackingStatus trackingStatus) {
+
+                if (tempCaseAccount == null)
+                    return;
+
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
                 Date date = new Date();
                 date.setMinutes(date.getMinutes() - 1);
                 String t = dateFormat.format(date);
                 Log.d("TAGGG", "onChanged: date"+ t);
 
-                Case c = new Case(account.getArea(),
+                String location = "1,1";
+                // Ex parten: "[10.84627,106.76992999999999]null,Vietnam"
+                location = trackingStatus.getLocation().split("]")[0];
+                location = location.substring(1);
+
+                Case c = new Case(tempCaseAccount.getArea(),
                         t,
                         "zzzzzzzzzzzzzzzzzz",
                         fx,
                         "setlater",
-                        "22356,44426",
-                        account.getIdentity(),
-                        account.getUsername());
+                        location,
+                        tempCaseAccount.getIdentity(),
+                        tempCaseAccount.getUsername());
 
                 DataManager.Instance().insertCase(c);
+                //Log.d("CASE", "location: " + location);
                 lsCases.add(c);
                 adaptor.notifyDataSetChanged();
-                lastUIDInserted = account.getIdentity();
+                lastUIDInserted = tempCaseAccount.getIdentity();
+                tempCaseAccount = null;
             }
         });
 

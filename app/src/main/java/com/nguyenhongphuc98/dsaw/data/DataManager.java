@@ -58,6 +58,7 @@ import com.nguyenhongphuc98.dsaw.data.model.ReportModel;
 import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
+import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
 import com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultViewModel;
 
@@ -967,7 +968,7 @@ public class DataManager {
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Case a = snapshot.getValue(Case.class);
-                        if (t.compareTo(a.getBegin_time()) > 0 && t.compareTo(a.getEnd_time()) < 0 )
+                        if (t.compareTo(a.getBegin_time()) >= 0 && t.compareTo(a.getEnd_time()) < 0 )
                             ls.add(a);
                     }
                 }
@@ -989,7 +990,7 @@ public class DataManager {
         fetchCasesInfo(lsCases, query);
     }
 
-    // Fetch all cắ to visualize on map
+    // Fetch all case to visualize on map
     public void fetchAllCase(final MutableLiveData<List<Case>> lsCases) {
 
         Query query = mDatabaseRef.child("Case");
@@ -1141,6 +1142,33 @@ public class DataManager {
                     }
                 }
                 routeData.setValue(new RouteData());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /// Fetch last location for special user
+    public void fetchLastLocationOfUser(final MutableLiveData<TrackingStatus> trackingStatus, String uid) {
+
+        Query query = mDatabaseRef.child("RouteData").orderByChild("user").equalTo(uid);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        RouteData a = snapshot.getValue(RouteData.class);
+                        // item cuoi cung chinh la cai moi nhat
+                        trackingStatus.setValue(a.getStatus().get(a.getStatus().size() - 1));
+
+                        return;
+                    }
+                }
             }
 
             @Override

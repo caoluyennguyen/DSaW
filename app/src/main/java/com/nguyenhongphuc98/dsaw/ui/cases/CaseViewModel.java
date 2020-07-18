@@ -14,6 +14,7 @@ import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
 import com.nguyenhongphuc98.dsaw.data.model.News;
+import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,30 +25,20 @@ public class CaseViewModel extends ViewModel {
 
     private MutableLiveData<Account> liveAccount;
 
+    MutableLiveData<TrackingStatus> lastLocation;
+
     public CaseViewModel() {
         liveAccount = new MutableLiveData<>();
+        lastLocation = new MutableLiveData<>();
     }
 
     public LiveData<Account> getLiveAccount() {
         return liveAccount;
     }
 
-//    public void setContext(Context c) {
-//        this.context = c;
-//        lsCases = new ArrayList<>();
-//        lsCases.add(new Case("Ha Tinh",
-//                "22:20 - 02/05/2020",
-//                "24:50 - 12/05/2020",
-//                "F0",
-//                "case01",
-//                "22356,44426",
-//                "184335348",
-//                "Nguyen Hong Phuc"));
-//
-//
-//        adaptor = new CaseAdaptor(this.context, lsCases);
-//        mAdaptor.setValue(adaptor);
-//    }
+    public LiveData<TrackingStatus> getLastLocation() {
+        return lastLocation;
+    }
 
     public void updateCase(String cmnd, String f) {
 
