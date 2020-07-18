@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="130dp"
+    android:paddingLeft="15dp"
+    android:paddingBottom="15dp"
+    android:background="@drawable/background_case_info">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Case info:"
+            android:textColor="#000"/>
+
+        <ImageButton
+            android:id="@+id/case_info_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_close"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginRight="45dp"
+        android:background="#000000"
+        />
+
+    <TextView
+        android:id="@+id/case_info_begin_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:text="Begin time: 22/11/2012"/>
+
+    <TextView
+        android:id="@+id/case_info_identity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:text="Identify: 132654852"/>
+
+    <TextView
+        android:id="@+id/case_info_display_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:text="Name: Ho Thi Anh Ngoc"/>
+
+    <TextView
+        android:id="@+id/case_info_case_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:text="Case level: F0"/>
+
+</LinearLayout>
