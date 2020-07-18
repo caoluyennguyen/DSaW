@@ -1,12 +1,9 @@
 package com.nguyenhongphuc98.dsaw.ui.cases;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.nguyenhongphuc98.dsaw.adaptor.CaseAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
@@ -33,7 +30,7 @@ public class ViewCaseViewModel extends ViewModel {
     public void fetchData() {
 
         // just have permission to view case in this area
-        DataManager.Instance().fetchAllCase(lsCases, DataCenter.currentUser.getArea_management());
+        DataManager.Instance().fetchAllCaseOfArea(lsCases, DataCenter.currentUser.getArea_management());
 //        lsCases = new ArrayList<>();
 //        lsCases.add(new Case("Ha Tinh",
 //                "22:20 - 02/05/2020",

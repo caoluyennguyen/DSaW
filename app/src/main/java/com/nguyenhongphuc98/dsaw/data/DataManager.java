@@ -953,11 +953,8 @@ public class DataManager {
         });
     }
 
-    // Just manager can process case, and just case of area - which it manager
-    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases, String area) {
-
-        Query query = mDatabaseRef.child("Case").orderByChild("area").equalTo(area);
-
+    // Get cases base on query
+    private void fetchCasesInfo(final MutableLiveData<List<Case>> lsCases, Query query) {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -982,6 +979,22 @@ public class DataManager {
 
             }
         });
+    }
+
+    // Just manager can process case, and just case of area - which it manager
+    public void fetchAllCaseOfArea(final MutableLiveData<List<Case>> lsCases, String area) {
+
+        Query query = mDatabaseRef.child("Case").orderByChild("area").equalTo(area);
+
+        fetchCasesInfo(lsCases, query);
+    }
+
+    // Fetch all cắ to visualize on map
+    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases) {
+
+        Query query = mDatabaseRef.child("Case");
+
+        fetchCasesInfo(lsCases, query);
     }
 
     public void insertCase(final Case aCase) {
@@ -1036,7 +1049,7 @@ public class DataManager {
     }
 
     // featch all case to statitis (for admin) so we don't care about area. get all :v
-    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases) {
+    public void fetchAllCaseOfArea(final MutableLiveData<List<Case>> lsCases) {
 
         Query query = mDatabaseRef.child("Case");
 
