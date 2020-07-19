@@ -3,16 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:gravity="center_horizontal"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="10dp">
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/login_icon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/login_icon" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,13 +35,12 @@
             android:layout_margin="10dp"/>
 
         <EditText
+            android:id="@+id/account"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:hint="Tài khoản đăng nhập (SĐT/CMND)"
-            android:textColor="#4CAF50"
-            android:textSize="15dp"
-            android:outlineSpotShadowColor="#4CAF50"/>
+            android:textSize="15dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,13 +52,16 @@
             android:layout_margin="10dp"/>
 
         <EditText
+            android:id="@+id/password"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:hint="Mật khẩu"
+            android:textSize="15dp"
+            android:inputType="textPassword"/>
 
         <TextView
+            android:id="@+id/get_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -66,6 +73,7 @@
             android:textColor="#A39E9E" />
 
         <Button
+            android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -74,10 +82,18 @@
             android:background="@drawable/button_green"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chưa có tài khoản? Nhấn vào đây!"
-        android:textSize="15dp"
-        android:textColor="#464646" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có tài khoản? Nhấn vào đây!"
+            android:textSize="15dp"
+            android:textColor="#464646" />
+    </LinearLayout>
+
 </LinearLayout>

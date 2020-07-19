@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw.data.model;
 
 public class Account {
+    private String id;
 
     private String birthday;
 
@@ -18,9 +19,11 @@ public class Account {
 
     private String area_management;
 
+    private String email;
+
     public Account() {}
 
-    public Account(String birthday, String identity, String password, String phonenumber, String role, String username, String area, String area_management) {
+    public Account(String birthday, String identity, String password, String phonenumber, String role, String username, String area, String area_management, String email) {
         this.birthday = birthday;
         this.identity = identity;
         this.password = password;
@@ -29,6 +32,15 @@ public class Account {
         this.username = username;
         this.area = area;
         this.area_management = area_management;
+        this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getBirthday() {
@@ -93,5 +105,13 @@ public class Account {
 
     public void setArea_management(String area_management) {
         this.area_management = area_management;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
