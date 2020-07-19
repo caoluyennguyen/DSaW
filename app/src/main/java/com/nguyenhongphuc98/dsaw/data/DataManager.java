@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ListView;
@@ -46,6 +47,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nguyenhongphuc98.dsaw.MainActivity;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.Answer;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
@@ -59,6 +61,7 @@ import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
+import com.nguyenhongphuc98.dsaw.ui.login.LoginActivity;
 import com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultViewModel;
 
 import org.json.JSONException;
@@ -127,6 +130,7 @@ public class DataManager {
     FirebaseDatabase mDatabase;
     DatabaseReference mDatabaseRef;
     StorageReference mStorageRef;
+    LoginActivity loginProcess;
 
     Context mContext;
 
@@ -169,7 +173,11 @@ public class DataManager {
         organs_Reference.setValue("this is test connenction from nguyenhongphuc98");
     }
 
-    public void ProcessLogin(String email, String password) {
+    public void setLoginProcess(LoginActivity loginProcess) {
+        this.loginProcess = loginProcess;
+    }
+
+    public void ProcessLogin(final String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -177,17 +185,31 @@ public class DataManager {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            //GetUserDataByEmail(email);
+                            loginProcess.LoadUserDataComplete();
+                            loginProcess.LoginSuccessful();
+                            /*if(this.loginCallback!=null)
+                            {
+                                loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_SUCCESS);
+                                Log.d("DATAMANAGER","callback login");
+                            }*/
                             Log.d("DATAMANAGER", "errcallback login");
                         }
                         else {
+                            loginProcess.LoginFail();
+                            /*if(loginCallback!=null)
+                            {
+                                loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_INCORRECT);
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            }*/
                             // If sign in fails, display a message to the user.
                             Log.d(TAG, "signInWithEmail:failure");
-
-
                         }
                     }
                 });
+
+        /*if (mAuth.getCurrentUser() != null) return true;
+        else return false;*/
     }
 
     public boolean registerProcess(String userName, String passWord) {
@@ -225,6 +247,31 @@ public class DataManager {
         else return false;
     }
 
+    public void CreateNewAccount(Account account)
+    {
+        {
+            try{
+                String key=mDatabaseRef.child("Account").push().getKey();
+                account.setId(key);
+                Task task = mDatabaseRef.child("Account").child(key).setValue(account);
+                task.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("DataManager",e.toString());
+                    }
+                }).addOnSuccessListener(new OnSuccessListener() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        Log.d("DataManager","Create new post success");
+                    }
+                });
+            }
+            catch (Exception e){
+                Log.d("DataManager",e.toString());
+            }
+        }
+    }
+
     public void CreateWarning(Warning warning)
     {
         mDatabaseRef.child("Warnings").child("2").setValue(warning);
@@ -250,6 +297,32 @@ public class DataManager {
                             identity.setText(account.getIdentity());
                             birthday.setText(account.getBirthday());
                             phonenumber.setText(account.getPhonenumber());
+                        }
+                    }
+                    else Log.e("DataManager","Account not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get account: " + e.getMessage());
+        }
+    }
+
+    public void GetUserDataByEmail(String email)
+    {
+        try {
+            Query query = mDatabase.getReference("Account").orderByChild("role").equalTo("tihtk.98@gmail.com");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            DataCenter.currentUser = snapshot.getValue(Account.class);
                         }
                     }
                     else Log.e("DataManager","Account not found");
@@ -498,7 +571,7 @@ public class DataManager {
                 {
                     map.put(questionList.get(i).getId(), answerList.get(i));
                 }
-                mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).child("answer_key").updateChildren(map);
+                mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).child("answers_key").updateChildren(map);
                 Log.e("Data manager", "Add new answer successful");
             }
 
