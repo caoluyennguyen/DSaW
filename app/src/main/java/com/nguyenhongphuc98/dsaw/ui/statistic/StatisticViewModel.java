@@ -11,7 +11,6 @@ import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class StatisticViewModel extends ViewModel {
@@ -59,7 +58,7 @@ public class StatisticViewModel extends ViewModel {
     }
 
     public void fetchPieDataFor(String areaID) {
-        DataManager.Instance().fetchAllCase(listCases, areaID);
+        DataManager.Instance().fetchAllCaseOfArea(listCases, areaID);
     }
 
     public LiveData<List<DataEntry>> getPie() {

@@ -47,7 +47,7 @@ public class Geo {
                     } else {
                         message.what = 1;
                         Bundle bundle = new Bundle();
-                        result = " Unable to get address for this location.";
+                        result = "[" + latitude + "," + longitude + "] Unable to get address for this location.";
                         bundle.putString("address", result);
                         message.setData(bundle);
                     }

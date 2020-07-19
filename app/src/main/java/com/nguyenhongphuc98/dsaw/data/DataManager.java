@@ -58,6 +58,7 @@ import com.nguyenhongphuc98.dsaw.data.model.ReportModel;
 import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
+import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
 import com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultViewModel;
 
@@ -953,11 +954,8 @@ public class DataManager {
         });
     }
 
-    // Just manager can process case, and just case of area - which it manager
-    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases, String area) {
-
-        Query query = mDatabaseRef.child("Case").orderByChild("area").equalTo(area);
-
+    // Get cases base on query
+    private void fetchCasesInfo(final MutableLiveData<List<Case>> lsCases, Query query) {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -970,7 +968,7 @@ public class DataManager {
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Case a = snapshot.getValue(Case.class);
-                        if (t.compareTo(a.getBegin_time()) > 0 && t.compareTo(a.getEnd_time()) < 0 )
+                        if (t.compareTo(a.getBegin_time()) >= 0 && t.compareTo(a.getEnd_time()) < 0 )
                             ls.add(a);
                     }
                 }
@@ -982,6 +980,22 @@ public class DataManager {
 
             }
         });
+    }
+
+    // Just manager can process case, and just case of area - which it manager
+    public void fetchAllCaseOfArea(final MutableLiveData<List<Case>> lsCases, String area) {
+
+        Query query = mDatabaseRef.child("Case").orderByChild("area").equalTo(area);
+
+        fetchCasesInfo(lsCases, query);
+    }
+
+    // Fetch all case to visualize on map
+    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases) {
+
+        Query query = mDatabaseRef.child("Case");
+
+        fetchCasesInfo(lsCases, query);
     }
 
     public void insertCase(final Case aCase) {
@@ -1024,8 +1038,19 @@ public class DataManager {
         });
     }
 
+    public void markWellCase(final Case aCase) {
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+        Date date = new Date();
+        String t = dateFormat.format(date);
+
+        mDatabaseRef.child("Case").child(aCase.getId()).child("end_time").setValue(t);
+
+        Toast.makeText(mContext, "did well: "+ aCase.getId(), Toast.LENGTH_SHORT).show();
+    }
+
     // featch all case to statitis (for admin) so we don't care about area. get all :v
-    public void fetchAllCase(final MutableLiveData<List<Case>> lsCases) {
+    public void fetchAllCaseOfArea(final MutableLiveData<List<Case>> lsCases) {
 
         Query query = mDatabaseRef.child("Case");
 
@@ -1117,6 +1142,33 @@ public class DataManager {
                     }
                 }
                 routeData.setValue(new RouteData());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /// Fetch last location for special user
+    public void fetchLastLocationOfUser(final MutableLiveData<TrackingStatus> trackingStatus, String uid) {
+
+        Query query = mDatabaseRef.child("RouteData").orderByChild("user").equalTo(uid);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        RouteData a = snapshot.getValue(RouteData.class);
+                        // item cuoi cung chinh la cai moi nhat
+                        trackingStatus.setValue(a.getStatus().get(a.getStatus().size() - 1));
+
+                        return;
+                    }
+                }
             }
 
             @Override

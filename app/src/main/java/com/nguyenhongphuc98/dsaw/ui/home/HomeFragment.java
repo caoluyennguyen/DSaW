@@ -16,6 +16,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -82,6 +83,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"go to visualize",Toast.LENGTH_SHORT).show();
+                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_mapVisualize);
             }
         });
     }

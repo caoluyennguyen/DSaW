@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/case_item_name"
+        android:id="@+id/account_item_name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="wrap_content"
@@ -19,8 +19,8 @@
         android:focusable="false"/>
 
     <TextView
-        android:id="@+id/case_item_cmnd"
-        app:layout_constraintTop_toBottomOf="@id/case_item_name"
+        android:id="@+id/account_item_cmnd"
+        app:layout_constraintTop_toBottomOf="@id/account_item_name"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,31 +30,17 @@
         android:focusable="false"/>
 
     <Button
-        android:id="@+id/case_item_f"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/case_item_beingwell"
-        android:gravity="center"
-        android:layout_marginTop="13dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="50dp"
-        android:layout_height="20dp"
-        android:text="F0"
-        android:textColor="#fff"
-        android:textAllCaps="false"
-        android:background="@drawable/background_button_f0"
-        android:focusable="false"/>
-
-    <Button
-        android:id="@+id/case_item_beingwell"
+        android:id="@+id/account_item_role"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:gravity="center"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:layout_width="70dp"
         android:layout_height="20dp"
-        android:text="Mark well"
+        android:text="Promote"
         android:textColor="#fff"
         android:textAllCaps="false"
-        android:background="@drawable/background_button_f1"
+        android:background="@drawable/background_button_f0"
         android:focusable="false"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

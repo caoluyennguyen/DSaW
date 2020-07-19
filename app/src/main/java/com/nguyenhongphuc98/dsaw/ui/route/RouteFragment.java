@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class RouteFragment extends Fragment {
             public void onChanged(RouteData routeData) {
                 lsTracking.clear();
                 for (TrackingStatus t : routeData.getStatus()) {
+                    //Log.d("LOCATIONN", "onChanged: location: " + t.getLocation());
                     String location = t.getLocation().split("]")[1];
                     t.setLocation(location);
                     lsTracking.add(t);
