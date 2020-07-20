@@ -21,6 +21,8 @@ public class Account {
 
     private String email;
 
+    private String mail;
+
     public Account() {}
 
     public Account(String birthday, String identity, String password, String phonenumber, String role, String username, String area, String area_management, String email) {
@@ -32,7 +34,7 @@ public class Account {
         this.username = username;
         this.area = area;
         this.area_management = area_management;
-        this.email = email;
+        this.mail = email;
     }
 
     public String getId() {
@@ -113,5 +115,13 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }

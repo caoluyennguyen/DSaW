@@ -28,6 +28,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Warning;
 
@@ -82,7 +83,7 @@ public class AdminWarning extends Fragment {
                 Toast.makeText(getContext(),"Button is clicked",Toast.LENGTH_SHORT).show();
 
                 mViewModel.setContent(mTextContent.getText().toString());
-                Warning warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString());
+                Warning warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername());
 
                 mViewModel.CreateWarning(warning);
 

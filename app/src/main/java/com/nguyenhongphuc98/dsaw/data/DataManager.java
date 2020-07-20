@@ -187,8 +187,8 @@ public class DataManager {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             //GetUserDataByEmail(email);
-                            loginProcess.LoadUserDataComplete();
                             loginProcess.LoginSuccessful();
+                            loginProcess.LoadUserDataComplete();
                             /*if(this.loginCallback!=null)
                             {
                                 loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_SUCCESS);
@@ -273,26 +273,42 @@ public class DataManager {
         }
     }
 
-    public void CreateWarning(Warning warning)
+    public void CreateWarning(final Warning fWarning)
     {
-        mDatabaseRef.child("Warnings").child("2").setValue(warning);
+        Query query = mDatabaseRef.child("Warnings");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 1;
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                    {
+                        count++;
+                    }
+                }
+
+                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator());
+                mDatabaseRef.child("Warnings").child(String.valueOf(count)).setValue(warning);
+                Log.e("Data manager", "Add new warning successful");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage());
+            }
+        });
     }
 
-    public void GetUserData(String id, final TextView name, final TextView identity, final TextView birthday, final TextView phonenumber)
+    public void GetUserData(final TextView name, final TextView identity, final TextView birthday, final TextView phonenumber)
     {
         try {
-            Query query = mDatabase.getReference("Account").orderByChild("role").equalTo(id);
+            Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Account account = snapshot.getValue(Account.class);
-
-                            /*DataCenter.userName = account.getUsername();
-                            DataCenter.identity = account.getIdentity();
-                            DataCenter.birthday = account.getBirthday();
-                            DataCenter.phoneNumber = account.getPhonenumber();*/
 
                             name.setText(account.getUsername());
                             identity.setText(account.getIdentity());
@@ -314,16 +330,17 @@ public class DataManager {
         }
     }
 
-    public void GetUserDataByEmail(String email)
+    public void GetUserDataByEmail(String mail)
     {
         try {
-            Query query = mDatabase.getReference("Account").orderByChild("role").equalTo("tihtk.98@gmail.com");
+            Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(mail);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            DataCenter.currentUser = snapshot.getValue(Account.class);
+                            Account account = snapshot.getValue(Account.class);
+                            DataCenter.currentUser = account;
                         }
                     }
                     else Log.e("DataManager","Account not found");
@@ -343,7 +360,7 @@ public class DataManager {
     public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber)
     {
         try {
-            Query query = mDatabase.getReference("Account").orderByChild("role").equalTo("manager");
+            Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
