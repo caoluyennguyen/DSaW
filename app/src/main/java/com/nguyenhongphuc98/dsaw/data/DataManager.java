@@ -570,7 +570,7 @@ public class DataManager {
         });
     }
 
-    public void AddNewMultipleAnswer(final String surveyKey, final String userId, final List<Question> questionList, final ArrayList<ArrayList<String>> answerList)
+    public void AddNewMultipleAnswer(final String surveyKey, final String userId, final List<Question> questionList, final ArrayList<ArrayList<String>> answerList, final ArrayList<ArrayList<Integer>> answerIdList)
     {
         Query query = mDatabaseRef.child("Answers").child(surveyKey).child(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -585,9 +585,14 @@ public class DataManager {
                 }
                 // save new answer here
                 Map<String, Object> map = new HashMap<>();
-                for (int i = 0; i < answerList.size(); i++)
+                /*for (int i = 0; i < answerList.size(); i++)
                 {
                     map.put(questionList.get(i).getId(), answerList.get(i));
+                    //map.put(questionList.get(i).getId(), i);
+                }*/
+                for (int i = 0; i < answerIdList.size(); i++)
+                {
+                    map.put(questionList.get(i).getId(), answerIdList.get(i));
                 }
                 mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).child("answers_key").updateChildren(map);
                 Log.e("Data manager", "Add new answer successful");

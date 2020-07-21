@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ public class UserFragment extends Fragment {
     private TextView mTextDayofBirth;
     private TextView mTextContact;
     private Button mBtnUpdate;
+    private CheckedTextView checkedTextView;
 
     final Calendar myCalendar = Calendar.getInstance();
 
@@ -88,6 +90,7 @@ public class UserFragment extends Fragment {
         mTextDayofBirth = view.findViewById(R.id.txtDayOfBirth);
         mTextContact = view.findViewById(R.id.txtContact);
         mBtnUpdate = view.findViewById(R.id.user_update_btn);
+        checkedTextView = view.findViewById(R.id.ctxAgreement);
     }
 
     public void InitEvent()
@@ -95,13 +98,17 @@ public class UserFragment extends Fragment {
         mBtnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.setmName(mTextName.getText().toString());
-                mViewModel.setmCMND(mTextCMND.getText().toString());
-                mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
-                mViewModel.setmContact(mTextContact.getText().toString());
-                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
-                Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
-                UnfocusElement();
+                if (checkedTextView.isChecked()) {
+                    mViewModel.setmName(mTextName.getText().toString());
+                    mViewModel.setmCMND(mTextCMND.getText().toString());
+                    mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
+                    mViewModel.setmContact(mTextContact.getText().toString());
+                    mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
+                    Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
+                    UnfocusElement();
+                }
+                else Toast.makeText(getContext(), "Vui lòng xác nhận điều khoản", Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -110,6 +117,14 @@ public class UserFragment extends Fragment {
             public void onClick(View v) {
                 new DatePickerDialog(getContext(), date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        checkedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkedTextView.isChecked()) checkedTextView.setChecked(false);
+                else checkedTextView.setChecked(true);
             }
         });
     }
