@@ -25,6 +25,7 @@ import com.nguyenhongphuc98.dsaw.adaptor.AnswerAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 
 public class CreateQuestionDialog extends DialogFragment {
+    TextView quesNumber;
     TextView title;
     EditText edtQuestion;
     EditText edtAnswer;
@@ -69,6 +70,7 @@ public class CreateQuestionDialog extends DialogFragment {
 
     public void InitComponent(View view)
     {
+        quesNumber = view.findViewById(R.id.question_number);
         title = view.findViewById(R.id.creare_answer_title);
         edtQuestion = view.findViewById(R.id.edtQuestion);
         edtAnswer = view.findViewById(R.id.edtCreateAnswer);
@@ -86,6 +88,8 @@ public class CreateQuestionDialog extends DialogFragment {
             title.setVisibility(View.GONE);
             edtAnswer.setVisibility(View.GONE);
         }
+
+        quesNumber.setText("Câu hỏi số " + String.valueOf(mArgs.getInt("number") + 1));
     }
 
     public void InitEvent()
@@ -93,8 +97,9 @@ public class CreateQuestionDialog extends DialogFragment {
         addQuesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mViewModel.getLsAnswer().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu trả lời!", Toast.LENGTH_LONG).show();
-                else if (edtQuestion.getText().toString().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu hỏi!", Toast.LENGTH_LONG).show();
+                if (mViewModel.getLsAnswer().isEmpty() && typeOfQuestion.equalsIgnoreCase("MT")) Toast.makeText(getContext(), "Không được để trống câu trả lời!", Toast.LENGTH_LONG).show();
+                else if (edtQuestion.getText().toString().isEmpty())
+                    Toast.makeText(getContext(), "Không được để trống câu hỏi!", Toast.LENGTH_LONG).show();
                 else {
                     if (typeOfQuestion.equalsIgnoreCase("text")) {
                         //DataManager.Instance().AddNewQuestion(edtQuestion.getText().toString(), null, "text");

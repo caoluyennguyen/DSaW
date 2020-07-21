@@ -57,9 +57,9 @@ public class UserViewModel extends ViewModel {
         this.mContact.setValue(mContact);
     }
 
-    public void GetUser(String id, TextView name, TextView identity, TextView birthday, TextView phonenumber)
+    public void GetUser(TextView name, TextView identity, TextView birthday, TextView phonenumber)
     {
-        DataManager.Instance().GetUserData(id, name, identity, birthday, phonenumber);
+        DataManager.Instance().GetUserData(name, identity, birthday, phonenumber);
     }
 
     public void UpdateUser(String name, String identity, String birthday, String phoneNumber)

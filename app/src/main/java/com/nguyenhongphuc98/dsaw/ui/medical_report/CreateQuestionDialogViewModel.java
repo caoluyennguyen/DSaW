@@ -23,7 +23,7 @@ public class CreateQuestionDialogViewModel extends ViewModel {
         this.context = c;
         lsAnswer = new ArrayList<>();
 
-        lsAnswer.add("Cau tra loi 1");
+        //lsAnswer.add("Cau tra loi 1");
 
         adaptor = new AnswerAdaptor(this.context, lsAnswer);
         mAdaptor.setValue(adaptor);

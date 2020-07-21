@@ -148,7 +148,7 @@ public class DataManager {
         if(_instance == null){
             _instance = new DataManager(c);
         }
-
+        _instance.mContext = c;
         return _instance;
     }
 
@@ -187,8 +187,8 @@ public class DataManager {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             //GetUserDataByEmail(email);
-                            loginProcess.LoadUserDataComplete();
                             loginProcess.LoginSuccessful();
+                            loginProcess.LoadUserDataComplete();
                             /*if(this.loginCallback!=null)
                             {
                                 loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_SUCCESS);
@@ -273,26 +273,42 @@ public class DataManager {
         }
     }
 
-    public void CreateWarning(Warning warning)
+    public void CreateWarning(final Warning fWarning)
     {
-        mDatabaseRef.child("Warnings").child("2").setValue(warning);
+        Query query = mDatabaseRef.child("Warnings");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 1;
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                    {
+                        count++;
+                    }
+                }
+
+                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator());
+                mDatabaseRef.child("Warnings").child(String.valueOf(count)).setValue(warning);
+                Log.e("Data manager", "Add new warning successful");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage());
+            }
+        });
     }
 
-    public void GetUserData(String id, final TextView name, final TextView identity, final TextView birthday, final TextView phonenumber)
+    public void GetUserData(final TextView name, final TextView identity, final TextView birthday, final TextView phonenumber)
     {
         try {
-            Query query = mDatabase.getReference("Account").orderByChild("role").equalTo(id);
+            Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Account account = snapshot.getValue(Account.class);
-
-                            /*DataCenter.userName = account.getUsername();
-                            DataCenter.identity = account.getIdentity();
-                            DataCenter.birthday = account.getBirthday();
-                            DataCenter.phoneNumber = account.getPhonenumber();*/
 
                             name.setText(account.getUsername());
                             identity.setText(account.getIdentity());
@@ -314,16 +330,17 @@ public class DataManager {
         }
     }
 
-    public void GetUserDataByEmail(String email)
+    public void GetUserDataByEmail(String mail)
     {
         try {
-            Query query = mDatabase.getReference("Account").orderByChild("role").equalTo("tihtk.98@gmail.com");
+            Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(mail);
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            DataCenter.currentUser = snapshot.getValue(Account.class);
+                            Account account = snapshot.getValue(Account.class);
+                            DataCenter.currentUser = account;
                         }
                     }
                     else Log.e("DataManager","Account not found");
@@ -343,7 +360,7 @@ public class DataManager {
     public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber)
     {
         try {
-            Query query = mDatabase.getReference("Account").orderByChild("role").equalTo("manager");
+            Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -553,7 +570,7 @@ public class DataManager {
         });
     }
 
-    public void AddNewMultipleAnswer(final String surveyKey, final String userId, final List<Question> questionList, final ArrayList<ArrayList<String>> answerList)
+    public void AddNewMultipleAnswer(final String surveyKey, final String userId, final List<Question> questionList, final ArrayList<ArrayList<String>> answerList, final ArrayList<ArrayList<Integer>> answerIdList)
     {
         Query query = mDatabaseRef.child("Answers").child(surveyKey).child(userId);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -568,9 +585,14 @@ public class DataManager {
                 }
                 // save new answer here
                 Map<String, Object> map = new HashMap<>();
-                for (int i = 0; i < answerList.size(); i++)
+                /*for (int i = 0; i < answerList.size(); i++)
                 {
                     map.put(questionList.get(i).getId(), answerList.get(i));
+                    //map.put(questionList.get(i).getId(), i);
+                }*/
+                for (int i = 0; i < answerIdList.size(); i++)
+                {
+                    map.put(questionList.get(i).getId(), answerIdList.get(i));
                 }
                 mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).child("answers_key").updateChildren(map);
                 Log.e("Data manager", "Add new answer successful");
@@ -1026,6 +1048,36 @@ public class DataManager {
     public void fetchAccountById(final String id, final MutableLiveData<Account> account) {
 
         Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(id);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        // We expect one account match
+                        Account a = snapshot.getValue(Account.class);
+                        account.setValue(a);
+                        return;
+                    }
+                } else {
+                    Account temp = new Account();
+                    temp.setIdentity("null");
+                    account.setValue(temp);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void fetchAccountByEmail(final String email, final MutableLiveData<Account> account) {
+
+        Query query = mDatabaseRef.child("Account").orderByChild("mail").equalTo(email);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

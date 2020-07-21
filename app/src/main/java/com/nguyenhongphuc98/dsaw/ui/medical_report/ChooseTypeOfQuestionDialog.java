@@ -23,12 +23,13 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
     TextView imgQuestion;
     TextView txtQuestion;
     CreateQuestionDialog createQuestionDialog;
-    Bundle args;
+    Bundle preArgs;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_choose_type_of_question, container, false);
+        preArgs = getArguments();
 
         InitComponent(view);
         InitEvent();
@@ -72,8 +73,9 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
                 createQuestionDialog = new CreateQuestionDialog();
                 createQuestionDialog.show(getFragmentManager(), "Create new question");
                 createQuestionDialog.setTargetFragment(ChooseTypeOfQuestionDialog.this, 0);
-                args = new Bundle();
+                Bundle args = new Bundle();
                 args.putString("type", "image");
+                args.putInt("number", preArgs.getInt("number"));
                 createQuestionDialog.setArguments(args);
                 getDialog().dismiss();
             }
@@ -85,8 +87,9 @@ public class ChooseTypeOfQuestionDialog extends DialogFragment {
                 createQuestionDialog = new CreateQuestionDialog();
                 createQuestionDialog.show(getFragmentManager(), "Create new question");
                 createQuestionDialog.setTargetFragment(ChooseTypeOfQuestionDialog.this, 0);
-                args = new Bundle();
+                Bundle args = new Bundle();
                 args.putString("type", "text");
+                args.putInt("number", preArgs.getInt("number"));
                 createQuestionDialog.setArguments(args);
                 getDialog().dismiss();
             }
