@@ -16,6 +16,7 @@ import com.nguyenhongphuc98.dsaw.MainActivity;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.Account;
 
 public class LoginActivity extends AppCompatActivity {
     EditText account;
@@ -75,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void LoadUserDataComplete()
     {
+        DataCenter.currentUser = new Account();
+        DataCenter.currentUser.setEmail(account.getText().toString());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         //Log.d("Login activity", "User name" + DataCenter.currentUser.getUsername());
@@ -82,8 +85,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void LoginSuccessful()
     {
-        if (account.getText().toString().equalsIgnoreCase("1")) DataManager.Instance().GetUserDataByEmail("tihtk.98@gmail.com");
-        else DataManager.Instance().GetUserDataByEmail(account.getText().toString());
+        // Khong xu ly thong tin user o day ma se de cho qua main activity lam
+        //========================================================
+        //if (account.getText().toString().equalsIgnoreCase("1")) DataManager.Instance().GetUserDataByEmail("tihtk.98@gmail.com");
+        //else DataManager.Instance().GetUserDataByEmail(account.getText().toString());
         //Log.e("LoginProcess","Account: " + DataCenter.currentUser.getUsername());
         Toast.makeText(getApplicationContext(), "Xin chào", Toast.LENGTH_LONG).show();
     }
