@@ -27,10 +27,17 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.nguyenhongphuc98.dsaw.MainActivity;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Warning;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AdminWarning extends Fragment {
     private AdminWarningViewModel mViewModel;
@@ -85,7 +92,7 @@ public class AdminWarning extends Fragment {
                 mViewModel.setContent(mTextContent.getText().toString());
                 Warning warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername());
 
-                mViewModel.CreateWarning(warning);
+                //mViewModel.CreateWarning(warning);
 
                 /*Notification notification = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
                         .setSmallIcon(R.drawable.warning_icon)
@@ -103,6 +110,28 @@ public class AdminWarning extends Fragment {
                 notificationManager.notify(1, builder.build());
 
                 Log.d("show", "Warning created");
+
+                // Get token
+                // [START retrieve_current_token]
+                FirebaseInstanceId.getInstance().getInstanceId()
+                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.w(TAG, "getInstanceId failed", task.getException());
+                                    return;
+                                }
+
+                                // Get new Instance ID token
+                                String token = task.getResult().getToken();
+
+                                // Log and toast
+                                String msg = getString(R.string.msg_token_fmt, token);
+                                Log.d(TAG, msg);
+                                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                // [END retrieve_current_token]
             }
         });
 

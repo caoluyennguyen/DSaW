@@ -9,7 +9,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +22,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name=".FirebaseMessagingService"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:enabled="false"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -25,7 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/app_name">
@@ -34,14 +49,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--        Map API-->
+        </activity> <!-- Map API -->
         <uses-library android:name="com.google.android.maps" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBas8i6tjOtbrCzt7lBO52hYcAJe2pYIHU"/>
+            android:value="AIzaSyBas8i6tjOtbrCzt7lBO52hYcAJe2pYIHU" />
 
         <activity
             android:name=".ui.login.SignUpActivity"
@@ -52,7 +65,4 @@
         </activity>
     </application>
 
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true"/>
 </manifest>
