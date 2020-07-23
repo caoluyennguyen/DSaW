@@ -28,7 +28,7 @@ public class MapVisualizeViewModel extends ViewModel {
     }
 
     public void fetchData() {
-        DataManager.Instance().fetchAllCaseOfArea(lsCases, DataCenter.currentUser.getArea_management());
+        DataManager.Instance().fetchAllCase(lsCases);
     }
 }
 

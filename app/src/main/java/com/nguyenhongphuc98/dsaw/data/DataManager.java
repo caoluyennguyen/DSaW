@@ -148,7 +148,7 @@ public class DataManager {
         if(_instance == null){
             _instance = new DataManager(c);
         }
-
+        _instance.mContext = c;
         return _instance;
     }
 
@@ -1048,6 +1048,36 @@ public class DataManager {
     public void fetchAccountById(final String id, final MutableLiveData<Account> account) {
 
         Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(id);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        // We expect one account match
+                        Account a = snapshot.getValue(Account.class);
+                        account.setValue(a);
+                        return;
+                    }
+                } else {
+                    Account temp = new Account();
+                    temp.setIdentity("null");
+                    account.setValue(temp);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void fetchAccountByEmail(final String email, final MutableLiveData<Account> account) {
+
+        Query query = mDatabaseRef.child("Account").orderByChild("mail").equalTo(email);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

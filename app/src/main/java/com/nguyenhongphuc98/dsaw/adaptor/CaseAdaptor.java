@@ -59,6 +59,8 @@ public class CaseAdaptor extends ArrayAdapter {
 
         if (!e.getF().equals("F0")) {
             viewHolder.f.setBackgroundResource(R.drawable.background_button_f1);
+        } else {
+            viewHolder.f.setBackgroundResource(R.drawable.background_button_f0);
         }
 
         //set action to this row
