@@ -605,9 +605,9 @@ public class DataManager {
         });
     }
 
-    public void AddNewPost(String title, String content, String idCover)
+    public void AddNewPost(String title, String link, String content, String idCover)
     {
-        Post post = new Post(DataCenter.currentUser.getIdentity(), content, idCover, LocalDateTime.now().toString(), null, null, title, "write");
+        Post post = new Post(DataCenter.currentUser.getIdentity(), content, idCover, LocalDateTime.now().toString(), null, link, title, "write");
 
         try{
             String key=mDatabaseRef.child("Post").push().getKey();

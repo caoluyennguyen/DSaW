@@ -34,6 +34,7 @@ public class CreateNewsFragment extends Fragment {
     ImageButton btnUploadCover;
     Uri coverImg;
     EditText edtTitle;
+    EditText edtLink;
     EditText edtContent;
     Button btnPost;
 
@@ -44,7 +45,7 @@ public class CreateNewsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_news_link, container, false);
         InitComponent(view);
         InitEvent();
         return view;
@@ -101,7 +102,7 @@ public class CreateNewsFragment extends Fragment {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataManager.Instance().AddNewPost(edtTitle.getText().toString(), edtContent.getText().toString(),
+                DataManager.Instance().AddNewPost(edtTitle.getText().toString(), edtLink.getText().toString(), edtContent.getText().toString(),
                         DataManager.Instance().UploadFileToFirebase("posts/", coverImg));
                 Toast.makeText(getContext(), "Đăng bài viết thành công", Toast.LENGTH_LONG).show();
 
