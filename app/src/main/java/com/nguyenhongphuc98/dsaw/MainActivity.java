@@ -60,12 +60,15 @@ public class MainActivity extends AppCompatActivity {
 
         //set current account after login to using later
         MutableLiveData<Account> user = new MutableLiveData<>();
-        DataManager.Instance().fetchAccountById("184331234",user);
+        //DataManager.Instance().fetchAccountById("184331234",user);
         //DataManager.Instance().fetchAccountById(userId,user);
+        DataManager.Instance().fetchAccountByEmail(DataCenter.currentUser.getEmail(),user);
         user.observe(this, new Observer<Account>() {
             @Override
             public void onChanged(Account account) {
-                //DataCenter.currentUser = account;
+
+                // update to get full info of current account
+                DataCenter.currentUser = account;
                 locationTrack = new LocationTrack(MainActivity.this);
 
                 if (locationTrack.canGetLocation()) {

@@ -31,46 +31,6 @@ public class ViewCaseViewModel extends ViewModel {
 
         // just have permission to view case in this area
         DataManager.Instance().fetchAllCaseOfArea(lsCases, DataCenter.currentUser.getArea_management());
-//        lsCases = new ArrayList<>();
-//        lsCases.add(new Case("Ha Tinh",
-//                "22:20 - 02/05/2020",
-//                "24:50 - 12/05/2020",
-//                "F0",
-//                "case01",
-//                "22356,44426",
-//                "184335348",
-//                "Nguyen Hong Phuc"));
-//
-//        lsCases.add(new Case("Ha Tinh",
-//                "22:20 - 02/05/2020",
-//                "24:50 - 12/05/2020",
-//                "F1",
-//                "case01",
-//                "22356,44426",
-//                "65986589",
-//                "Nguyen Hong Loc"));
-//
-//        lsCases.add(new Case("Ha Tinh",
-//                "22:20 - 02/05/2020",
-//                "24:50 - 12/05/2020",
-//                "F2",
-//                "case01",
-//                "22356,44426",
-//                "24563256",
-//                "Nguyen Hong To"));
-//
-//        lsCases.add(new Case("Ha Tinh",
-//                "22:20 - 02/05/2020",
-//                "24:50 - 12/05/2020",
-//                "F0",
-//                "case01",
-//                "22356,44426",
-//                "12365895",
-//                "Nguyen Hong Pink"));
-//
-//
-//        adaptor = new CaseAdaptor(this.context, lsCases);
-//        mAdaptor.setValue(adaptor);
     }
 
     public List<Case> filterByF(String f) {

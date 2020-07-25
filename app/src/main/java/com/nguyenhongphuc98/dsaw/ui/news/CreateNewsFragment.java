@@ -34,6 +34,7 @@ public class CreateNewsFragment extends Fragment {
     ImageButton btnUploadCover;
     Uri coverImg;
     EditText edtTitle;
+    EditText edtLink;
     EditText edtContent;
     Button btnPost;
 
@@ -44,7 +45,7 @@ public class CreateNewsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_create_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_news_link, container, false);
         InitComponent(view);
         InitEvent();
         return view;
@@ -80,6 +81,7 @@ public class CreateNewsFragment extends Fragment {
     {
         btnUploadCover = view.findViewById(R.id.btn_upload_cover);
         edtTitle = view.findViewById(R.id.edtTitle);
+        edtLink = view.findViewById(R.id.edtLink);
         edtContent = view.findViewById(R.id.edtContent);
         btnPost = view.findViewById(R.id.button_post);
     }
@@ -101,10 +103,13 @@ public class CreateNewsFragment extends Fragment {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataManager.Instance().AddNewPost(edtTitle.getText().toString(), edtContent.getText().toString(),
+                String link = edtLink.getText().toString();
+                if (!link.startsWith("http://") || !link.startsWith("https://"))
+                    link = "https://" + link;
+                DataManager.Instance().AddNewPost(edtTitle.getText().toString(), link, edtContent.getText().toString(),
                         DataManager.Instance().UploadFileToFirebase("posts/", coverImg));
                 Toast.makeText(getContext(), "Đăng bài viết thành công", Toast.LENGTH_LONG).show();
-
+                UnfocusElement();
             }
         });
     }
@@ -123,5 +128,26 @@ public class CreateNewsFragment extends Fragment {
                 edtContent.setText(s);
             }
         });
+    }
+
+
+    public void UnfocusElement()
+    {
+        btnUploadCover.setImageURI(null);
+        edtTitle.setFocusableInTouchMode(false);
+        edtTitle.setFocusable(false);
+        edtTitle.setFocusableInTouchMode(true);
+        edtTitle.setFocusable(true);
+        edtTitle.setText("");
+        edtLink.setFocusableInTouchMode(false);
+        edtLink.setFocusable(false);
+        edtLink.setFocusableInTouchMode(true);
+        edtLink.setFocusable(true);
+        edtLink.setText("");
+        edtContent.setFocusableInTouchMode(false);
+        edtContent.setFocusable(false);
+        edtContent.setFocusableInTouchMode(true);
+        edtContent.setFocusable(true);
+        edtContent.setText("");
     }
 }

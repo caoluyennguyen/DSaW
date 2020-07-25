@@ -120,6 +120,9 @@ public class CreateSurvey extends Fragment {
                     typeOfQuestionDialog = new ChooseTypeOfQuestionDialog();
                     typeOfQuestionDialog.show(getFragmentManager(), "Type of question");
                     typeOfQuestionDialog.setTargetFragment(CreateSurvey.this, 0);
+                    Bundle args = new Bundle();
+                    args.putInt("number", lvQuestion.getCount());
+                    typeOfQuestionDialog.setArguments(args);
                 }
                 else {
                     Log.e("Create survey", "Spinner position: " + spinner_pos);
@@ -128,6 +131,7 @@ public class CreateSurvey extends Fragment {
                     createQuestionDialog.setTargetFragment(CreateSurvey.this, 0);
                     Bundle args = new Bundle();
                     args.putString("type", "MT");
+                    args.putInt("number", lvQuestion.getCount());
                     createQuestionDialog.setArguments(args);
                 }
             }

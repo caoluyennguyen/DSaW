@@ -169,6 +169,7 @@ public class SubmitSurvey extends Fragment {
                 Toast.makeText(getContext(), "Submit survey", Toast.LENGTH_LONG).show();
                 lsAnswer = new ArrayList<>();
                 ArrayList<ArrayList<String>> lsMultipleAnswer = new ArrayList<>();
+                ArrayList<ArrayList<Integer>> lsMultipleAnswerId = new ArrayList<>();
                 View parentView = null;
                 int index = 0;
 
@@ -187,6 +188,7 @@ public class SubmitSurvey extends Fragment {
                     }
                     else {
                         ArrayList<String> lsCheckedAnswer = new ArrayList<>();
+                        ArrayList<Integer> lsCheckedAnswerId = new ArrayList<>();
                         LinearLayout lsAnswer =  parentView.findViewById(R.id.list_of_answer);
                         for (int j = 0; j < lsQuestion.get(i).getAnswers().size(); j++) {
                             LinearLayout answerLayout = (LinearLayout) lsAnswer.getChildAt(j);
@@ -194,16 +196,19 @@ public class SubmitSurvey extends Fragment {
                             if (answer.isChecked()) {
                                 Log.e("Submit survey", "Answer is checked: " + answer.getText().toString());
                                 lsCheckedAnswer.add(answer.getText().toString());
+                                //lsCheckedAnswer.add(String.valueOf(j));
+                                lsCheckedAnswerId.add(j);
                             }
                         }
                         lsMultipleAnswer.add(lsCheckedAnswer);
+                        lsMultipleAnswerId.add(lsCheckedAnswerId);
                     }
                     Log.e("Submit survey", "List question: " + lvQuestion.getAdapter());
                 }
 
                 //save answer to firebase
                 if (lsQuestion.get(0).getType().equalsIgnoreCase("MT")) {
-                    DataManager.Instance().AddNewMultipleAnswer(DataCenter.surveyID, DataCenter.currentUser.getIdentity(), lsQuestion, lsMultipleAnswer);
+                    DataManager.Instance().AddNewMultipleAnswer(DataCenter.surveyID, DataCenter.currentUser.getIdentity(), lsQuestion, lsMultipleAnswer, lsMultipleAnswerId);
                 }
                 else {
                     // save list image
