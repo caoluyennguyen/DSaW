@@ -63,6 +63,7 @@ import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
 import com.nguyenhongphuc98.dsaw.ui.login.LoginActivity;
+import com.nguyenhongphuc98.dsaw.ui.login.ResetPasswordActivity;
 import com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultViewModel;
 
 import org.json.JSONException;
@@ -132,6 +133,7 @@ public class DataManager {
     DatabaseReference mDatabaseRef;
     StorageReference mStorageRef;
     LoginActivity loginProcess;
+    ResetPasswordActivity resetPasswordActivity;
 
     Context mContext;
 
@@ -176,6 +178,10 @@ public class DataManager {
 
     public void setLoginProcess(LoginActivity loginProcess) {
         this.loginProcess = loginProcess;
+    }
+
+    public void setResetPasswordActivity(ResetPasswordActivity resetPasswordActivity) {
+        this.resetPasswordActivity = resetPasswordActivity;
     }
 
     public void ProcessLogin(final String email, String password) {
@@ -248,6 +254,17 @@ public class DataManager {
         else return false;
     }
 
+
+    public Task sendMailResetPassword(String emailAddress) {
+        return mAuth.sendPasswordResetEmail(emailAddress)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Reset email sent.");
+                    }
+                    else Log.w(TAG, "Send mail rest failed.");
+                });
+    }
+
     public void CreateNewAccount(Account account)
     {
         {
@@ -287,7 +304,7 @@ public class DataManager {
                     }
                 }
 
-                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator());
+                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator(), fWarning.getReceiver());
                 mDatabaseRef.child("Warnings").child(String.valueOf(count)).setValue(warning);
                 Log.e("Data manager", "Add new warning successful");
             }

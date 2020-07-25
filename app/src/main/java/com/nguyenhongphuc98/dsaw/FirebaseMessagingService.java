@@ -19,8 +19,20 @@ import androidx.work.WorkManager;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
+
+    private static FirebaseMessagingService _instance;
+    public static FirebaseMessagingService Instance() {
+        if(_instance == null) {
+            _instance = new FirebaseMessagingService();
+        }
+
+        return _instance;
+    }
+
     public FirebaseMessagingService() {
     }
+
+
 
     private static final String TAG = "MyFirebaseMsgService";
 

@@ -57,6 +57,12 @@ public class LoginActivity extends AppCompatActivity {
                 CreateNewAccount();
             }
         });
+        get_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ResetPassword();
+            }
+        });
     }
 
     public void LoginProcess()
@@ -102,6 +108,12 @@ public class LoginActivity extends AppCompatActivity {
     public void CreateNewAccount()
     {
         Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
+    }
+
+    public void ResetPassword()
+    {
+        Intent intent = new Intent(this, ResetPasswordActivity.class);
         startActivity(intent);
     }
 }

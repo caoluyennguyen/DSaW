@@ -31,11 +31,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.nguyenhongphuc98.dsaw.FirebaseMessagingService;
 import com.nguyenhongphuc98.dsaw.MainActivity;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Warning;
+
+import java.util.Arrays;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -90,9 +93,11 @@ public class AdminWarning extends Fragment {
                 Toast.makeText(getContext(),"Button is clicked",Toast.LENGTH_SHORT).show();
 
                 mViewModel.setContent(mTextContent.getText().toString());
-                Warning warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername());
+                Warning warning;
+                if (mSwitch.isChecked()) warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername(), Arrays.asList(mTextCmnd.getText().toString().split(",")));
+                else warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername(), null);
 
-                //mViewModel.CreateWarning(warning);
+                mViewModel.CreateWarning(warning);
 
                 /*Notification notification = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
                         .setSmallIcon(R.drawable.warning_icon)
@@ -129,6 +134,8 @@ public class AdminWarning extends Fragment {
                                 String msg = getString(R.string.msg_token_fmt, token);
                                 Log.d(TAG, msg);
                                 Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, token);
+
                             }
                         });
                 // [END retrieve_current_token]
@@ -175,5 +182,4 @@ public class AdminWarning extends Fragment {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
 }
