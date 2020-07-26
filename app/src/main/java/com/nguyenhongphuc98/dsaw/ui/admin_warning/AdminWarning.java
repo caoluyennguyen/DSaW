@@ -105,14 +105,6 @@ public class AdminWarning extends Fragment {
                         .setContentText(mTextContent.getText())
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .build();*/
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
-                        .setSmallIcon(R.drawable.warning_icon)
-                        .setContentTitle("Cảnh báo nguy hiểm")
-                        .setContentText(mTextContent.getText())
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
-                // notificationId is a unique int for each notification that you must define
-                notificationManager.notify(1, builder.build());
 
                 Log.d("show", "Warning created");
 
@@ -181,5 +173,17 @@ public class AdminWarning extends Fragment {
             NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public void PushNotify()
+    {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
+                .setSmallIcon(R.drawable.warning_icon)
+                .setContentTitle("Cảnh báo nguy hiểm")
+                .setContentText(mTextContent.getText())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
     }
 }

@@ -9,6 +9,8 @@ public class Warning {
     public String title;
     public List<String> receiver;
 
+    public Warning() {}
+
     public Warning(String title, String content, String creator, List<String> receiver)
     {
         this.title = title;

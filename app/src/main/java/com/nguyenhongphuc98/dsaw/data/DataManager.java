@@ -34,6 +34,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +50,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nguyenhongphuc98.dsaw.MainActivity;
+import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.Answer;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
@@ -306,6 +309,7 @@ public class DataManager {
 
                 Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator(), fWarning.getReceiver());
                 mDatabaseRef.child("Warnings").child(String.valueOf(count)).setValue(warning);
+                //PushNotify(fWarning.getContent());
                 Log.e("Data manager", "Add new warning successful");
             }
 
@@ -314,6 +318,43 @@ public class DataManager {
                 Log.d(TAG, databaseError.getMessage());
             }
         });
+    }
+
+    public void FetchWarning(final MutableLiveData<Warning> warningMutableLiveData)
+    {
+        Query query = mDatabaseRef.child("Warnings");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    List<Warning> lsWarning = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                    {
+                        Warning w = snapshot.getValue(Warning.class);
+                        warningMutableLiveData.setValue(w);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage());
+            }
+        });
+    }
+
+
+    public void PushNotify(String content)
+    {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.warning_icon)
+                .setContentTitle("Cảnh báo nguy hiểm")
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mContext);
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(1, builder.build());
     }
 
     public void GetUserData(final TextView name, final TextView identity, final TextView birthday, final TextView phonenumber)
