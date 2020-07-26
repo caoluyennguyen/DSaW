@@ -783,15 +783,15 @@ public class DataManager {
 //        mDatabaseRef.child("PublicData").push().setValue(d5);
 //
 //        PublicData d6 = new PublicData("tg","nil",
-//                "Thế Giới","220",
-//                "45","44",
-//                "2020-05-14T23:00:00.000Z");
+//                "Thế Giới","10920186",
+//                "481432","2558938",
+//                "2020-07-22T16:40:00.000Z");
 //        mDatabaseRef.child("PublicData").push().setValue(d6);
 //
-//        PublicData d7 = new PublicData("tg","nil",
-//                "Thế Giới","300",
-//                "20","250",
-//                "2020-05-13T23:00:00.000Z");
+//        PublicData d7 = new PublicData("vn","nil",
+//                "Việt Nam","396",
+//                "0","365",
+//                "2020-07-22T16:40:00.000Z");
 //        mDatabaseRef.child("PublicData").push().setValue(d7);
 
 
