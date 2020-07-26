@@ -1539,6 +1539,7 @@ public class DataManager {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 final List<ReportModel> listAnswers = new ArrayList<>();
 
                 if (dataSnapshot.exists()) {
@@ -1549,6 +1550,7 @@ public class DataManager {
                     // duyet tat ca account da tra loi survey nay
                     for (String accountID : userReponse.keySet()) {
 
+                        // List<qid,textAnswer>
                         ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
                         for (Map map : ls) {
                             List<String> oneAnswer = new ArrayList<>();

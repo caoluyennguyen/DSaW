@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     TextView sign_up;
 
+    ProgressBar progressBar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         get_password = findViewById(R.id.get_password);
         login = findViewById(R.id.login);
         sign_up = findViewById(R.id.sign_up);
+        progressBar = findViewById(R.id.login_progessbar);
     }
 
     void InitEvent()
@@ -68,8 +72,13 @@ public class LoginActivity extends AppCompatActivity {
     public void LoginProcess()
     {
         if (account.getText().toString().length() != 0 && password.getText().toString().length() != 0) {
+
+            progressBar.setIndeterminate(true);
+            progressBar.setVisibility(View.VISIBLE);
+
             DataManager.Instance().setLoginProcess(this);
             DataManager.Instance().ProcessLogin(account.getText().toString(), password.getText().toString());
+
         }
         else if (account.getText().toString().equalsIgnoreCase("1")) {
             DataManager.Instance().setLoginProcess(this);
@@ -97,12 +106,13 @@ public class LoginActivity extends AppCompatActivity {
         //else DataManager.Instance().GetUserDataByEmail(account.getText().toString());
         //Log.e("LoginProcess","Account: " + DataCenter.currentUser.getUsername());
         Toast.makeText(getApplicationContext(), "Xin chào", Toast.LENGTH_LONG).show();
+        hiddenProgessbar();
     }
 
     public void LoginFail()
     {
         Toast.makeText(getApplicationContext(), "Xin kiểm tra lại thông tin đăng nhập!", Toast.LENGTH_LONG).show();
-
+        hiddenProgessbar();
     }
 
     public void CreateNewAccount()
@@ -115,5 +125,11 @@ public class LoginActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, ResetPasswordActivity.class);
         startActivity(intent);
+    }
+
+    private void hiddenProgessbar() {
+
+        progressBar.setIndeterminate(false);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }
