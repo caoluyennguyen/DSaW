@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(Warning warning) {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
                         .setSmallIcon(R.drawable.warning_icon)
-                        .setContentTitle("Cảnh báo nguy hiểm")
-                        .setContentText("Hello")
+                        .setContentTitle(warning.getTitle())
+                        .setContentText(warning.getContent())
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
                 // notificationId is a unique int for each notification that you must define

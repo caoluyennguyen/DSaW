@@ -322,18 +322,23 @@ public class DataManager {
 
     public void FetchWarning(final MutableLiveData<Warning> warningMutableLiveData)
     {
-        Query query = mDatabaseRef.child("Warnings");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query query = mDatabaseRef.child("Warnings").orderByKey().limitToLast(1);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    List<Warning> lsWarning = new ArrayList<>();
+                    //List<Warning> lsWarning = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren())
                     {
                         Warning w = snapshot.getValue(Warning.class);
                         warningMutableLiveData.setValue(w);
+                        Log.d(TAG, w.getTitle());
+                        Log.d(TAG, w.getContent());
                         return;
                     }
+                    /*Warning w = dataSnapshot.getValue(Warning.class);
+                    warningMutableLiveData.setValue(w);*/
+
                 }
             }
 
