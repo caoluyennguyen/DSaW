@@ -136,7 +136,12 @@ public class CreateQuestionDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (edtAnswer.getText().toString().isEmpty()) Toast.makeText(getContext(), "Không được để trống câu trả lời!", Toast.LENGTH_LONG).show();
-                else mViewModel.AddNewAnswer(edtAnswer.getText().toString());
+                else  {
+
+                    mViewModel.AddNewAnswer(edtAnswer.getText().toString());
+                    edtAnswer.setText("");
+                }
+
             }
         });
     }
