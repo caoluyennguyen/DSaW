@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
@@ -21,6 +23,7 @@ import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
+import com.nguyenhongphuc98.dsaw.data.model.Warning;
 import com.nguyenhongphuc98.dsaw.data.network.DataService;
 import com.nguyenhongphuc98.dsaw.utils.CurrentLocation;
 import com.nguyenhongphuc98.dsaw.utils.Geo;
@@ -84,6 +87,22 @@ public class MainActivity extends AppCompatActivity {
 
                     locationTrack.showSettingsAlert();
                 }
+            }
+        });
+
+        MutableLiveData<Warning> mWarning = new MutableLiveData<>();
+        DataManager.Instance().FetchWarning(mWarning);
+        mWarning.observe(this, new Observer<Warning>() {
+            @Override
+            public void onChanged(Warning warning) {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
+                        .setSmallIcon(R.drawable.warning_icon)
+                        .setContentTitle(warning.getTitle())
+                        .setContentText(warning.getContent())
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                // notificationId is a unique int for each notification that you must define
+                notificationManager.notify(1, builder.build());
             }
         });
 

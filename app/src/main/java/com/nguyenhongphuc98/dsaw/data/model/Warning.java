@@ -1,16 +1,22 @@
 package com.nguyenhongphuc98.dsaw.data.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Warning {
     public String content;
     public String creator;
     public String title;
-    public String link;
+    public List<String> receiver;
 
-    public Warning(String title, String content, String creator)
+    public Warning() {}
+
+    public Warning(String title, String content, String creator, List<String> receiver)
     {
         this.title = title;
         this.content = content;
         this.creator = creator;
+        this.receiver = receiver;
     }
 
     public void setTitle(String title) {
@@ -21,9 +27,6 @@ public class Warning {
         this.content = content;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
 
     public void setCreator(String creator) {
         this.creator = creator;
@@ -41,7 +44,11 @@ public class Warning {
         return creator;
     }
 
-    public String getLink() {
-        return link;
+    public List<String> getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(List<String> receiver) {
+        this.receiver = receiver;
     }
 }
