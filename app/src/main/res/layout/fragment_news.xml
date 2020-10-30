@@ -10,7 +10,7 @@
         app:layout_constraintTop_toTopOf="@id/news_parent"
         app:layout_constraintLeft_toLeftOf="@id/news_parent"
         android:layout_width="match_parent"
-        android:layout_height="580dp"
+        android:layout_height="match_parent"
         android:divider="@android:color/transparent"
         android:dividerHeight="20dp"
         android:layout_marginRight="20dp"
