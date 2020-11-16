@@ -21,122 +21,120 @@
         app:layout_constraintBottom_toTopOf="@id/content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="40dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintBottom_toTopOf="@+id/layoutUpdate">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="Họ và tên"
-            android:textColor="#7E7E7E"
-            android:textSize="15dp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/txtName"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:hint="Nhập họ tên ở đây"
-            android:textSize="15dp" />
+            android:layout_height="350dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="CMND/ Hộ chiếu"
-            android:textColor="#7E7E7E"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Họ và tên"
+                android:textColor="#7E7E7E"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/txtCMND"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:hint="Nhập số CMND hoặc hộ chiếu"
-            android:textSize="15dp" />
+            <EditText
+                android:id="@+id/txtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:hint="Nhập họ tên ở đây"
+                android:textSize="15dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="Ngày sinh"
-            android:textColor="#7E7E7E"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="CMND/ Hộ chiếu"
+                android:textColor="#7E7E7E"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/txtDayOfBirth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:drawableRight="@android:drawable/ic_menu_my_calendar"
-            android:hint="DD/MM/YYYY"
-            android:textSize="15dp" />
+            <EditText
+                android:id="@+id/txtCMND"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:hint="Nhập số CMND hoặc hộ chiếu"
+                android:textSize="15dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="Liên hệ"
-            android:textColor="#7E7E7E"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Ngày sinh"
+                android:textColor="#7E7E7E"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/txtContact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:hint="Nhập số điện thoại"
-            android:textSize="15dp" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/txtDayOfBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:drawableRight="@android:drawable/ic_menu_my_calendar"
+                android:hint="DD/MM/YYYY"
+                android:textSize="15dp" />
 
-    <LinearLayout
-        android:id="@+id/layoutUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Liên hệ"
+                android:textColor="#7E7E7E"
+                android:textStyle="bold" />
 
-        <CheckedTextView
-            android:id="@+id/ctxAgreement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:checked="false"
-            android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
-            android:gravity="center"
-            android:text="Đồng ý các điều khoản chính sách của chúng tôi"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000000" />
+            <EditText
+                android:id="@+id/txtContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:hint="Nhập số điện thoại"
+                android:textSize="15dp" />
 
-        <Button
-            android:id="@+id/user_update_btn"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/button_green"
-            android:text="Update"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <CheckedTextView
+                    android:id="@+id/ctxAgreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:checked="false"
+                    android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
+                    android:gravity="center"
+                    android:text="Tôi cam kết các thông tin trên là hoàn toàn chính xác"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000000" />
+
+                <Button
+                    android:id="@+id/user_update_btn"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/button_green"
+                    android:text="Update"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
