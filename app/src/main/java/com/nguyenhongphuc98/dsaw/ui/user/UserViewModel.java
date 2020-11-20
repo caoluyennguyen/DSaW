@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.City;
+
+import java.util.List;
 
 public class UserViewModel extends ViewModel {
 
@@ -17,6 +20,7 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<String> mCMND = new MutableLiveData<>();
     private MutableLiveData<String> mDayOfBirth = new MutableLiveData<>();
     private MutableLiveData<String> mContact = new MutableLiveData<>();
+    private MutableLiveData<List<City>> lsCity = new MutableLiveData<>();
 
     public UserViewModel() {
         mName.setValue(DataCenter.currentUser.getUsername());
@@ -39,6 +43,10 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<String> getContact() {
         return mContact;
+    }
+
+    public MutableLiveData<List<City>> getLsCity() {
+        return lsCity;
     }
 
     public void setmName(String mName) {
@@ -65,5 +73,10 @@ public class UserViewModel extends ViewModel {
     public void UpdateUser(String name, String identity, String birthday, String phoneNumber)
     {
         DataManager.Instance().UpdateUser(name, identity, birthday, phoneNumber);
+    }
+
+    public void GetAllCity()
+    {
+        DataManager.Instance().GetAllCity(lsCity);
     }
 }

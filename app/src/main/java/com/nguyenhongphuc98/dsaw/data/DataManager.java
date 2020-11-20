@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.anychart.enums.CircularGaugePointerType;
 import com.anychart.scales.DateTime;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,6 +57,7 @@ import com.nguyenhongphuc98.dsaw.data.model.Answer;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
+import com.nguyenhongphuc98.dsaw.data.model.City;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
@@ -676,17 +678,7 @@ public class DataManager {
             String key=mDatabaseRef.child("Post").push().getKey();
             post.setId(key);
             Task task = mDatabaseRef.child("Post").child(key).setValue(post);
-            task.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("DataManager",e.toString());
-                }
-            }).addOnSuccessListener(new OnSuccessListener() {
-                @Override
-                public void onSuccess(Object o) {
-                    Log.d("DataManager","Create new post success");
-                }
-            });
+            task.addOnFailureListener(e -> Log.d("DataManager",e.toString())).addOnSuccessListener(o -> Log.d("DataManager","Create new post success"));
         }
         catch (Exception e){
             Log.d("DataManager",e.toString());
@@ -1605,4 +1597,37 @@ public class DataManager {
             }
         });
     }
+
+    public void GetAllCity(final MutableLiveData<List<City>> mListCity)
+    {
+        try {
+            Query query = mDatabase.getReference("City");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        List<City> lsCity = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            City city = snapshot.getValue(City.class);
+                            lsCity.add(city);
+                            Log.e("DataManager","City was found is " + city.getName());
+                            //Log.e("DataManager","Type of question was found is " + question.getType());
+                            //Log.e("DataManager","Answer of question was found is " + question.getAnswers());
+                        }
+                        mListCity.setValue(lsCity);
+                    }
+                    else Log.e("DataManager","Question not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get account: " + e.getMessage());
+        }
+    }
+
 }

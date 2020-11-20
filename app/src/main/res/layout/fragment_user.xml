@@ -105,6 +105,21 @@
                 android:hint="Nhập số điện thoại"
                 android:textSize="15dp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Địa chỉ thường trú"
+                android:textColor="#7E7E7E"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/type_of_survey"
+                />
+
             <LinearLayout
                 android:id="@+id/layoutUpdate"
                 android:layout_width="match_parent"
