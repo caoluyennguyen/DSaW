@@ -112,12 +112,39 @@
                 android:text="Địa chỉ thường trú"
                 android:textColor="#7E7E7E"
                 android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Thành phố"
+                android:textColor="#7E7E7E"/>
 
             <Spinner
                 android:id="@+id/spinCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/type_of_survey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Quận"
+                android:textColor="#7E7E7E"/>
+            <Spinner
+                android:id="@+id/spinDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Phường"
+                android:textColor="#7E7E7E"/>
+            <Spinner
+                android:id="@+id/spinWard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 />
 
             <LinearLayout

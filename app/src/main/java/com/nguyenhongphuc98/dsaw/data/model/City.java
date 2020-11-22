@@ -1,15 +1,16 @@
 package com.nguyenhongphuc98.dsaw.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class City {
     private String code;
     private String name;
-    private List<District> lsDistrict;
 
-    public City() {}
+    public City() { }
 
-    public City(String name) {
+    public City(String code, String name, List<District> district) {
+        this.code = code;
         this.name= name;
     }
 
@@ -21,10 +22,6 @@ public class City {
         this.code = code;
     }
 
-    public void setLsDistrict(List<District> lsDistrict) {
-        this.lsDistrict = lsDistrict;
-    }
-
     public String getName() {
         return name;
     }
@@ -33,7 +30,8 @@ public class City {
         return code;
     }
 
-    public List<District> getLsDistrict() {
-        return lsDistrict;
+    @Override
+    public String toString() {
+        return this.name; // What to display in the Spinner list.
     }
 }

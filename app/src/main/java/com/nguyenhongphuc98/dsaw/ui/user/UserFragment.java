@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.City;
+import com.nguyenhongphuc98.dsaw.data.model.District;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,7 +40,6 @@ public class UserFragment extends Fragment {
 
     private UserViewModel mViewModel;
 
-
     private TextView mTextName;
     private TextView mTextCMND;
     private TextView mTextDayofBirth;
@@ -46,10 +47,20 @@ public class UserFragment extends Fragment {
     private Button mBtnUpdate;
     private CheckedTextView checkedTextView;
     private Spinner mSpinCity;
-    String[] city = { "Da Nang", "Ha Noi", "Ho Chi Minh", "Da Lat", "Quang Ngai"};
+    private Spinner mSpinDistrict;
+    private Spinner mSpinWard;
+
+    //String[] city = { "Da Nang", "Ha Noi", "Ho Chi Minh", "Da Lat", "Quang Ngai"};
     private ArrayList<String> lsCityName = new ArrayList<>();
-    private ArrayAdapter<String> adCityName;
     private ArrayList<City> lsCity = new ArrayList<>();
+    private ArrayAdapter<String> adCityName;
+    private int cityPos = 0;
+
+    private ArrayAdapter<String> adDistrictName;
+    private ArrayList<District> lsDistrict = new ArrayList<>();
+
+    private ArrayAdapter<String> adWardName;
+    private List<String> lsWard = new ArrayList<>();
 
 
     final Calendar myCalendar = Calendar.getInstance();
@@ -96,12 +107,12 @@ public class UserFragment extends Fragment {
         // TODO: Use the ViewModel
         mViewModel.GetUser(mTextName, mTextCMND, mTextDayofBirth, mTextContact);
 
+        // add items to city spinner
         adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCityName);
         adCityName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinCity.setAdapter(adCityName);
 
         mViewModel.GetAllCity();
-
         mViewModel.getLsCity().observe(this, new Observer<List<City>>() {
             @Override
             public void onChanged(List<City> cities) {
@@ -110,7 +121,7 @@ public class UserFragment extends Fragment {
                 for (City a : cities) {
                     lsCity.add(a);
                     lsCityName.add(a.getName());
-                    Log.e("User fragment", a.getName());
+                    Log.e("User fragment get city: ", a.getName());
                 }
 
                 if (lsCityName.size() == 0)
@@ -120,6 +131,41 @@ public class UserFragment extends Fragment {
             }
         });
 
+        mViewModel.getLsDistrict().observe(this, new Observer<List<District>>() {
+            @Override
+            public void onChanged(List<District> districts) {
+                lsDistrict.clear();
+                for (District a : districts)
+                {
+                    lsDistrict.add(a);
+                    Log.e("User fragment get districts: ", a.getName());
+                }
+
+                if (lsDistrict.size() == 0)
+                    lsDistrict.add(new District("Thanh Khe", "01"));
+
+
+                adDistrictName.notifyDataSetChanged();
+
+            }
+        });
+
+        mViewModel.getLsWard().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> wards) {
+                lsWard.clear();
+                for (String a : wards)
+                {
+                    lsWard.add(a);
+                    Log.e("User fragment get wards: ", a);
+                }
+
+                if (lsWard.size() == 0)
+                    lsWard.add("An Khe");
+
+                adWardName.notifyDataSetChanged();
+            }
+        });
     }
 
     public void InitComponent(View view) {
@@ -131,47 +177,75 @@ public class UserFragment extends Fragment {
         checkedTextView = view.findViewById(R.id.ctxAgreement);
 
         mSpinCity = view.findViewById(R.id.spinCity);
+        mSpinDistrict = view.findViewById(R.id.spinDistrict);
+        mSpinWard = view.findViewById(R.id.spinWard);
     }
 
     public void InitEvent()
     {
-        mBtnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkedTextView.isChecked()) {
-                    mViewModel.setmName(mTextName.getText().toString());
-                    mViewModel.setmCMND(mTextCMND.getText().toString());
-                    mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
-                    mViewModel.setmContact(mTextContact.getText().toString());
-                    mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
-                    Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
-                    UnfocusElement();
-                }
-                else Toast.makeText(getContext(), "Vui lòng xác nhận cam kết", Toast.LENGTH_LONG).show();
-
+        mBtnUpdate.setOnClickListener(v -> {
+            if (checkedTextView.isChecked()) {
+                mViewModel.setmName(mTextName.getText().toString());
+                mViewModel.setmCMND(mTextCMND.getText().toString());
+                mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
+                mViewModel.setmContact(mTextContact.getText().toString());
+                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
+                Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
+                UnfocusElement();
             }
+            else Toast.makeText(getContext(), "Vui lòng xác nhận cam kết", Toast.LENGTH_LONG).show();
+
         });
 
-        mTextDayofBirth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(getContext(), date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
+        mTextDayofBirth.setOnClickListener(v -> new DatePickerDialog(getContext(), date, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
-        checkedTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkedTextView.isChecked()) checkedTextView.setChecked(false);
-                else checkedTextView.setChecked(true);
-            }
+        checkedTextView.setOnClickListener(v -> {
+            if (checkedTextView.isChecked()) checkedTextView.setChecked(false);
+            else checkedTextView.setChecked(true);
         });
 
         mSpinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), lsCityName.get(position) , Toast.LENGTH_LONG).show();
+
+                cityPos = position;
+                lsWard.clear();
+                mViewModel.GetDistrictOfCity(lsCity.get(position).getCode());
+
+                adDistrictName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsDistrict);
+                adDistrictName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSpinDistrict.setAdapter(adDistrictName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        mSpinDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), lsDistrict.get(position).getName() , Toast.LENGTH_LONG).show();
+
+                mViewModel.GetWardOfDistrict(lsCity.get(cityPos).getCode(), lsDistrict.get(position).getCode());
+
+                adWardName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsWard);
+                adWardName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSpinWard.setAdapter(adWardName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mSpinWard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), lsWard.get(position), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -208,8 +282,7 @@ public class UserFragment extends Fragment {
         });
     }
 
-    public void UnfocusElement()
-    {
+    public void UnfocusElement() {
         mTextName.setFocusableInTouchMode(false);
         mTextName.setFocusable(false);
         mTextName.setFocusableInTouchMode(true);
@@ -227,4 +300,5 @@ public class UserFragment extends Fragment {
         mTextContact.setFocusableInTouchMode(true);
         mTextContact.setFocusable(true);
     }
+
 }

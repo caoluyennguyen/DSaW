@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                     //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
                     //Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
                 } else {
-
+                    // loi crash khi khong co GPS
                     locationTrack.showSettingsAlert();
                 }
 

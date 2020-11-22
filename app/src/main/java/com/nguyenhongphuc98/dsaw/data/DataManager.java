@@ -58,6 +58,7 @@ import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
 import com.nguyenhongphuc98.dsaw.data.model.Area;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
 import com.nguyenhongphuc98.dsaw.data.model.City;
+import com.nguyenhongphuc98.dsaw.data.model.District;
 import com.nguyenhongphuc98.dsaw.data.model.News;
 import com.nguyenhongphuc98.dsaw.data.model.PublicData;
 import com.nguyenhongphuc98.dsaw.data.model.Question;
@@ -523,8 +524,6 @@ public class DataManager {
                             Question question = snapshot.getValue(Question.class);
                             lsQuestion.add(question);
                             Log.e("DataManager","Title of question was found is " + question.getTitle());
-                            //Log.e("DataManager","Type of question was found is " + question.getType());
-                            //Log.e("DataManager","Answer of question was found is " + question.getAnswers());
                         }
                         mListQuestion.setValue(lsQuestion);
                     }
@@ -1598,7 +1597,7 @@ public class DataManager {
         });
     }
 
-    public void GetAllCity(final MutableLiveData<List<City>> mListCity)
+    public void GetAllmCity(final MutableLiveData<List<City>> mListCity)
     {
         try {
             Query query = mDatabase.getReference("City");
@@ -1611,10 +1610,129 @@ public class DataManager {
                             City city = snapshot.getValue(City.class);
                             lsCity.add(city);
                             Log.e("DataManager","City was found is " + city.getName());
-                            //Log.e("DataManager","Type of question was found is " + question.getType());
-                            //Log.e("DataManager","Answer of question was found is " + question.getAnswers());
                         }
                         mListCity.setValue(lsCity);
+                    }
+                    else Log.e("DataManager","City not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get city: " + e.getMessage());
+        }
+    }
+
+
+    public void GetmDistrictOfCity(final MutableLiveData<List<District>> mLsDistrict, String code)
+    {
+        try {
+            //Query query = mDatabase.getReference("City").child(id).child("district");
+            Query query = mDatabase.getReference("City").child(code).child("district");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        List<District> lsDistrict = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            District district = snapshot.getValue(District.class);
+                            lsDistrict.add(district);
+                            Log.e("DataManager","District was found is " + district.getName());
+                        }
+                        mLsDistrict.setValue(lsDistrict);
+                    }
+                    else Log.e("DataManager","District not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get district: " + e.getMessage());
+        }
+    }
+
+
+    public void GetmWardOfDistrict(final MutableLiveData<List<String>> mLsWard, String cityCode, String districtCode)
+    {
+        try {
+            //Query query = mDatabase.getReference("City").child(id).child("district");
+            Query query = mDatabase.getReference("City").child(cityCode).child("district").child(districtCode).child("wards");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        List<String> lsWard = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String ward = snapshot.getValue(String.class);
+                            lsWard.add(ward);
+                            Log.e("DataManager","Ward was found is " + ward);
+                        }
+                        mLsWard.setValue(lsWard);
+                    }
+                    else Log.e("DataManager","Ward not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get district: " + e.getMessage());
+        }
+    }
+
+    public void GetAllCity(final List<City> listCity)
+    {
+        try {
+            Query query = mDatabase.getReference("City");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            City city = snapshot.getValue(City.class);
+                            listCity.add(city);
+                            Log.e("DataManager","City was found is " + city.getName());
+                        }
+                    }
+                    else Log.e("DataManager","City not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get city: " + e.getMessage());
+        }
+    }
+
+    public void GetDistrictOfCity(final List<District> lsDistrict, String code)
+    {
+        try {
+            //Query query = mDatabase.getReference("City").child(id).child("district");
+            Query query = mDatabase.getReference("City").child(code).child("district");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            District district = snapshot.getValue(District.class);
+                            lsDistrict.add(district);
+                            Log.e("DataManager","District was found is " + district.getName());
+                        }
                     }
                     else Log.e("DataManager","Question not found");
                 }
@@ -1626,8 +1744,36 @@ public class DataManager {
             });
         }
         catch (Exception e){
-            Log.e("DataManager","Error get account: " + e.getMessage());
+            Log.e("DataManager","Error get district: " + e.getMessage());
         }
     }
 
+    public void GetWardOfDistrict(final List<String> lsWard, String cityCode, String districtCode)
+    {
+        try {
+            //Query query = mDatabase.getReference("City").child(id).child("district");
+            Query query = mDatabase.getReference("City").child(cityCode).child("district").child(districtCode).child("wards");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String ward = snapshot.getValue(String.class);
+                            lsWard.add(ward);
+                            Log.e("DataManager","Ward was found is " + ward);
+                        }
+                    }
+                    else Log.e("DataManager","Ward not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get district: " + e.getMessage());
+        }
+    }
 }

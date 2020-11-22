@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.City;
+import com.nguyenhongphuc98.dsaw.data.model.District;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<String> mDayOfBirth = new MutableLiveData<>();
     private MutableLiveData<String> mContact = new MutableLiveData<>();
     private MutableLiveData<List<City>> lsCity = new MutableLiveData<>();
+    private MutableLiveData<List<District>> lsDistrict = new MutableLiveData<>();
+    private MutableLiveData<List<String>> lsWard = new MutableLiveData<>();
 
     public UserViewModel() {
         mName.setValue(DataCenter.currentUser.getUsername());
@@ -47,6 +50,14 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<List<City>> getLsCity() {
         return lsCity;
+    }
+
+    public MutableLiveData<List<District>> getLsDistrict() {
+        return lsDistrict;
+    }
+
+    public MutableLiveData<List<String>> getLsWard() {
+        return lsWard;
     }
 
     public void setmName(String mName) {
@@ -77,6 +88,17 @@ public class UserViewModel extends ViewModel {
 
     public void GetAllCity()
     {
-        DataManager.Instance().GetAllCity(lsCity);
+        DataManager.Instance().GetAllmCity(lsCity);
+    }
+
+    public void GetDistrictOfCity(String codeCity)
+    {
+        DataManager.Instance().GetmDistrictOfCity(lsDistrict, codeCity);
+    }
+
+
+    public void GetWardOfDistrict(String cityCode, String codeDistrict)
+    {
+        DataManager.Instance().GetmWardOfDistrict(lsWard, cityCode, codeDistrict);
     }
 }
