@@ -1,15 +1,12 @@
 package com.nguyenhongphuc98.dsaw.data.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class City {
     private String code;
     private String name;
 
     public City() { }
 
-    public City(String code, String name, List<District> district) {
+    public City(String code, String name) {
         this.code = code;
         this.name= name;
     }

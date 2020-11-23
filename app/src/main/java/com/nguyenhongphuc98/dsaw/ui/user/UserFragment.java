@@ -10,12 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
-import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.City;
 import com.nguyenhongphuc98.dsaw.data.model.District;
 
@@ -51,16 +48,15 @@ public class UserFragment extends Fragment {
     private Spinner mSpinWard;
 
     //String[] city = { "Da Nang", "Ha Noi", "Ho Chi Minh", "Da Lat", "Quang Ngai"};
-    private ArrayList<String> lsCityName = new ArrayList<>();
     private ArrayList<City> lsCity = new ArrayList<>();
     private ArrayAdapter<String> adCityName;
     private int cityPos = 0;
 
-    private ArrayAdapter<String> adDistrictName;
     private ArrayList<District> lsDistrict = new ArrayList<>();
+    private ArrayAdapter<String> adDistrictName;
 
-    private ArrayAdapter<String> adWardName;
     private List<String> lsWard = new ArrayList<>();
+    private ArrayAdapter<String> adWardName;
 
 
     final Calendar myCalendar = Calendar.getInstance();
@@ -96,7 +92,7 @@ public class UserFragment extends Fragment {
         InitComponent(root);
         InitEvent();
         RegisterDataLiveListener();
-        UnfocusElement();
+        UnfocusedElement();
 
         return root;
     }
@@ -108,7 +104,7 @@ public class UserFragment extends Fragment {
         mViewModel.GetUser(mTextName, mTextCMND, mTextDayofBirth, mTextContact);
 
         // add items to city spinner
-        adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCityName);
+        adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
         adCityName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinCity.setAdapter(adCityName);
 
@@ -117,20 +113,19 @@ public class UserFragment extends Fragment {
             @Override
             public void onChanged(List<City> cities) {
                 lsCity.clear();
-                lsCityName.clear();
                 for (City a : cities) {
                     lsCity.add(a);
-                    lsCityName.add(a.getName());
                     Log.e("User fragment get city: ", a.getName());
                 }
 
-                if (lsCityName.size() == 0)
-                    lsCityName.add("Da Nang");
+                if (lsCity.size() == 0)
+                    lsCity.add(new City("0", "My City"));
 
                 adCityName.notifyDataSetChanged();
             }
         });
 
+        adDistrictName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
         mViewModel.getLsDistrict().observe(this, new Observer<List<District>>() {
             @Override
             public void onChanged(List<District> districts) {
@@ -150,6 +145,7 @@ public class UserFragment extends Fragment {
             }
         });
 
+        adWardName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
         mViewModel.getLsWard().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> wards) {
@@ -191,7 +187,7 @@ public class UserFragment extends Fragment {
                 mViewModel.setmContact(mTextContact.getText().toString());
                 mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
                 Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
-                UnfocusElement();
+                UnfocusedElement();
             }
             else Toast.makeText(getContext(), "Vui lòng xác nhận cam kết", Toast.LENGTH_LONG).show();
 
@@ -208,15 +204,16 @@ public class UserFragment extends Fragment {
         mSpinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), lsCityName.get(position) , Toast.LENGTH_LONG).show();
-
                 cityPos = position;
+                lsDistrict.clear();
                 lsWard.clear();
                 mViewModel.GetDistrictOfCity(lsCity.get(position).getCode());
 
                 adDistrictName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsDistrict);
                 adDistrictName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinDistrict.setAdapter(adDistrictName);
+
+                Toast.makeText(getContext(), lsCity.get(position).getName() , Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -227,13 +224,14 @@ public class UserFragment extends Fragment {
         mSpinDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), lsDistrict.get(position).getName() , Toast.LENGTH_LONG).show();
 
                 mViewModel.GetWardOfDistrict(lsCity.get(cityPos).getCode(), lsDistrict.get(position).getCode());
 
                 adWardName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsWard);
                 adWardName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinWard.setAdapter(adWardName);
+
+                //Toast.makeText(getContext(), lsDistrict.get(position).getName() , Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -245,7 +243,7 @@ public class UserFragment extends Fragment {
         mSpinWard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), lsWard.get(position), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), lsWard.get(position), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -282,7 +280,7 @@ public class UserFragment extends Fragment {
         });
     }
 
-    public void UnfocusElement() {
+    public void UnfocusedElement() {
         mTextName.setFocusableInTouchMode(false);
         mTextName.setFocusable(false);
         mTextName.setFocusableInTouchMode(true);
