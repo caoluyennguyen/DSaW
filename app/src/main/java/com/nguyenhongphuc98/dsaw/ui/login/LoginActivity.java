@@ -73,24 +73,9 @@ public class LoginActivity extends AppCompatActivity {
 
     void InitEvent()
     {
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginProcess();
-            }
-        });
-        sign_up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateNewAccount();
-            }
-        });
-        get_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ResetPassword();
-            }
-        });
+        login.setOnClickListener(v -> LoginProcess());
+        sign_up.setOnClickListener(v -> CreateNewAccount());
+        get_password.setOnClickListener(v -> ResetPassword());
     }
 
     public void LoginProcess()

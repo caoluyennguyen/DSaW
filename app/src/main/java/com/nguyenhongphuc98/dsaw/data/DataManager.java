@@ -423,7 +423,7 @@ public class DataManager {
         }
     }
 
-    public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber)
+    public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber, final String code_city, final String code_district, final int code_ward)
     {
         try {
             Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
@@ -440,6 +440,9 @@ public class DataManager {
                             account.setIdentity(identity);
                             account.setBirthday(birthday);
                             account.setPhonenumber(phoneNumber);
+                            account.setCode_city(code_city);
+                            account.setCode_district(code_district);
+                            account.setCode_ward(code_ward);
                             mDatabase.getReference("Account").child(snapshot.getKey()).setValue(account);
                             Log.e("DataManager", "Update user successfully");
                         }
@@ -1676,92 +1679,6 @@ public class DataManager {
                             Log.e("DataManager","Ward was found is " + ward);
                         }
                         mLsWard.setValue(lsWard);
-                    }
-                    else Log.e("DataManager","Ward not found");
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        catch (Exception e){
-            Log.e("DataManager","Error get district: " + e.getMessage());
-        }
-    }
-
-    public void GetAllCity(final List<City> listCity)
-    {
-        try {
-            Query query = mDatabase.getReference("City");
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            City city = snapshot.getValue(City.class);
-                            listCity.add(city);
-                            Log.e("DataManager","City was found is " + city.getName());
-                        }
-                    }
-                    else Log.e("DataManager","City not found");
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        catch (Exception e){
-            Log.e("DataManager","Error get city: " + e.getMessage());
-        }
-    }
-
-    public void GetDistrictOfCity(final List<District> lsDistrict, String code)
-    {
-        try {
-            //Query query = mDatabase.getReference("City").child(id).child("district");
-            Query query = mDatabase.getReference("City").child(code).child("district");
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            District district = snapshot.getValue(District.class);
-                            lsDistrict.add(district);
-                            Log.e("DataManager","District was found is " + district.getName());
-                        }
-                    }
-                    else Log.e("DataManager","Question not found");
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        catch (Exception e){
-            Log.e("DataManager","Error get district: " + e.getMessage());
-        }
-    }
-
-    public void GetWardOfDistrict(final List<String> lsWard, String cityCode, String districtCode)
-    {
-        try {
-            //Query query = mDatabase.getReference("City").child(id).child("district");
-            Query query = mDatabase.getReference("City").child(cityCode).child("district").child(districtCode).child("wards");
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String ward = snapshot.getValue(String.class);
-                            lsWard.add(ward);
-                            Log.e("DataManager","Ward was found is " + ward);
-                        }
                     }
                     else Log.e("DataManager","Ward not found");
                 }

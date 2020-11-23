@@ -81,9 +81,9 @@ public class UserViewModel extends ViewModel {
         DataManager.Instance().GetUserData(name, identity, birthday, phonenumber);
     }
 
-    public void UpdateUser(String name, String identity, String birthday, String phoneNumber)
+    public void UpdateUser(String name, String identity, String birthday, String phoneNumber, String code_city, String code_district, int code_ward)
     {
-        DataManager.Instance().UpdateUser(name, identity, birthday, phoneNumber);
+        DataManager.Instance().UpdateUser(name, identity, birthday, phoneNumber, code_city, code_district, code_ward);
     }
 
     public void GetAllCity()

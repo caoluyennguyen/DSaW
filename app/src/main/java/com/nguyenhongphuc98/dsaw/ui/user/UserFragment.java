@@ -54,9 +54,11 @@ public class UserFragment extends Fragment {
 
     private ArrayList<District> lsDistrict = new ArrayList<>();
     private ArrayAdapter<String> adDistrictName;
+    private int districtPos = 0;
 
     private List<String> lsWard = new ArrayList<>();
     private ArrayAdapter<String> adWardName;
+    private int wardPos = 0;
 
 
     final Calendar myCalendar = Calendar.getInstance();
@@ -185,7 +187,8 @@ public class UserFragment extends Fragment {
                 mViewModel.setmCMND(mTextCMND.getText().toString());
                 mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
                 mViewModel.setmContact(mTextContact.getText().toString());
-                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString());
+                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString(),
+                        lsCity.get(cityPos).getCode(), lsDistrict.get(districtPos).getCode(), wardPos);
                 Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
                 UnfocusedElement();
             }
@@ -224,6 +227,7 @@ public class UserFragment extends Fragment {
         mSpinDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                districtPos = position;
 
                 mViewModel.GetWardOfDistrict(lsCity.get(cityPos).getCode(), lsDistrict.get(position).getCode());
 
@@ -243,6 +247,8 @@ public class UserFragment extends Fragment {
         mSpinWard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                wardPos = 0;
+
                 //Toast.makeText(getContext(), lsWard.get(position), Toast.LENGTH_LONG).show();
             }
 

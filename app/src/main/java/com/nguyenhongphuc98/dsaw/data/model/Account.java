@@ -23,6 +23,12 @@ public class Account {
 
     private String mail;
 
+    private String code_city;
+
+    private String code_district;
+
+    private int code_ward;
+
     public Account() {}
 
     public Account(String birthday, String identity, String password, String phonenumber, String role, String username, String area, String area_management, String email) {
@@ -123,5 +129,29 @@ public class Account {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public String getCode_city() {
+        return code_city;
+    }
+
+    public void setCode_city(String code_city) {
+        this.code_city = code_city;
+    }
+
+    public String getCode_district() {
+        return code_district;
+    }
+
+    public void setCode_district(String code_district) {
+        this.code_district = code_district;
+    }
+
+    public int getCode_ward() {
+        return code_ward;
+    }
+
+    public void setCode_ward(int code_ward) {
+        this.code_ward = code_ward;
     }
 }
