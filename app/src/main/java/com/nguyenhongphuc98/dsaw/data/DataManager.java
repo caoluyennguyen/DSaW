@@ -67,6 +67,7 @@ import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.Survey;
 import com.nguyenhongphuc98.dsaw.data.model.SurveyModel;
 import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
+import com.nguyenhongphuc98.dsaw.data.model.Ward;
 import com.nguyenhongphuc98.dsaw.ui.home.HomeDelegate;
 import com.nguyenhongphuc98.dsaw.ui.login.LoginActivity;
 import com.nguyenhongphuc98.dsaw.ui.login.ResetPasswordActivity;
@@ -423,7 +424,7 @@ public class DataManager {
         }
     }
 
-    public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber, final String code_city, final String code_district, final int code_ward)
+    public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber, final String code_city, final String code_district, final String code_ward)
     {
         try {
             Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
@@ -1663,7 +1664,7 @@ public class DataManager {
     }
 
 
-    public void GetmWardOfDistrict(final MutableLiveData<List<String>> mLsWard, String cityCode, String districtCode)
+    /*public void GetmWardOfDistrict(final MutableLiveData<List<String>> mLsWard, String cityCode, String districtCode)
     {
         try {
             //Query query = mDatabase.getReference("City").child(id).child("district");
@@ -1677,6 +1678,36 @@ public class DataManager {
                             String ward = snapshot.getValue(String.class);
                             lsWard.add(ward);
                             Log.e("DataManager","Ward was found is " + ward);
+                        }
+                        mLsWard.setValue(lsWard);
+                    }
+                    else Log.e("DataManager","Ward not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get district: " + e.getMessage());
+        }
+    }*/
+
+    public void GetmWardOfDistrict(final MutableLiveData<List<Ward>> mLsWard, String cityCode, String districtCode)
+    {
+        try {
+            Query query = mDatabase.getReference("City").child(cityCode).child("district").child(districtCode).child("wards");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        List<Ward> lsWard = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Ward ward = snapshot.getValue(Ward.class);
+                            lsWard.add(ward);
+                            Log.e("DataManager","Ward was found is " + ward.getName());
                         }
                         mLsWard.setValue(lsWard);
                     }

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.model.City;
 import com.nguyenhongphuc98.dsaw.data.model.District;
+import com.nguyenhongphuc98.dsaw.data.model.Ward;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class UserFragment extends Fragment {
     private ArrayAdapter<String> adDistrictName;
     private int districtPos = 0;
 
-    private List<String> lsWard = new ArrayList<>();
+    private List<Ward> lsWard = new ArrayList<>();
     private ArrayAdapter<String> adWardName;
     private int wardPos = 0;
 
@@ -148,21 +149,18 @@ public class UserFragment extends Fragment {
         });
 
         adWardName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
-        mViewModel.getLsWard().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> wards) {
-                lsWard.clear();
-                for (String a : wards)
-                {
-                    lsWard.add(a);
-                    Log.e("User fragment get wards: ", a);
-                }
-
-                if (lsWard.size() == 0)
-                    lsWard.add("An Khe");
-
-                adWardName.notifyDataSetChanged();
+        mViewModel.getLsWard().observe(this, wards -> {
+            lsWard.clear();
+            for (Ward a : wards)
+            {
+                lsWard.add(a);
+                Log.e("User fragment get wards: ", a.getName());
             }
+
+            if (lsWard.size() == 0)
+                lsWard.add(new Ward("An Khe", "0"));
+
+            adWardName.notifyDataSetChanged();
         });
     }
 
@@ -188,7 +186,7 @@ public class UserFragment extends Fragment {
                 mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
                 mViewModel.setmContact(mTextContact.getText().toString());
                 mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString(),
-                        lsCity.get(cityPos).getCode(), lsDistrict.get(districtPos).getCode(), wardPos);
+                        lsCity.get(cityPos).getCode(), lsDistrict.get(districtPos).getCode(), lsWard.get(wardPos).getCode());
                 Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
                 UnfocusedElement();
             }
@@ -247,7 +245,7 @@ public class UserFragment extends Fragment {
         mSpinWard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                wardPos = 0;
+                wardPos = position;
 
                 //Toast.makeText(getContext(), lsWard.get(position), Toast.LENGTH_LONG).show();
             }

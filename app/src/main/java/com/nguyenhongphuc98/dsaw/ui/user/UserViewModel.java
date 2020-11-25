@@ -12,6 +12,7 @@ import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.City;
 import com.nguyenhongphuc98.dsaw.data.model.District;
+import com.nguyenhongphuc98.dsaw.data.model.Ward;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<String> mContact = new MutableLiveData<>();
     private MutableLiveData<List<City>> lsCity = new MutableLiveData<>();
     private MutableLiveData<List<District>> lsDistrict = new MutableLiveData<>();
-    private MutableLiveData<List<String>> lsWard = new MutableLiveData<>();
+    private MutableLiveData<List<Ward>> lsWard = new MutableLiveData<>();
 
     public UserViewModel() {
         mName.setValue(DataCenter.currentUser.getUsername());
@@ -56,7 +57,7 @@ public class UserViewModel extends ViewModel {
         return lsDistrict;
     }
 
-    public MutableLiveData<List<String>> getLsWard() {
+    public MutableLiveData<List<Ward>> getLsWard() {
         return lsWard;
     }
 
@@ -81,7 +82,7 @@ public class UserViewModel extends ViewModel {
         DataManager.Instance().GetUserData(name, identity, birthday, phonenumber);
     }
 
-    public void UpdateUser(String name, String identity, String birthday, String phoneNumber, String code_city, String code_district, int code_ward)
+    public void UpdateUser(String name, String identity, String birthday, String phoneNumber, String code_city, String code_district, String code_ward)
     {
         DataManager.Instance().UpdateUser(name, identity, birthday, phoneNumber, code_city, code_district, code_ward);
     }
@@ -95,7 +96,6 @@ public class UserViewModel extends ViewModel {
     {
         DataManager.Instance().GetmDistrictOfCity(lsDistrict, codeCity);
     }
-
 
     public void GetWardOfDistrict(String cityCode, String codeDistrict)
     {

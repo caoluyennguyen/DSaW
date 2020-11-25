@@ -27,7 +27,7 @@ public class Account {
 
     private String code_district;
 
-    private int code_ward;
+    private String code_ward;
 
     public Account() {}
 
@@ -147,11 +147,11 @@ public class Account {
         this.code_district = code_district;
     }
 
-    public int getCode_ward() {
+    public String getCode_ward() {
         return code_ward;
     }
 
-    public void setCode_ward(int code_ward) {
+    public void setCode_ward(String code_ward) {
         this.code_ward = code_ward;
     }
 }
