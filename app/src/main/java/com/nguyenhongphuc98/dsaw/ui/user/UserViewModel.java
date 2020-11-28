@@ -1,6 +1,7 @@
 package com.nguyenhongphuc98.dsaw.ui.user;
 
 import android.app.Application;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -82,7 +83,7 @@ public class UserViewModel extends ViewModel {
         DataManager.Instance().GetUserData(name, identity, birthday, phonenumber);
     }
 
-    public void UpdateUser(String name, String identity, String birthday, String phoneNumber, String code_city, String code_district, String code_ward)
+    public void UpdateUser(String name, String identity, String birthday, String phoneNumber, int code_city, int code_district, int code_ward)
     {
         DataManager.Instance().UpdateUser(name, identity, birthday, phoneNumber, code_city, code_district, code_ward);
     }

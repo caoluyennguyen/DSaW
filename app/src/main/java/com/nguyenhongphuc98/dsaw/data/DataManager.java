@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -381,6 +383,10 @@ public class DataManager {
                             identity.setText(account.getIdentity());
                             birthday.setText(account.getBirthday());
                             phonenumber.setText(account.getPhonenumber());
+
+                            /*city = account.getCode_city();
+                            district = account.getCode_district();
+                            ward = account.getCode_ward();*/
                         }
                     }
                     else Log.e("DataManager","Account not found");
@@ -424,7 +430,8 @@ public class DataManager {
         }
     }
 
-    public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber, final String code_city, final String code_district, final String code_ward)
+    public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber,
+                           final int code_city, int code_district, final int code_ward)
     {
         try {
             Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
@@ -444,6 +451,7 @@ public class DataManager {
                             account.setCode_city(code_city);
                             account.setCode_district(code_district);
                             account.setCode_ward(code_ward);
+                            DataCenter.currentUser = account;
                             mDatabase.getReference("Account").child(snapshot.getKey()).setValue(account);
                             Log.e("DataManager", "Update user successfully");
                         }
@@ -1631,7 +1639,6 @@ public class DataManager {
         }
     }
 
-
     public void GetmDistrictOfCity(final MutableLiveData<List<District>> mLsDistrict, String code)
     {
         try {
@@ -1662,38 +1669,6 @@ public class DataManager {
             Log.e("DataManager","Error get district: " + e.getMessage());
         }
     }
-
-
-    /*public void GetmWardOfDistrict(final MutableLiveData<List<String>> mLsWard, String cityCode, String districtCode)
-    {
-        try {
-            //Query query = mDatabase.getReference("City").child(id).child("district");
-            Query query = mDatabase.getReference("City").child(cityCode).child("district").child(districtCode).child("wards");
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        List<String> lsWard = new ArrayList<>();
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String ward = snapshot.getValue(String.class);
-                            lsWard.add(ward);
-                            Log.e("DataManager","Ward was found is " + ward);
-                        }
-                        mLsWard.setValue(lsWard);
-                    }
-                    else Log.e("DataManager","Ward not found");
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        catch (Exception e){
-            Log.e("DataManager","Error get district: " + e.getMessage());
-        }
-    }*/
 
     public void GetmWardOfDistrict(final MutableLiveData<List<Ward>> mLsWard, String cityCode, String districtCode)
     {

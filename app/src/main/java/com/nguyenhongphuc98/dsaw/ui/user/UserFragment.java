@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nguyenhongphuc98.dsaw.R;
+import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.City;
 import com.nguyenhongphuc98.dsaw.data.model.District;
 import com.nguyenhongphuc98.dsaw.data.model.Ward;
@@ -106,46 +107,42 @@ public class UserFragment extends Fragment {
         // TODO: Use the ViewModel
         mViewModel.GetUser(mTextName, mTextCMND, mTextDayofBirth, mTextContact);
 
+
         // add items to city spinner
         adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
         adCityName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinCity.setAdapter(adCityName);
 
         mViewModel.GetAllCity();
-        mViewModel.getLsCity().observe(this, new Observer<List<City>>() {
-            @Override
-            public void onChanged(List<City> cities) {
-                lsCity.clear();
-                for (City a : cities) {
-                    lsCity.add(a);
-                    Log.e("User fragment get city: ", a.getName());
-                }
-
-                if (lsCity.size() == 0)
-                    lsCity.add(new City("0", "My City"));
-
-                adCityName.notifyDataSetChanged();
+        mViewModel.getLsCity().observe(this, cities -> {
+            lsCity.clear();
+            for (City a : cities) {
+                lsCity.add(a);
+                Log.e("User fragment get city: ", a.getName());
             }
+
+            if (lsCity.size() == 0)
+                lsCity.add(new City());
+
+            adCityName.notifyDataSetChanged();
+            mSpinCity.setSelection(DataCenter.currentUser.getCode_city());
         });
 
         adDistrictName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
-        mViewModel.getLsDistrict().observe(this, new Observer<List<District>>() {
-            @Override
-            public void onChanged(List<District> districts) {
-                lsDistrict.clear();
-                for (District a : districts)
-                {
-                    lsDistrict.add(a);
-                    Log.e("User fragment get districts: ", a.getName());
-                }
-
-                if (lsDistrict.size() == 0)
-                    lsDistrict.add(new District("Thanh Khe", "01"));
-
-
-                adDistrictName.notifyDataSetChanged();
-
+        mViewModel.getLsDistrict().observe(this, districts -> {
+            lsDistrict.clear();
+            for (District a : districts)
+            {
+                lsDistrict.add(a);
+                Log.e("User fragment get districts: ", a.getName());
             }
+
+            if (lsDistrict.size() == 0)
+                lsDistrict.add(new District());
+
+
+            adDistrictName.notifyDataSetChanged();
+            mSpinDistrict.setSelection(DataCenter.currentUser.getCode_district());
         });
 
         adWardName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
@@ -158,9 +155,10 @@ public class UserFragment extends Fragment {
             }
 
             if (lsWard.size() == 0)
-                lsWard.add(new Ward("An Khe", "0"));
+                lsWard.add(new Ward());
 
             adWardName.notifyDataSetChanged();
+            mSpinWard.setSelection(DataCenter.currentUser.getCode_ward());
         });
     }
 
@@ -186,7 +184,7 @@ public class UserFragment extends Fragment {
                 mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
                 mViewModel.setmContact(mTextContact.getText().toString());
                 mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString(),
-                        lsCity.get(cityPos).getCode(), lsDistrict.get(districtPos).getCode(), lsWard.get(wardPos).getCode());
+                        cityPos, districtPos, wardPos);
                 Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
                 UnfocusedElement();
             }
@@ -214,7 +212,7 @@ public class UserFragment extends Fragment {
                 adDistrictName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinDistrict.setAdapter(adDistrictName);
 
-                Toast.makeText(getContext(), lsCity.get(position).getName() , Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), lsCity.get(position).getName() , Toast.LENGTH_LONG).show();
             }
 
             @Override
