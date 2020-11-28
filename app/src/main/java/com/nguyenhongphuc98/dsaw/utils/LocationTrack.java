@@ -160,19 +160,13 @@ public class LocationTrack extends Service implements LocationListener {
         alertDialog.setMessage("Do you want to turn on GPS?");
 
 
-        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mContext.startActivity(intent);
-            }
+        alertDialog.setPositiveButton("Yes", (dialog, which) -> {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            mContext.startActivity(intent);
         });
 
 
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        alertDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
 
 
         alertDialog.show();
@@ -181,7 +175,6 @@ public class LocationTrack extends Service implements LocationListener {
 
     public void stopListener() {
         if (locationManager != null) {
-
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions

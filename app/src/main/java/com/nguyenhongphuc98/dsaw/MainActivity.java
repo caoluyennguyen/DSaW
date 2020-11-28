@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Utils.activity = this;
-        DataManager d = DataManager.Instance(getApplicationContext());
+        DataManager.Instance(getApplicationContext());
         //d.TestConnectDB();
 
         //fetch data in background
@@ -92,18 +92,15 @@ public class MainActivity extends AppCompatActivity {
 
         MutableLiveData<Warning> mWarning = new MutableLiveData<>();
         DataManager.Instance().FetchWarning(mWarning);
-        mWarning.observe(this, new Observer<Warning>() {
-            @Override
-            public void onChanged(Warning warning) {
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
-                        .setSmallIcon(R.drawable.warning_icon)
-                        .setContentTitle(warning.getTitle())
-                        .setContentText(warning.getContent())
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                // notificationId is a unique int for each notification that you must define
-                notificationManager.notify(1, builder.build());
-            }
+        mWarning.observe(this, warning -> {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
+                    .setSmallIcon(R.drawable.warning_icon)
+                    .setContentTitle(warning.getTitle())
+                    .setContentText(warning.getContent())
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+            // notificationId is a unique int for each notification that you must define
+            notificationManager.notify(1, builder.build());
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

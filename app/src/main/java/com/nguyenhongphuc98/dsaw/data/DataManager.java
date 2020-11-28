@@ -195,32 +195,29 @@ public class DataManager {
 
     public void ProcessLogin(final String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            //GetUserDataByEmail(email);
-                            loginProcess.LoginSuccessful();
-                            loginProcess.LoadUserDataComplete();
-                            /*if(this.loginCallback!=null)
-                            {
-                                loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_SUCCESS);
-                                Log.d("DATAMANAGER","callback login");
-                            }*/
-                            Log.d("DATAMANAGER", "errcallback login");
-                        }
-                        else {
-                            loginProcess.LoginFail();
-                            /*if(loginCallback!=null)
-                            {
-                                loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_INCORRECT);
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            }*/
-                            // If sign in fails, display a message to the user.
-                            Log.d(TAG, "signInWithEmail:failure");
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithEmail:success");
+                        //GetUserDataByEmail(email);
+                        loginProcess.LoginSuccessful();
+                        loginProcess.LoadUserDataComplete();
+                        /*if(this.loginCallback!=null)
+                        {
+                            loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_SUCCESS);
+                            Log.d("DATAMANAGER","callback login");
+                        }*/
+                        Log.d("DATAMANAGER", "errcallback login");
+                    }
+                    else {
+                        loginProcess.LoginFail();
+                        /*if(loginCallback!=null)
+                        {
+                            loginCallback.OnLoginComplete(LoginCallback.CODE_LOGIN_INCORRECT);
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        }*/
+                        // If sign in fails, display a message to the user.
+                        Log.d(TAG, "signInWithEmail:failure");
                     }
                 });
 

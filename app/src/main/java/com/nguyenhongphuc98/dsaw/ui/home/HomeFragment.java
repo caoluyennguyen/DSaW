@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupView(View view) {
-        anyChartView = (AnyChartView) view.findViewById(R.id.home_line_chart);
+        anyChartView = view.findViewById(R.id.home_line_chart);
         changeAreaBtn = view.findViewById(R.id.home_btn_change_area);
         mapVisualizeBtn = view.findViewById(R.id.home_btn_visualine);
         areaTv = view.findViewById(R.id.home_tv_area);
