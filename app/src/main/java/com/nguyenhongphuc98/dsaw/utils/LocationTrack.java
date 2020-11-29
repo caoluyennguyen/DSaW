@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.nguyenhongphuc98.dsaw.MainActivity;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
@@ -163,6 +164,8 @@ public class LocationTrack extends Service implements LocationListener {
         alertDialog.setPositiveButton("Yes", (dialog, which) -> {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             mContext.startActivity(intent);
+            /*Intent mainIntent = new Intent(this.mContext, MainActivity.class);
+            startActivity(mainIntent);*/
         });
 
 

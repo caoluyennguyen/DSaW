@@ -163,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 DataCenter.currentLocation = new CurrentLocation(latitude, longitude);
 
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
                 //Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
             } else {
@@ -172,8 +174,6 @@ public class LoginActivity extends AppCompatActivity {
 
             // Open main screen when have enough data
             hiddenProgessbar();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
         });
     }
 
