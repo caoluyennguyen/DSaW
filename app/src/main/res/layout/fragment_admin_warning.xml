@@ -126,6 +126,10 @@
             android:inputType="text"
             android:textColorLink="#2FD740"
             android:textSize="12sp" />
+        <Spinner
+            android:id="@+id/spinCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <Button

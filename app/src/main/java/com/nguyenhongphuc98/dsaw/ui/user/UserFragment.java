@@ -95,7 +95,6 @@ public class UserFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_user, container, false);
         InitComponent(root);
         InitEvent();
-        RegisterDataLiveListener();
         UnfocusedElement();
 
         return root;
@@ -104,62 +103,10 @@ public class UserFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         // TODO: Use the ViewModel
-        mViewModel.GetUser(mTextName, mTextCMND, mTextDayofBirth, mTextContact);
-
-
-        // add items to city spinner
-        adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
-        adCityName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinCity.setAdapter(adCityName);
-
-        mViewModel.GetAllCity();
-        mViewModel.getLsCity().observe(this, cities -> {
-            lsCity.clear();
-            for (City a : cities) {
-                lsCity.add(a);
-                Log.e("User fragment get city: ", a.getName());
-            }
-
-            if (lsCity.size() == 0)
-                lsCity.add(new City());
-
-            adCityName.notifyDataSetChanged();
-            mSpinCity.setSelection(DataCenter.currentUser.getCode_city());
-        });
-
-        adDistrictName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
-        mViewModel.getLsDistrict().observe(this, districts -> {
-            lsDistrict.clear();
-            for (District a : districts)
-            {
-                lsDistrict.add(a);
-                Log.e("User fragment get districts: ", a.getName());
-            }
-
-            if (lsDistrict.size() == 0)
-                lsDistrict.add(new District());
-
-
-            adDistrictName.notifyDataSetChanged();
-            mSpinDistrict.setSelection(DataCenter.currentUser.getCode_district());
-        });
-
-        adWardName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
-        mViewModel.getLsWard().observe(this, wards -> {
-            lsWard.clear();
-            for (Ward a : wards)
-            {
-                lsWard.add(a);
-                Log.e("User fragment get wards: ", a.getName());
-            }
-
-            if (lsWard.size() == 0)
-                lsWard.add(new Ward());
-
-            adWardName.notifyDataSetChanged();
-            mSpinWard.setSelection(DataCenter.currentUser.getCode_ward());
-        });
+        RegisterDataLiveListener();
+        //mViewModel.GetUser(mTextName, mTextCMND, mTextDayofBirth, mTextContact);
     }
 
     public void InitComponent(View view) {
@@ -256,29 +203,62 @@ public class UserFragment extends Fragment {
     }
 
     public void RegisterDataLiveListener() {
-        mViewModel.getName().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mTextName.setText(String.valueOf(s));
+        mViewModel.getName().observe(this, s -> mTextName.setText(String.valueOf(s)));
+        mViewModel.getCMND().observe(this, s -> mTextCMND.setText(String.valueOf(s)));
+        mViewModel.getDayOfBirth().observe(this, s -> mTextDayofBirth.setText(String.valueOf(s)));
+        mViewModel.getContact().observe(this, s -> mTextContact.setText(String.valueOf(s)));
+
+        // add items to city spinner
+        adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
+        adCityName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinCity.setAdapter(adCityName);
+
+        mViewModel.GetAllCity();
+        mViewModel.getLsCity().observe(this, cities -> {
+            lsCity.clear();
+            for (City a : cities) {
+                lsCity.add(a);
+                Log.e("User fragment get city: ", a.getName());
             }
+
+            if (lsCity.size() == 0)
+                lsCity.add(new City());
+
+            adCityName.notifyDataSetChanged();
+            mSpinCity.setSelection(DataCenter.currentUser.getCode_city());
         });
-        mViewModel.getCMND().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mTextCMND.setText(String.valueOf(s));
+
+        adDistrictName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
+        mViewModel.getLsDistrict().observe(this, districts -> {
+            lsDistrict.clear();
+            for (District a : districts)
+            {
+                lsDistrict.add(a);
+                Log.e("User fragment get districts: ", a.getName());
             }
+
+            if (lsDistrict.size() == 0)
+                lsDistrict.add(new District());
+
+
+            adDistrictName.notifyDataSetChanged();
+            mSpinDistrict.setSelection(DataCenter.currentUser.getCode_district());
         });
-        mViewModel.getDayOfBirth().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mTextDayofBirth.setText(String.valueOf(s));
+
+        adWardName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
+        mViewModel.getLsWard().observe(this, wards -> {
+            lsWard.clear();
+            for (Ward a : wards)
+            {
+                lsWard.add(a);
+                Log.e("User fragment get wards: ", a.getName());
             }
-        });
-        mViewModel.getContact().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mTextContact.setText(String.valueOf(s));
-            }
+
+            if (lsWard.size() == 0)
+                lsWard.add(new Ward());
+
+            adWardName.notifyDataSetChanged();
+            mSpinWard.setSelection(DataCenter.currentUser.getCode_ward());
         });
     }
 

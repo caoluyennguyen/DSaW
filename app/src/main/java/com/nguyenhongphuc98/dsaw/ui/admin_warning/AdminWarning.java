@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -50,6 +51,8 @@ public class AdminWarning extends Fragment {
     EditText mTextContent;
     EditText mTextCmnd;
     Button mButton;
+
+    Spinner spinCity;
 
     public static AdminWarning newInstance() {
         return new AdminWarning();
@@ -83,6 +86,7 @@ public class AdminWarning extends Fragment {
         mTextContent = view.findViewById(R.id.contentEdit);
         mTextCmnd = view.findViewById(R.id.cmndEdit);
         mButton = view.findViewById(R.id.summit_warning_button);
+        spinCity = view.findViewById(R.id.spinCity);
     }
 
     public void InitEvent()
@@ -157,6 +161,7 @@ public class AdminWarning extends Fragment {
                 mTextCmnd.setText(String.valueOf(s));
             }
         });
+
     }
 
     private void createNotificationChannel() {
