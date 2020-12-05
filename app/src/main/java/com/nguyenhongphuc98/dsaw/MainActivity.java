@@ -92,15 +92,33 @@ public class MainActivity extends AppCompatActivity {
 
         MutableLiveData<Warning> mWarning = new MutableLiveData<>();
         DataManager.Instance().FetchWarning(mWarning);
+
         mWarning.observe(this, warning -> {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
+            if (warning.getCode_city() == -1 || warning.getCode_city() == DataCenter.currentUser.getCode_city())
+            {
+                if (warning.getCode_district() == -1 || warning.getCode_district() == DataCenter.currentUser.getCode_district())
+                {
+                    if (warning.getCode_ward() == -1 || warning.getCode_ward() == DataCenter.currentUser.getCode_ward())
+                    {
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
+                                .setSmallIcon(R.drawable.warning_icon)
+                                .setContentTitle(warning.getTitle())
+                                .setContentText(warning.getContent())
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                        // notificationId is a unique int for each notification that you must define
+                        notificationManager.notify(1, builder.build());
+                    }
+                }
+            }
+            /*NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
                     .setSmallIcon(R.drawable.warning_icon)
                     .setContentTitle(warning.getTitle())
                     .setContentText(warning.getContent())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
             // notificationId is a unique int for each notification that you must define
-            notificationManager.notify(1, builder.build());
+            notificationManager.notify(1, builder.build());*/
         });
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

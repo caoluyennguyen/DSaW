@@ -119,44 +119,61 @@ public class AdminWarning extends Fragment {
 
             mViewModel.setmContent(mTextContent.getText().toString());
             Warning warning;
-            if (mSwitch.isChecked()) warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername(), Arrays.asList(mTextCmnd.getText().toString().split(",")));
-            else warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername(), null);
 
-            mViewModel.CreateWarning(warning);
+            if (mTextContent.getText().toString().isEmpty())
+            {
+                Toast.makeText(getContext(), "Content can not be empty!", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                if (mSwitch.isChecked())
+                {
+                    warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername(),
+                            null, cityPos, districtPos - 1, wardPos - 1);
 
-            /*Notification notification = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
+                }
+                else
+                {
+                    warning = new Warning("Cảnh báo nguy hiểm", mTextContent.getText().toString(), DataCenter.currentUser.getUsername(),
+                            null, -1, -1, -1);
+
+                }
+
+                mViewModel.CreateWarning(warning);
+
+                /*Notification notification = new NotificationCompat.Builder(getContext(), "CHANNEL_ID")
                     .setSmallIcon(R.drawable.warning_icon)
                     .setContentTitle("Canh bao tu luyenprocool")
                     .setContentText(mTextContent.getText())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .build();*/
 
-            Log.d("show", "Warning created");
+                Log.d("show", "Warning created");
 
-            // Get token
-            // [START retrieve_current_token]
-            FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
+                // Get token
+                // [START retrieve_current_token]
+                FirebaseInstanceId.getInstance().getInstanceId()
+                        .addOnCompleteListener(task -> {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                return;
+                            }
 
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
+                            // Get new Instance ID token
+                            String token = task.getResult().getToken();
 
-                        // Log and toast
-                        String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d(TAG, msg);
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, token);
+                            // Log and toast
+                            String msg = getString(R.string.msg_token_fmt, token);
+                            Log.d(TAG, msg);
+                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, token);
 
-                    });
-            // [END retrieve_current_token]
+                        });
+                // [END retrieve_current_token]
+            }
         });
 
         mSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
             if (isChecked) mCmndLayout.setVisibility(View.VISIBLE);
             else mCmndLayout.setVisibility(View.GONE);
         });

@@ -310,7 +310,7 @@ public class DataManager {
                     }
                 }
 
-                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator(), fWarning.getReceiver());
+                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator(), fWarning.getReceiver(), fWarning.getCode_city(), fWarning.getCode_district(), fWarning.getCode_ward());
                 mDatabaseRef.child("Warnings").child(String.valueOf(count)).setValue(warning);
                 //PushNotify(fWarning.getContent());
                 Log.e("Data manager", "Add new warning successful");
@@ -339,9 +339,6 @@ public class DataManager {
                         Log.d(TAG, w.getContent());
                         return;
                     }
-                    /*Warning w = dataSnapshot.getValue(Warning.class);
-                    warningMutableLiveData.setValue(w);*/
-
                 }
             }
 
