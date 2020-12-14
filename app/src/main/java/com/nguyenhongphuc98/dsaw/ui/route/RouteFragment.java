@@ -80,7 +80,7 @@ public class RouteFragment extends Fragment {
                 }
 
                 if (lsTracking.size() == 0)
-                    lsTracking.add(new TrackingStatus("Location not yet update for this user","Notify"));
+                    lsTracking.add(new TrackingStatus("Location has not update for this user yet","Notify"));
 
                 adaptor.notifyDataSetChanged();
             }

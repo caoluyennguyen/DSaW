@@ -130,7 +130,8 @@ public class UserFragment extends Fragment {
                 mViewModel.setmCMND(mTextCMND.getText().toString());
                 mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
                 mViewModel.setmContact(mTextContact.getText().toString());
-                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(), mTextDayofBirth.getText().toString(), mTextContact.getText().toString(),
+                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(),
+                        mTextDayofBirth.getText().toString(), mTextContact.getText().toString(),
                         cityPos, districtPos, wardPos);
                 Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
                 UnfocusedElement();

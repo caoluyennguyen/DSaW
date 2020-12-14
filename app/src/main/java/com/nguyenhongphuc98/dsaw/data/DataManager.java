@@ -260,7 +260,6 @@ public class DataManager {
         else return false;
     }
 
-
     public Task sendMailResetPassword(String emailAddress) {
         return mAuth.sendPasswordResetEmail(emailAddress)
                 .addOnCompleteListener(task -> {
@@ -348,7 +347,6 @@ public class DataManager {
             }
         });
     }
-
 
     public void PushNotify(String content)
     {
