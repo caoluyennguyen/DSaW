@@ -31,7 +31,8 @@ public class Account {
 
     public Account() {}
 
-    public Account(String birthday, String identity, String password, String phonenumber, String role, String username, String area, String area_management, String email) {
+    public Account(String birthday, String identity, String password, String phonenumber,
+                   String role, String username, String area, String area_management, String email) {
         this.birthday = birthday;
         this.identity = identity;
         this.password = password;

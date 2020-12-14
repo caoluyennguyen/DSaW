@@ -260,7 +260,6 @@ public class DataManager {
         else return false;
     }
 
-
     public Task sendMailResetPassword(String emailAddress) {
         return mAuth.sendPasswordResetEmail(emailAddress)
                 .addOnCompleteListener(task -> {
@@ -310,7 +309,7 @@ public class DataManager {
                     }
                 }
 
-                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator(), fWarning.getReceiver());
+                Warning warning = new Warning(fWarning.getTitle(), fWarning.getContent(), fWarning.getCreator(), fWarning.getReceiver(), fWarning.getCode_city(), fWarning.getCode_district(), fWarning.getCode_ward());
                 mDatabaseRef.child("Warnings").child(String.valueOf(count)).setValue(warning);
                 //PushNotify(fWarning.getContent());
                 Log.e("Data manager", "Add new warning successful");
@@ -339,9 +338,6 @@ public class DataManager {
                         Log.d(TAG, w.getContent());
                         return;
                     }
-                    /*Warning w = dataSnapshot.getValue(Warning.class);
-                    warningMutableLiveData.setValue(w);*/
-
                 }
             }
 
@@ -351,7 +347,6 @@ public class DataManager {
             }
         });
     }
-
 
     public void PushNotify(String content)
     {
@@ -1684,6 +1679,111 @@ public class DataManager {
                         mLsWard.setValue(lsWard);
                     }
                     else Log.e("DataManager","Ward not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get district: " + e.getMessage());
+        }
+    }
+
+    public void GetAllmCityWarning(final MutableLiveData<List<City>> mListCity)
+    {
+        try {
+            Query query = mDatabase.getReference("City");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        List<City> lsCity = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            City city = snapshot.getValue(City.class);
+                            lsCity.add(city);
+                            Log.e("DataManager","City was found is " + city.getName());
+                        }
+                        mListCity.setValue(lsCity);
+                    }
+                    else Log.e("DataManager","City not found");
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get city: " + e.getMessage());
+        }
+    }
+
+    public void GetmDistrictOfCityWarning(final MutableLiveData<List<District>> mLsDistrict, String code)
+    {
+        try {
+            //Query query = mDatabase.getReference("City").child(id).child("district");
+            Query query = mDatabase.getReference("City").child(code).child("district");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        List<District> lsDistrict = new ArrayList<>();
+                        lsDistrict.add(new District("Tất cả","0"));
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            District district = snapshot.getValue(District.class);
+                            lsDistrict.add(district);
+                            Log.e("DataManager","District was found is " + district.getName());
+                        }
+                        mLsDistrict.setValue(lsDistrict);
+                    }
+                    else
+                    {
+                        Log.e("DataManager","District not found");
+                        List<District> lsDistrict = new ArrayList<>();
+                        lsDistrict.add(new District("--","0"));
+                        mLsDistrict.setValue(lsDistrict);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error get district: " + e.getMessage());
+        }
+    }
+
+    public void GetmWardOfDistrictWarning(final MutableLiveData<List<Ward>> mLsWard, String cityCode, String districtCode)
+    {
+        try {
+            Query query = mDatabase.getReference("City").child(cityCode).child("district").child(districtCode).child("wards");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        List<Ward> lsWard = new ArrayList<>();
+                        lsWard.add(new Ward("Tất cả","0"));
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Ward ward = snapshot.getValue(Ward.class);
+                            lsWard.add(ward);
+                            Log.e("DataManager","Ward was found is " + ward.getName());
+                        }
+                        mLsWard.setValue(lsWard);
+                    }
+                    else
+                    {
+                        Log.e("DataManager","Ward not found");
+                        List<Ward> lsWard = new ArrayList<>();
+                        lsWard.add(new Ward("--","0"));
+                        mLsWard.setValue(lsWard);
+                    }
                 }
 
                 @Override
