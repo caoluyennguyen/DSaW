@@ -92,7 +92,7 @@ public class LocationTrack extends Service implements LocationListener {
                             longitude = loc.getLongitude();
                         }
                     }
-                } else  if (checkNetwork) {
+                } else if (checkNetwork) {
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                             ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling

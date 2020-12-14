@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.RouteAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.RouteData;
 import com.nguyenhongphuc98.dsaw.data.model.TrackingStatus;
 
@@ -92,6 +93,8 @@ public class RouteFragment extends Fragment {
     private void setupView(View view) {
         tvPersonName = view.findViewById(R.id.route_person_name_tv);
         lvTracking = view.findViewById(R.id.route_tracking_lv);
+
+        tvPersonName.setText(DataCenter.routeUNAME);
     }
 
     private void setupAction() {
