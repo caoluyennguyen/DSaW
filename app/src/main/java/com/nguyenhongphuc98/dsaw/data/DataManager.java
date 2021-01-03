@@ -1234,8 +1234,12 @@ public class DataManager {
         fetchCasesInfo(lsCases, query);
     }
 
-    public void insertCase(final Case aCase) {
+    public void updateArea()
+    {
 
+    }
+
+    public void insertCase(final Case aCase) {
         // check if exist need update status before
         // if exist id user in any case mean we have to update old and insert new
         Query query = mDatabaseRef.child("Case").orderByChild("user").equalTo(aCase.getUser());
@@ -1256,7 +1260,6 @@ public class DataManager {
                             a.setEnd_time(t);
                             mDatabaseRef.child("Case").child(snapshot.getKey()).setValue(a);
                         }
-
                     }
                 }
 

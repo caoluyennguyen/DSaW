@@ -13,8 +13,7 @@ public class PublicDataModel {
 
     private String lastUpdatedApify;
 
-    public PublicDataModel() {
-    }
+    public PublicDataModel() { }
 
     public PublicDataModel(String infected, String deceased, String recovered, String lastUpdatedAtSource) {
         this.infected = infected;

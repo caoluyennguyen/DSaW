@@ -125,7 +125,7 @@ public class StatisticFragment extends Fragment {
                         .anchor(Anchor.CENTER_BOTTOM)
                         .offsetX(0d)
                         .offsetY(5d)
-                        .format("${%Value}{groupsSeparator: }");
+                        .format("{%Value}{groupsSeparator: }");
             }
         });
 
