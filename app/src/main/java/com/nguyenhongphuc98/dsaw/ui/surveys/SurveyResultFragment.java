@@ -9,15 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.adaptor.SurveyResultAdaptor;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
+import com.nguyenhongphuc98.dsaw.data.model.City;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,10 @@ public class SurveyResultFragment extends Fragment {
 
     private List<AnswerViewModel> lsAnswers = new ArrayList<>();
 
+    private ArrayList<City> lsCity = new ArrayList<>();
+    private ArrayAdapter<String> adCityName;
+    private Spinner mSpinCity;
+
     public static SurveyResultFragment newInstance() {
         return new SurveyResultFragment();
     }
@@ -49,6 +57,22 @@ public class SurveyResultFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        RegisterDataLiveListener();
+    }
+
+    private void setupView(View view) {
+        lv = view.findViewById(R.id.survey_result_lv);
+        mSpinCity = view.findViewById(R.id.survey_spinner);
+    }
+
+    public void setSurveyId(String sid) {
+        this.surveyID = sid;
+    }
+
+    private void RegisterDataLiveListener()
+    {
         mViewModel = ViewModelProviders.of(this).get(SurveyResultViewModel.class);
 
         adaptor = new SurveyResultAdaptor(getContext(),lsAnswers);
@@ -68,15 +92,26 @@ public class SurveyResultFragment extends Fragment {
                 adaptor.notifyDataSetChanged();
             }
         });
-
         mViewModel.fetchData(DataCenter.surveyID);
-    }
 
-    private void setupView(View view) {
-        lv = view.findViewById(R.id.survey_result_lv);
-    }
+        //get all city
+        adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
+        adCityName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinCity.setAdapter(adCityName);
 
-    public void setSurveyId(String sid) {
-        this.surveyID = sid;
+        mViewModel.GetAllCity();
+        mViewModel.getLsCity().observe(this, cities -> {
+            lsCity.clear();
+            lsCity.add(new City("0","Tất cả"));
+            for (City a : cities) {
+                lsCity.add(a);
+                Log.e("Survey result fragment get city: ", a.getName());
+            }
+
+            if (lsCity.size() == 0)
+                lsCity.add(new City());
+
+            adCityName.notifyDataSetChanged();
+        });
     }
 }

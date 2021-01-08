@@ -62,12 +62,9 @@ public class ReportResultFragment extends Fragment {
                 for (ReportModel r : reportModels) {
                     lsReport.add(r);
                 }
-
                 adaptor.notifyDataSetChanged();
             }
         });
-
         mViewModel.fetchData(DataCenter.surveyID);
     }
-
 }

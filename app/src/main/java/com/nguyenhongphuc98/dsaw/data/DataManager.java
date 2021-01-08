@@ -1433,20 +1433,79 @@ public class DataManager {
                     // value list instance of a answer
                     Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
 
-
                     /// map <questionID - hashMap<answer mau id, count checked>>
                     final HashMap<String, HashMap<Long,Long>> result = new HashMap<>();
 
+
                     // duyet tat ca account da tra loi survey nay
                     for (String accountID : userReponse.keySet()) {
+                        //ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
 
-                        ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
+                        // check area cua tai khoan
+                        Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(accountID);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists())
+                                {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                        // submit cuoi cung la submit gan day nhat va han anh dung nhat cho thong ke hien tai
+                                        Account account = snapshot.getValue(Account.class);
+                                        if (account.getCode_city() == 49)
+                                        {
+                                            Log.e("DataManager"," User was found is " + account.getId());
+                                            ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
+                                            // submit cuoi cung la submit gan day nhat va phan anh dung nhat cho thong ke hien tai
+                                            Map<String,Object> lastSubmitAnswer = ls.get(ls.size() - 1);
+
+                                            /// key - question key
+                                            /// value -list cac lua chon da duoc tick cho mutichoice Q
+                                            Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
+
+                                            // duyet het tat ca cau hoi trong phan tra loi
+                                            for(Map.Entry<String, List<Long>> entry : ansewerMutilChoices.entrySet()) {
+                                                String key = entry.getKey();
+                                                List<Long> answerSelected = entry.getValue();
+
+                                                if (result.get(key) == null) {
+                                                    // neu day la lan dau count cau tl cho cau hoi nay
+                                                    // <key dc check - count>
+                                                    HashMap ans = new HashMap<Long, Long>();
+                                                    for (Long i : answerSelected) {
+                                                        ans.put(i, (long)1);
+                                                    }
+
+                                                    result.put(key, ans);
+                                                } else {
+                                                    // neu day la lan thu 2+ thi phai count len 1 neu tim thay
+                                                    for (Long i : answerSelected) {
+                                                        // chua co ai tick cau tra loi nay ca
+                                                        if (result.get(key).get(i) == null)
+                                                            result.get(key).put(i, (long) 1);
+                                                        else
+                                                            result.get(key).put(i,(Long) (result.get(key).get(i) + 1));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        // lay danh sach cac cau tra loi
+                        //ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
+
+                        /*// submit cuoi cung la submit gan day nhat va phan anh dung nhat cho thong ke hien tai
                         Map<String,Object> lastSubmitAnswer = ls.get(ls.size() - 1);
 
                         /// key - question key
-                        /// value -list caclua chon da duoc tick cho mutichoice Q
+                        /// value -list cac lua chon da duoc tick cho mutichoice Q
                         Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
                         
                         // duyet het tat ca cau hoi trong phan tra loi
@@ -1474,7 +1533,7 @@ public class DataManager {
                                 }
 
                             }
-                        }
+                        }*/
                     }
 
                     final List<AnswerViewModel> answers = new ArrayList<>();
@@ -1485,7 +1544,6 @@ public class DataManager {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                     Question q = snapshot.getValue(Question.class);
                                     AnswerViewModel a = new AnswerViewModel();
@@ -1498,7 +1556,7 @@ public class DataManager {
                                         // neu cau hoi nay k co thi cung  = 0 luon, ma thuc ra la phai co chu :v
                                         if (result.get(q.getId()) != null
                                                 && result.get(q.getId()).get((Long)(long) i) != null)
-                                            mAnswers.add(q.getAnswers().get(i) + "(" + result.get(q.getId()).get((Long)(long) i) +")");
+                                            mAnswers.add(q.getAnswers().get(i) + "(" + result.get(q.getId()).get((long) i) +")");
                                         else
                                             mAnswers.add(q.getAnswers().get(i) + "(0)");
                                     }
@@ -1518,7 +1576,8 @@ public class DataManager {
 
                         }
                     });
-                } else
+                }
+                else
                     answersResult.setValue(new ArrayList<AnswerViewModel>());
             }
 
