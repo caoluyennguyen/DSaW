@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -51,6 +52,7 @@ public class SurveyResultFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_survey_result, container, false);
         setupView(view);
+        setupEvent();
         return view;
     }
 
@@ -58,13 +60,30 @@ public class SurveyResultFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         RegisterDataLiveListener();
     }
 
     private void setupView(View view) {
         lv = view.findViewById(R.id.survey_result_lv);
         mSpinCity = view.findViewById(R.id.survey_spinner);
+    }
+
+    private void setupEvent()
+    {
+        mSpinCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                lsAnswers.clear();
+                mViewModel.fetchData(DataCenter.surveyID, position - 1);
+                adaptor = new SurveyResultAdaptor(getContext(),lsAnswers);
+                lv.setAdapter(adaptor);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void setSurveyId(String sid) {
@@ -92,7 +111,7 @@ public class SurveyResultFragment extends Fragment {
                 adaptor.notifyDataSetChanged();
             }
         });
-        mViewModel.fetchData(DataCenter.surveyID);
+        //mViewModel.fetchData(DataCenter.surveyID, 0);
 
         //get all city
         adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);

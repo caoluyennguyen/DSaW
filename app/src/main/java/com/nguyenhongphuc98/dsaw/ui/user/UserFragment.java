@@ -137,7 +137,6 @@ public class UserFragment extends Fragment {
                 UnfocusedElement();
             }
             else Toast.makeText(getContext(), "Vui lòng xác nhận cam kết", Toast.LENGTH_LONG).show();
-
         });
 
         mTextDayofBirth.setOnClickListener(v -> new DatePickerDialog(getContext(), date, myCalendar

@@ -440,6 +440,7 @@ public class DataManager {
                             account.setIdentity(identity);
                             account.setBirthday(birthday);
                             account.setPhonenumber(phoneNumber);
+                            // cap nhat user theo vi tri trong list
                             account.setCode_city(code_city);
                             account.setCode_district(code_district);
                             account.setCode_ward(code_ward);
@@ -1420,7 +1421,7 @@ public class DataManager {
     /// Lay ra cau tra loi cua tat cua user nam trong khu vuc duoc chi dinh
 
     /// Lay ra thong ke cau tra loi cua cac cau hoi trong 1 survey
-    public void fetchAnswerFor(final MutableLiveData<List<AnswerViewModel>> answersResult, final String surveyid) {
+    public void fetchAnswerFor(final MutableLiveData<List<AnswerViewModel>> answersResult, final String surveyid, final int city_code) {
 
         Query query = mDatabaseRef.child("Answers").child(surveyid);
 
@@ -1436,105 +1437,110 @@ public class DataManager {
                     /// map <questionID - hashMap<answer mau id, count checked>>
                     final HashMap<String, HashMap<Long,Long>> result = new HashMap<>();
 
+                    if (city_code != -1)
+                    {
+                        for (String accountID : userReponse.keySet()) {
+                            // check area cua tai khoan
+                            Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(accountID);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists())
+                                    {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                    // duyet tat ca account da tra loi survey nay
-                    for (String accountID : userReponse.keySet()) {
-                        //ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
+                                            Account account = snapshot.getValue(Account.class);
+                                            if (account.getCode_city() == city_code)
+                                            {
+                                                Log.e("DataManager"," User was found is " + account.getId());
+                                                ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
+                                                // submit cuoi cung la submit gan day nhat va phan anh dung nhat cho thong ke hien tai
+                                                Map<String,Object> lastSubmitAnswer = ls.get(ls.size() - 1);
 
-                        // check area cua tai khoan
-                        Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(accountID);
-                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists())
-                                {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                /// key - question key
+                                                /// value -list cac lua chon da duoc tick cho mutichoice Q
+                                                Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
 
-                                        Account account = snapshot.getValue(Account.class);
-                                        if (account.getCode_city() == 49)
-                                        {
-                                            Log.e("DataManager"," User was found is " + account.getId());
-                                            ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
-                                            // submit cuoi cung la submit gan day nhat va phan anh dung nhat cho thong ke hien tai
-                                            Map<String,Object> lastSubmitAnswer = ls.get(ls.size() - 1);
+                                                // duyet het tat ca cau hoi trong phan tra loi
+                                                for(Map.Entry<String, List<Long>> entry : ansewerMutilChoices.entrySet()) {
+                                                    String key = entry.getKey();
+                                                    List<Long> answerSelected = entry.getValue();
 
-                                            /// key - question key
-                                            /// value -list cac lua chon da duoc tick cho mutichoice Q
-                                            Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
+                                                    if (result.get(key) == null) {
+                                                        // neu day la lan dau count cau tl cho cau hoi nay
+                                                        // <key dc check - count>
+                                                        HashMap ans = new HashMap<Long, Long>();
+                                                        for (Long i : answerSelected) {
+                                                            ans.put(i, (long)1);
+                                                        }
 
-                                            // duyet het tat ca cau hoi trong phan tra loi
-                                            for(Map.Entry<String, List<Long>> entry : ansewerMutilChoices.entrySet()) {
-                                                String key = entry.getKey();
-                                                List<Long> answerSelected = entry.getValue();
-
-                                                if (result.get(key) == null) {
-                                                    // neu day la lan dau count cau tl cho cau hoi nay
-                                                    // <key dc check - count>
-                                                    HashMap ans = new HashMap<Long, Long>();
-                                                    for (Long i : answerSelected) {
-                                                        ans.put(i, (long)1);
-                                                    }
-
-                                                    result.put(key, ans);
-                                                } else {
-                                                    // neu day la lan thu 2+ thi phai count len 1 neu tim thay
-                                                    for (Long i : answerSelected) {
-                                                        // chua co ai tick cau tra loi nay ca
-                                                        if (result.get(key).get(i) == null)
-                                                            result.get(key).put(i, (long) 1);
-                                                        else
-                                                            result.get(key).put(i,(Long) (result.get(key).get(i) + 1));
+                                                        result.put(key, ans);
+                                                    } else {
+                                                        // neu day la lan thu 2+ thi phai count len 1 neu tim thay
+                                                        for (Long i : answerSelected) {
+                                                            // chua co ai tick cau tra loi nay ca
+                                                            if (result.get(key).get(i) == null)
+                                                                result.get(key).put(i, (long) 1);
+                                                            else
+                                                                result.get(key).put(i,(Long) (result.get(key).get(i) + 1));
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
-
-                        // lay danh sach cac cau tra loi
-                        //ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
-
-                        /*// submit cuoi cung la submit gan day nhat va phan anh dung nhat cho thong ke hien tai
-                        Map<String,Object> lastSubmitAnswer = ls.get(ls.size() - 1);
-
-                        /// key - question key
-                        /// value -list cac lua chon da duoc tick cho mutichoice Q
-                        Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
-                        
-                        // duyet het tat ca cau hoi trong phan tra loi
-                        for(Map.Entry<String, List<Long>> entry : ansewerMutilChoices.entrySet()) {
-                            String key = entry.getKey();
-                            List<Long> answerSelected = entry.getValue();
-
-                            if (result.get(key) == null) {
-                                // neu day la lan dau count cau tl cho cau hoi nay
-                                // <key dc check - count>
-                                HashMap ans = new HashMap<Long, Long>();
-                                for (Long i : answerSelected) {
-                                    ans.put(i, (long)1);
                                 }
-
-                                result.put(key, ans);
-                            } else {
-                                // neu day la lan thu 2+ thi phai count len 1 neu tim thay
-                                for (Long i : answerSelected) {
-                                    // chua co ai tick cau tra loi nay ca
-                                    if (result.get(key).get(i) == null)
-                                        result.get(key).put(i, (long) 1);
-                                    else
-                                        result.get(key).put(i,(Long) (result.get(key).get(i) + 1));
-                                }
-
-                            }
-                        }*/
+                            });
+                        }
                     }
+                    else
+                    {
+                        for (String accountID : userReponse.keySet()) {
+                            // lay danh sach cac cau tra loi
+                            ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
+
+                            // submit cuoi cung la submit gan day nhat va phan anh dung nhat cho thong ke hien tai
+                            Map<String,Object> lastSubmitAnswer = ls.get(ls.size() - 1);
+
+                            /// key - question key
+                            /// value -list cac lua chon da duoc tick cho mutichoice Q
+                            Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
+
+                            // duyet het tat ca cau hoi trong phan tra loi
+                            for(Map.Entry<String, List<Long>> entry : ansewerMutilChoices.entrySet()) {
+                                String key = entry.getKey();
+                                List<Long> answerSelected = entry.getValue();
+
+                                if (result.get(key) == null) {
+                                    // neu day la lan dau count cau tl cho cau hoi nay
+                                    // <key dc check - count>
+                                    HashMap ans = new HashMap<Long, Long>();
+                                    for (Long i : answerSelected) {
+                                        ans.put(i, (long)1);
+                                    }
+
+                                    result.put(key, ans);
+                                } else {
+                                    // neu day la lan thu 2+ thi phai count len 1 neu tim thay
+                                    for (Long i : answerSelected) {
+                                        // chua co ai tick cau tra loi nay ca
+                                        if (result.get(key).get(i) == null)
+                                            result.get(key).put(i, (long) 1);
+                                        else
+                                            result.get(key).put(i,(Long) (result.get(key).get(i) + 1));
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                    // duyet tat ca account da tra loi survey nay
+
 
                     final List<AnswerViewModel> answers = new ArrayList<>();
                     /// sau khi thong ke xong can map cu the cau hoi do la gi va cac cau tra loi

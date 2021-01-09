@@ -22,25 +22,9 @@ public class SurveyResultViewModel extends ViewModel {
         mAnsers = new MutableLiveData<>();
     }
 
-    public void fetchData(String survetID) {
+    public void fetchData(String surveyID, int city_code) {
 
-        DataManager.Instance().fetchAnswerFor(mAnsers, survetID);
-
-//        lsAnswers = new ArrayList<>();
-//        ArrayList<String> ls = new ArrayList<String>();
-//        ls.add("Có (22)");
-//        ls.add("Không (30)");
-//        lsAnswers.add(new AnswerViewModel("Bạn có đẹp trai không?", ls));
-//
-//        ArrayList<String> ls2 = new ArrayList<String>();
-//        ls2.add("Khẩu trang (532)");
-//        ls2.add("Băng cá nhân (200)");
-//        ls2.add("Gen rửa tay (562)");
-//        ls2.add("Thuốc ngủ (10)");
-//        lsAnswers.add(new AnswerViewModel("Bạn có nhưng thiết bị y tế nào?", ls2));
-//
-//        mAnsers.setValue(lsAnswers);
-
+        DataManager.Instance().fetchAnswerFor(mAnsers, surveyID, city_code);
     }
 
     public MutableLiveData<List<AnswerViewModel>> getlistAnswers() {
