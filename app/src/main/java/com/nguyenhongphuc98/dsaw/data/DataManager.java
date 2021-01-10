@@ -625,8 +625,14 @@ public class DataManager {
                 Map<String, Object> map = new HashMap<>();
                 for (int i = 0; i < questionList.size(); i++)
                 {
-                    if (questionList.get(i).getType().equalsIgnoreCase("image")) map.put(questionList.get(i).getId(), ">" + answerList.get(i));
-                    else map.put(questionList.get(i).getId(), answerList.get(i));
+                    if (questionList.get(i).getType().equalsIgnoreCase("image"))
+                    {
+                        map.put(questionList.get(i).getId(), ">" + answerList.get(i));
+                    }
+                    else
+                    {
+                        map.put(questionList.get(i).getId(), answerList.get(i));
+                    }
                 }
                 mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).updateChildren(map);
                 Log.e("Data manager", "Add new answer successful");
@@ -1539,7 +1545,6 @@ public class DataManager {
                             }
                         }
                     }
-                    // duyet tat ca account da tra loi survey nay
 
 
                     final List<AnswerViewModel> answers = new ArrayList<>();
@@ -1595,8 +1600,7 @@ public class DataManager {
     }
 
     /// Fetch cau tra loi danh rieng cho survey co cau truc report
-    public void fetchAnswerForReport(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid) {
-
+    public void fetchAnswerForReport(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid, final int city_code) {
         Query query = mDatabaseRef.child("Answers").child(surveyid);
 
         query.addValueEventListener(new ValueEventListener() {
@@ -1610,26 +1614,72 @@ public class DataManager {
                     // value list instance of a answer
                     Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
 
-                    // duyet tat ca account da tra loi survey nay
-                    for (String accountID : userReponse.keySet()) {
+                    if (city_code != -1)
+                    {
+                        // duyet tat ca account da tra loi survey nay
+                        for (String accountID : userReponse.keySet()) {
 
-                        // List<qid,textAnswer>
-                        ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
-                        for (Map map : ls) {
-                            List<String> oneAnswer = new ArrayList<>();
-                            ReportModel model = new ReportModel();
-                            for (Object qid : map.keySet()) {
-                                if (map.get(qid).toString().charAt(0) == '>')
-                                {
-                                    String[] imageName = map.get(qid).toString().split(">");
-                                    model.setImageUrl(imageName[1]);
-                                }  else
-                                    oneAnswer.add(qid + ": "+ map.get(qid));
-                            }
-                            model.setLsAnswers(oneAnswer);
-                            listAnswers.add(model);
+                            // List<qid,textAnswer>
+                            Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(accountID);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                            Account account = snapshot.getValue(Account.class);
+                                            if (account.getCode_city() == city_code) {
+                                                ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
+                                                for (Map map : ls) {
+                                                    List<String> oneAnswer = new ArrayList<>();
+                                                    ReportModel model = new ReportModel();
+                                                    for (Object qid : map.keySet()) {
+                                                        if (map.get(qid).toString().charAt(0) == '>')
+                                                        {
+                                                            String[] imageName = map.get(qid).toString().split(">");
+                                                            model.setImageUrl(imageName[1]);
+                                                        }  else
+                                                            oneAnswer.add(qid + ": "+ map.get(qid));
+                                                    }
+                                                    model.setLsAnswers(oneAnswer);
+                                                    listAnswers.add(model);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                         }
                     }
+                    else
+                    {
+                        // duyet tat ca account da tra loi survey nay
+                        for (String accountID : userReponse.keySet()) {
+
+                            // List<qid,textAnswer>
+                            ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
+                            for (Map map : ls) {
+                                List<String> oneAnswer = new ArrayList<>();
+                                ReportModel model = new ReportModel();
+                                for (Object qid : map.keySet()) {
+                                    if (map.get(qid).toString().charAt(0) == '>')
+                                    {
+                                        String[] imageName = map.get(qid).toString().split(">");
+                                        model.setImageUrl(imageName[1]);
+                                    }  else
+                                        oneAnswer.add(qid + ": "+ map.get(qid));
+                                }
+                                model.setLsAnswers(oneAnswer);
+                                listAnswers.add(model);
+                            }
+                        }
+                    }
+
                 }
 
                 // replace question key by title of question
@@ -1643,7 +1693,7 @@ public class DataManager {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 Question q = snapshot.getValue(Question.class);
                                 for (ReportModel r : listAnswers) {
-                                    List<String> newAnswers= new ArrayList<>();
+                                    List<String> newAnswers = new ArrayList<>();
                                     for (String s : r.getLsAnswers()) {
                                         String t = s.replace(q.getId(),q.getTitle());
                                         newAnswers.add(t);
@@ -1658,8 +1708,6 @@ public class DataManager {
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) { }
                 });
-
-
             }
 
             @Override

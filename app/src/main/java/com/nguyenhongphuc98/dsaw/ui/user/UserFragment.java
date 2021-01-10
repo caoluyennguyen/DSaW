@@ -159,7 +159,7 @@ public class UserFragment extends Fragment {
                 adDistrictName.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mSpinDistrict.setAdapter(adDistrictName);
 
-                //Toast.makeText(getContext(), lsCity.get(position).getName() , Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext0(), lsCity.get(position).getName() , Toast.LENGTH_LONG).show();
             }
 
             @Override

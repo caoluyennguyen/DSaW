@@ -48,6 +48,8 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
 
     Dialog caseInfoDialog;
 
+    ImageButton btnTracking;
+
     public static MapVisualizeFragment newInstance() {
         return new MapVisualizeFragment();
     }
@@ -71,6 +73,8 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
+
+        btnTracking = view.findViewById(R.id.btnTracking);
     }
 
     @Override
@@ -127,9 +131,6 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
                         .fillColor(Color.WHITE));
             }
         });
-
-
-
 
         CameraPosition liberty = CameraPosition.builder()
                 .target(new LatLng(DataCenter.currentLocation.getLatitude(), DataCenter.currentLocation.getLongitude()))

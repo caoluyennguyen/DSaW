@@ -140,89 +140,80 @@ public class SubmitSurvey extends Fragment {
 
     public void InitEvent()
     {
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.navigation_report);
-            }
-        });
-        lvQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
-                questionClicked = position;
-                view = lvQuestion.getChildAt(position);
-                if (lsQuestion.get(position).getType().equalsIgnoreCase("image")) {
-                    try {
-                        Intent intentOpenFile = new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intentOpenFile, "Choose image"), CODE_OPEN_DOCUMENT);
-                    } catch (android.content.ActivityNotFoundException ex) {
-                        // Potentially direct the user to the Market with a Dialog
-                        Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
-                    }
+        btnBack.setOnClickListener(v -> NavHostFragment.findNavController(getParentFragment()).navigate(R.id.navigation_report));
+
+        lvQuestion.setOnItemClickListener((parent, view, position, id) -> {
+            Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
+            questionClicked = position;
+            view = lvQuestion.getChildAt(position);
+            if (lsQuestion.get(position).getType().equalsIgnoreCase("image")) {
+                try {
+                    Intent intentOpenFile = new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intentOpenFile, "Choose image"), CODE_OPEN_DOCUMENT);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    // Potentially direct the user to the Market with a Dialog
+                    Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Submit survey", Toast.LENGTH_LONG).show();
-                lsAnswer = new ArrayList<>();
-                ArrayList<ArrayList<String>> lsMultipleAnswer = new ArrayList<>();
-                ArrayList<ArrayList<Integer>> lsMultipleAnswerId = new ArrayList<>();
-                View parentView = null;
-                int index = 0;
 
-                for (int i = 0; i < lvQuestion.getCount(); i++)
-                {
-                    parentView = lvQuestion.getChildAt(i);
-                    if (lsQuestion.get(i).getType().equalsIgnoreCase("text")) {
-                        lsAnswer.add(((TextView) parentView.findViewById(R.id.edtAnswer)).getText().toString());
-                    }
-                    else if (lsQuestion.get(i).getType().equalsIgnoreCase("image")) {
-                        lsAnswer.add(lsIdCoverImg.get(index));
-                        DataManager.Instance().UploadImageToReport(lsIdCoverImg.get(index), "report/", lsCoverImg.get(index));
-                        Log.e("Submit survey", "List id cover image: " + lsIdCoverImg);
+        btnSubmit.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Submit survey", Toast.LENGTH_LONG).show();
+            lsAnswer = new ArrayList<>();
+            //lsAnswer.clear();
+            ArrayList<ArrayList<String>> lsMultipleAnswer = new ArrayList<>();
+            ArrayList<ArrayList<Integer>> lsMultipleAnswerId = new ArrayList<>();
+            View parentView = null;
+            int index = 0;
 
-                        index++;
-                    }
-                    else {
-                        ArrayList<String> lsCheckedAnswer = new ArrayList<>();
-                        ArrayList<Integer> lsCheckedAnswerId = new ArrayList<>();
-                        LinearLayout lsAnswer =  parentView.findViewById(R.id.list_of_answer);
-                        for (int j = 0; j < lsQuestion.get(i).getAnswers().size(); j++) {
-                            LinearLayout answerLayout = (LinearLayout) lsAnswer.getChildAt(j);
-                            AppCompatCheckedTextView answer = (AppCompatCheckedTextView) answerLayout.getChildAt(0);
-                            if (answer.isChecked()) {
-                                Log.e("Submit survey", "Answer is checked: " + answer.getText().toString());
-                                lsCheckedAnswer.add(answer.getText().toString());
-                                //lsCheckedAnswer.add(String.valueOf(j));
-                                lsCheckedAnswerId.add(j);
-                            }
-                        }
-                        lsMultipleAnswer.add(lsCheckedAnswer);
-                        lsMultipleAnswerId.add(lsCheckedAnswerId);
-                    }
-                    Log.e("Submit survey", "List question: " + lvQuestion.getAdapter());
+            for (int i = 0; i < lvQuestion.getCount(); i++)
+            {
+                parentView = lvQuestion.getChildAt(i);
+                if (lsQuestion.get(i).getType().equalsIgnoreCase("text")) {
+                    lsAnswer.add(((TextView) parentView.findViewById(R.id.edtAnswer)).getText().toString());
                 }
+                else if (lsQuestion.get(i).getType().equalsIgnoreCase("image")) {
+                    lsAnswer.add(lsIdCoverImg.get(index));
+                    DataManager.Instance().UploadImageToReport(lsIdCoverImg.get(index), "report/", lsCoverImg.get(index));
+                    Log.e("Submit survey", "List id cover image: " + lsIdCoverImg);
 
-                //save answer to firebase
-                if (lsQuestion.get(0).getType().equalsIgnoreCase("MT")) {
-                    DataManager.Instance().AddNewMultipleAnswer(DataCenter.surveyID, DataCenter.currentUser.getIdentity(), lsQuestion, lsMultipleAnswer, lsMultipleAnswerId);
+                    index++;
                 }
                 else {
-                    // save list image
-                    /*for (int i = 0; i < lsCoverImg.size(); i++) {
-                        DataManager.Instance().UploadFileToFirebase("report/", lsCoverImg.get(i));
-                    }*/
-                    // save list answer
-                    DataManager.Instance().AddNewAnswer(DataCenter.surveyID, DataCenter.currentUser.getIdentity(), lsQuestion, lsAnswer);
+                    ArrayList<String> lsCheckedAnswer = new ArrayList<>();
+                    ArrayList<Integer> lsCheckedAnswerId = new ArrayList<>();
+                    LinearLayout lsAnswer =  parentView.findViewById(R.id.list_of_answer);
+                    for (int j = 0; j < lsQuestion.get(i).getAnswers().size(); j++) {
+                        LinearLayout answerLayout = (LinearLayout) lsAnswer.getChildAt(j);
+                        AppCompatCheckedTextView answer = (AppCompatCheckedTextView) answerLayout.getChildAt(0);
+                        if (answer.isChecked()) {
+                            Log.e("Submit survey", "Answer is checked: " + answer.getText().toString());
+                            lsCheckedAnswer.add(answer.getText().toString());
+                            //lsCheckedAnswer.add(String.valueOf(j));
+                            lsCheckedAnswerId.add(j);
+                        }
+                    }
+                    lsMultipleAnswer.add(lsCheckedAnswer);
+                    lsMultipleAnswerId.add(lsCheckedAnswerId);
                 }
-
-                lsAnswer.clear();
-                lsCoverImg.clear();
-                lsIdCoverImg.clear();
+                Log.e("Submit survey", "List question: " + lvQuestion.getAdapter());
             }
+
+            //save answer to firebase
+            if (lsQuestion.get(0).getType().equalsIgnoreCase("MT")) {
+                DataManager.Instance().AddNewMultipleAnswer(DataCenter.surveyID, DataCenter.currentUser.getIdentity(), lsQuestion, lsMultipleAnswer, lsMultipleAnswerId);
+            }
+            else {
+                // save list image
+                /*for (int i = 0; i < lsCoverImg.size(); i++) {
+                    DataManager.Instance().UploadFileToFirebase("report/", lsCoverImg.get(i));
+                }*/
+                // save list answer
+                DataManager.Instance().AddNewAnswer(DataCenter.surveyID, DataCenter.currentUser.getIdentity(), lsQuestion, lsAnswer);
+            }
+
+            lsCoverImg.clear();
+            lsIdCoverImg.clear();
         });
     }
 }

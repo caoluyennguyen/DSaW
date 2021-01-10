@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.nguyenhongphuc98.dsaw.data.DataManager;
+import com.nguyenhongphuc98.dsaw.data.model.City;
 import com.nguyenhongphuc98.dsaw.data.model.ReportModel;
 
 import java.util.ArrayList;
@@ -12,15 +13,17 @@ import java.util.List;
 public class ReportResultViewModel extends ViewModel {
 
     private MutableLiveData<List<ReportModel>> lsReports;
+    private MutableLiveData<List<City>> lsCity = new MutableLiveData<>();
+
 
     public ReportResultViewModel() {
         lsReports = new MutableLiveData<>();
 
     }
 
-    public void fetchData(String reportID) {
+    public void fetchData(String reportID, int city_code) {
 
-        DataManager.Instance().fetchAnswerForReport(lsReports, reportID);
+        DataManager.Instance().fetchAnswerForReport(lsReports, reportID, city_code);
 //        List<ReportModel> ls = new ArrayList<>();
 //        List<String> ans = new ArrayList<>();
 //        ans.add("Người báo cáo: Phúc");
@@ -41,4 +44,18 @@ public class ReportResultViewModel extends ViewModel {
     public MutableLiveData<List<ReportModel>> getLsReport() {
         return lsReports;
     }
+
+    public MutableLiveData<List<City>> getLsCity() {
+        return lsCity;
+    }
+
+    public void setLsCity(MutableLiveData<List<City>> lsCity) {
+        this.lsCity = lsCity;
+    }
+
+    public void GetAllCity()
+    {
+        DataManager.Instance().GetAllmCity(lsCity);
+    }
+
 }
