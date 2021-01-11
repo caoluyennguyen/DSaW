@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,6 +82,12 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MapVisualizeViewModel.class);
+
+        btnTracking.setOnClickListener(v -> {
+            DataCenter.routeUID = DataCenter.currentUser.getIdentity();
+            DataCenter.routeUNAME = DataCenter.currentUser.getUsername();
+            NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_user_tracking);
+        });
     }
 
     @Override
@@ -185,4 +192,5 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
             }
         });
     }
+
 }

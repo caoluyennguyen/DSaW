@@ -144,13 +144,10 @@ public class UserManagerFragment extends Fragment {
             }
         });
 
-        lvUsers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DataCenter.routeUID = mViewModel.getLisAccount().getValue().get(position).getIdentity();
-                DataCenter.routeUNAME = mViewModel.getLisAccount().getValue().get(position).getUsername();
-                NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_user_tracking);
-            }
+        lvUsers.setOnItemClickListener((parent, view, position, id) -> {
+            DataCenter.routeUID = mViewModel.getLisAccount().getValue().get(position).getIdentity();
+            DataCenter.routeUNAME = mViewModel.getLisAccount().getValue().get(position).getUsername();
+            NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_user_tracking);
         });
     }
 }

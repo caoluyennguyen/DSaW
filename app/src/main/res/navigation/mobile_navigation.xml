@@ -146,5 +146,10 @@
     <fragment
         android:id="@+id/mapVisualizeFragment"
         android:name="com.nguyenhongphuc98.dsaw.ui.map.MapVisualizeFragment"
-        android:label="MapVisualizeFragment" />
+        android:label="MapVisualizeFragment">
+
+        <action
+            android:id="@+id/go_to_user_tracking"
+            app:destination="@id/routeFragment"/>
+    </fragment>
 </navigation>

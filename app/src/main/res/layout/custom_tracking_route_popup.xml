@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:maxHeight="500dp"
+    android:paddingLeft="15dp"
+    android:paddingBottom="15dp"
+    android:gravity="center"
+    android:background="@drawable/background_case_info">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Case info:"
+            android:textColor="#000"/>
+
+        <ImageButton
+            android:id="@+id/case_info_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_close"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginRight="45dp"
+        android:background="#000000"
+        />
+
+    <ListView
+        android:id="@+id/route_tracking_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="4dp"
+        android:divider="@android:color/transparent"/>
+
+</LinearLayout>
