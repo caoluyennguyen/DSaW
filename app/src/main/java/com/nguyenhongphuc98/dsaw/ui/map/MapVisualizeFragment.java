@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.nguyenhongphuc98.dsaw.R;
 import com.nguyenhongphuc98.dsaw.data.DataCenter;
+import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Case;
 
 import java.util.List;
@@ -51,6 +54,10 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
 
     ImageButton btnTracking;
 
+    EditText edtDistance;
+
+    Button btnDistance;
+
     public static MapVisualizeFragment newInstance() {
         return new MapVisualizeFragment();
     }
@@ -68,7 +75,7 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMapView = (MapView) view.findViewById(R.id.mapVisualize);
+        mMapView = view.findViewById(R.id.mapVisualize);
         if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
@@ -76,6 +83,9 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
         }
 
         btnTracking = view.findViewById(R.id.btnTracking);
+
+        edtDistance = view.findViewById(R.id.edtDistance);
+        btnDistance = view.findViewById(R.id.btnSaveDistance);
     }
 
     @Override
@@ -88,6 +98,19 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
             DataCenter.routeUNAME = DataCenter.currentUser.getUsername();
             NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_user_tracking);
         });
+
+        btnDistance.setOnClickListener(v -> {
+            DataManager.Instance().UpdateUserDistance(Integer.parseInt(edtDistance.getText().toString()));
+            UnfocusElement();
+        });
+    }
+
+    void UnfocusElement()
+    {
+        edtDistance.setFocusableInTouchMode(false);
+        edtDistance.setFocusable(false);
+        edtDistance.setFocusableInTouchMode(true);
+        edtDistance.setFocusable(true);
     }
 
     @Override
@@ -98,45 +121,41 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        mViewModel.getListCases().observe(this, new Observer<List<Case>>() {
-            @Override
-            public void onChanged(List<Case> cases) {
+        mViewModel.getListCases().observe(this, cases -> {
+            for (Case c: cases) {
+                double latitude = Double.parseDouble(c.getLocation().split(",")[0]);
+                double logtitude = Double.parseDouble(c.getLocation().split(",")[1]);
+                //Log.d("CASE", "onChanged: location of case: " + latitude + logtitude);
 
-                for (Case c: cases) {
-                    double latitude = Double.parseDouble(c.getLocation().split(",")[0]);
-                    double logtitude = Double.parseDouble(c.getLocation().split(",")[1]);
-                    //Log.d("CASE", "onChanged: location of case: " + latitude + logtitude);
+                // Defaul is f0 - so it will get red color
+                int strokeColor = Color.RED;
 
-                    // Defaul is f0 - so it will get red color
-                    int strokeColor = Color.RED;
+                // Purple color for F1
+                if (c.getF().equals("F1"))
+                    strokeColor = Color.rgb(214, 79, 153);
+                // Orange color for F2
+                if (c.getF().equals("F2"))
+                    strokeColor = Color.rgb(247, 159, 7);
+                // Yellow color for F3
+                if (c.getF().equals("F3"))
+                    strokeColor = Color.rgb(162, 255, 0);
 
-                    // Purple color for F1
-                    if (c.getF().equals("F1"))
-                        strokeColor = Color.rgb(214, 79, 153);
-                    // Orange color for F2
-                    if (c.getF().equals("F2"))
-                        strokeColor = Color.rgb(247, 159, 7);
-                    // Yellow color for F3
-                    if (c.getF().equals("F3"))
-                        strokeColor = Color.rgb(162, 255, 0);
-
-                    Circle circle = googleMap.addCircle(new CircleOptions()
-                            .clickable(true)
-                            .center(new LatLng(latitude, logtitude))
-                            .radius(20)
-                            .strokeColor(strokeColor)
-                            .fillColor(Color.GREEN));
-
-                    circle.setTag(c);
-                }
-
-                Log.d("CASE", "your location: " + DataCenter.currentLocation.getLatitude() + ":"+ DataCenter.currentLocation.getLongitude());
                 Circle circle = googleMap.addCircle(new CircleOptions()
-                        .center(new LatLng(DataCenter.currentLocation.getLatitude(), DataCenter.currentLocation.getLongitude()))
+                        .clickable(true)
+                        .center(new LatLng(latitude, logtitude))
                         .radius(20)
-                        .strokeColor(Color.BLACK)
-                        .fillColor(Color.WHITE));
+                        .strokeColor(strokeColor)
+                        .fillColor(Color.GREEN));
+
+                circle.setTag(c);
             }
+
+            Log.d("CASE", "your location: " + DataCenter.currentLocation.getLatitude() + ":"+ DataCenter.currentLocation.getLongitude());
+            Circle circle = googleMap.addCircle(new CircleOptions()
+                    .center(new LatLng(DataCenter.currentLocation.getLatitude(), DataCenter.currentLocation.getLongitude()))
+                    .radius(20)
+                    .strokeColor(Color.BLACK)
+                    .fillColor(Color.WHITE));
         });
 
         CameraPosition liberty = CameraPosition.builder()

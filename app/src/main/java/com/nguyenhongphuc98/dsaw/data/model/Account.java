@@ -29,6 +29,8 @@ public class Account {
 
     private int code_ward;
 
+    private int warning_distance;
+
     public Account() {}
 
     public Account(String birthday, String identity, String password, String phonenumber,
@@ -154,5 +156,13 @@ public class Account {
 
     public void setCode_ward(int code_ward) {
         this.code_ward = code_ward;
+    }
+
+    public int getWarning_distance() {
+        return warning_distance;
+    }
+
+    public void setWarning_distance(int warning_distance) {
+        this.warning_distance = warning_distance;
     }
 }

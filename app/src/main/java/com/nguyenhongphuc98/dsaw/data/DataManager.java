@@ -460,6 +460,37 @@ public class DataManager {
         }
     }
 
+    public void UpdateUserDistance(final int warning_distance)
+    {
+        try {
+            Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot.exists()) {
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Account account = snapshot.getValue(Account.class);
+                            account.setWarning_distance(warning_distance);
+                            DataCenter.currentUser = account;
+                            mDatabase.getReference("Account").child(snapshot.getKey()).setValue(account);
+                            Log.e("DataManager", "Update user distance warning successfully");
+                            Toast.makeText(mContext, "Cập nhật khoảng cách cảnh báo thành công", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+        catch (Exception e){
+            Log.e("DataManager","Error update user distance warning: " + e.getMessage());
+        }
+    }
+
     public void GetNumberOfQuestion(final int amount)
     {
         try {
@@ -1051,7 +1082,7 @@ public class DataManager {
         });
     }
 
-    public void updateACcount(final Account user) {
+    public void updateAccount(final Account user) {
 
         // arrange increate so we get lastest date
         Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(user.getIdentity());

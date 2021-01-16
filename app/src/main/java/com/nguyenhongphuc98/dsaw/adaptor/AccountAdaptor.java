@@ -64,7 +64,7 @@ public class AccountAdaptor extends ArrayAdapter {
                         if (e.getRole().equals("user")) {
                             e.setRole("manager");
                             e.setArea_management(lsAreas.getValue().get(item.getOrder()).getId());
-                            DataManager.Instance().updateACcount(e);
+                            DataManager.Instance().updateAccount(e);
                         }
                     }
                 }
@@ -113,7 +113,7 @@ public class AccountAdaptor extends ArrayAdapter {
                 if (e.getRole().equals("manager")) {
                     e.setRole("user");
                     e.setArea_management("null");
-                    DataManager.Instance().updateACcount(e);
+                    DataManager.Instance().updateAccount(e);
                 } else {
                     menu.show();
                     selectedUserID = e.getIdentity();

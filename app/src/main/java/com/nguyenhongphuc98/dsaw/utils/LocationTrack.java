@@ -42,6 +42,8 @@ public class LocationTrack extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
 
     protected LocationManager locationManager;
+    //private FusedLocationProviderClient fusedLocationClient;
+
 
     public LocationTrack(Context mContext) {
         this.mContext = mContext;
@@ -49,7 +51,6 @@ public class LocationTrack extends Service implements LocationListener {
     }
 
     private Location getLocation() {
-
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
@@ -111,7 +112,6 @@ public class LocationTrack extends Service implements LocationListener {
                     if (locationManager != null) {
                         loc = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
                     }
 
                     if (loc != null) {
@@ -170,7 +170,6 @@ public class LocationTrack extends Service implements LocationListener {
 
         alertDialog.show();
     }
-
 
     public void stopListener() {
         if (locationManager != null) {

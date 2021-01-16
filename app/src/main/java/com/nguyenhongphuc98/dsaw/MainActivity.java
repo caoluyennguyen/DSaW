@@ -23,6 +23,7 @@ import com.nguyenhongphuc98.dsaw.data.DataCenter;
 import com.nguyenhongphuc98.dsaw.data.DataManager;
 import com.nguyenhongphuc98.dsaw.data.model.Account;
 import com.nguyenhongphuc98.dsaw.data.model.AnswerViewModel;
+import com.nguyenhongphuc98.dsaw.data.model.Case;
 import com.nguyenhongphuc98.dsaw.data.model.Warning;
 import com.nguyenhongphuc98.dsaw.data.network.DataService;
 import com.nguyenhongphuc98.dsaw.utils.CurrentLocation;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         //fetch data in background
         DataService.Instance().updateCovidStatistic();
 
+        // fetch all warnings to user
         MutableLiveData<Warning> mWarning = new MutableLiveData<>();
         DataManager.Instance().FetchWarning(mWarning);
 
@@ -72,6 +74,35 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // fetch all cases to user
+        MutableLiveData<List<Case>> mLsCases = new MutableLiveData<>();
+        DataManager.Instance().fetchAllCase(mLsCases);
+
+        mLsCases.observe(this, cases -> {
+            int i = 2;
+            for (Case c: cases) {
+                //double latitude = Double.parseDouble(c.getLocation().split(",")[0]) - DataCenter.currentLocation.getLatitude();
+                //double logtitude = Double.parseDouble(c.getLocation().split(",")[1]) - DataCenter.currentLocation.getLatitude();
+                double distance = calculateDistance(Double.parseDouble(c.getLocation().split(",")[0]), DataCenter.currentLocation.getLatitude(),
+                        Double.parseDouble(c.getLocation().split(",")[1]), DataCenter.currentLocation.getLongitude());
+                Log.d("CASE", "to your location: " + distance + "km");
+
+                if (distance < DataCenter.currentUser.getWarning_distance())
+                {
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "CHANNEL_ID")
+                            .setSmallIcon(R.drawable.warning_icon)
+                            .setContentTitle("CẢNH BÁO VÀO VÙNG NGUY HIỂM!")
+                            .setContentText("Ban cách đối tượng " + c.getName() + " " + distance + " km.")
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                    // notificationId is a unique int for each notification that you must define
+                    notificationManager.notify(i, builder.build());
+                    i++;
+                }
+            }
+        });
+
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -103,6 +134,36 @@ public class MainActivity extends AppCompatActivity {
 //            if (permissionsToRequest.size() > 0)
 //                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
 //        }
+    }
+
+    public double calculateDistance(double lat1,
+                                  double lat2, double lon1,
+                                  double lon2)
+    {
+
+        // The math module contains a function
+        // named toRadians which converts from
+        // degrees to radians.
+        lon1 = Math.toRadians(lon1);
+        lon2 = Math.toRadians(lon2);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        // Haversine formula
+        double dlon = lon2 - lon1;
+        double dlat = lat2 - lat1;
+        double a = Math.pow(Math.sin(dlat / 2), 2)
+                + Math.cos(lat1) * Math.cos(lat2)
+                * Math.pow(Math.sin(dlon / 2),2);
+
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956
+        // for miles
+        double r = 6371;
+
+        // calculate the result
+        return(c * r);
     }
 
 //    private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {
