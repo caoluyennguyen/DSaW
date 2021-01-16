@@ -22,23 +22,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.corazon98.dsaw.R;
 import com.corazon98.dsaw.data.DataCenter;
 import com.corazon98.dsaw.data.DataManager;
 import com.corazon98.dsaw.data.model.Case;
 
-public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnCircleClickListener {
+public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnCircleClickListener, GoogleMap.OnMarkerClickListener {
 
     private MapVisualizeViewModel mViewModel;
 
@@ -155,20 +158,24 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
                 circle.setTag(c);
 
                 LatLng markLoc = new LatLng(latitude, logtitude);
-                googleMap.addMarker(new MarkerOptions()
+                Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(markLoc)
-                        .title("Marker of " + c));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(markLoc));
-
+                        .title("Marker of " + c.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.warning)));
+                marker.setTag(c);
             }
-
-            Log.d("CASE", "your location: " + DataCenter.currentLocation.getLatitude() + ":"+ DataCenter.currentLocation.getLongitude());
-            Circle circle = googleMap.addCircle(new CircleOptions()
-                    .center(new LatLng(DataCenter.currentLocation.getLatitude(), DataCenter.currentLocation.getLongitude()))
-                    .radius(20)
-                    .strokeColor(Color.BLACK)
-                    .fillColor(Color.WHITE));
         });
+
+        Log.d("CASE", "your location: " + DataCenter.currentLocation.getLatitude() + ":"+ DataCenter.currentLocation.getLongitude());
+
+        googleMap.addCircle(new CircleOptions()
+                .center(new LatLng(DataCenter.currentLocation.getLatitude(), DataCenter.currentLocation.getLongitude()))
+                .radius(20)
+                .strokeColor(Color.BLACK)
+                .fillColor(Color.WHITE));
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(DataCenter.currentLocation.getLatitude(), DataCenter.currentLocation.getLongitude()))
+                .title("Vị trí hiện tai"));
 
         CameraPosition liberty = CameraPosition.builder()
                 .target(new LatLng(DataCenter.currentLocation.getLatitude(), DataCenter.currentLocation.getLongitude()))
@@ -180,22 +187,53 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(liberty));
 
         googleMap.setOnCircleClickListener(this);
+        googleMap.setOnMarkerClickListener(this);
     }
 
     @Override
     public void onCircleClick(Circle circle) {
-        Case c = (Case) circle.getTag();
-        //Toast.makeText(getContext(), c.getName(), Toast.LENGTH_SHORT).show();
+        /*if (!circle.getTag().equals(null))
+        {
+            Case c = (Case) circle.getTag();
+            //Toast.makeText(getContext(), c.getName(), Toast.LENGTH_SHORT).show();
 
-        mappingDialog();
+            mappingDialog();
 
-        displayName.setText("Name: " + c.getName());
-        identify.setText("ID: " + c.getUser());
-        time.setText("Begin time: " + c.getBegin_time());
-        level.setText("Case level: " + c.getF());
+            displayName.setText("Name: " + c.getName());
+            identify.setText("ID: " + c.getUser());
+            time.setText("Begin time: " + c.getBegin_time());
+            level.setText("Case level: " + c.getF());
 
-        caseInfoDialog.show();
+            caseInfoDialog.show();
+        }*/
     }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        if (!marker.getTitle().equals("Vị trí hiện tai"))
+        {
+            Case c = (Case) marker.getTag();
+            //Toast.makeText(getContext(), c.getName(), Toast.LENGTH_SHORT).show();
+
+            mappingDialog();
+
+            displayName.setText("Name: " + c.getName());
+            identify.setText("ID: " + c.getUser());
+            time.setText("Begin time: " + c.getBegin_time());
+            level.setText("Case level: " + c.getF());
+
+            caseInfoDialog.show();
+            Toast.makeText(getActivity(),
+                    c.getName() + " is in " + c.getArea() + " from " + c.getBegin_time(),
+                    Toast.LENGTH_SHORT).show();
+            // Return false to indicate that we have not consumed the event and that we wish
+            // for the default behavior to occur (which is for the camera to move such that the
+            // marker is centered and for the marker's info window to open, if it has one).
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+        }
+        return false;
+    }
+
 
     Boolean mapped = false;
     ImageButton closeBtn;
