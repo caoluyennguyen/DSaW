@@ -3,7 +3,9 @@ package com.nguyenhongphuc98.dsaw.ui.map;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -85,6 +88,7 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
         btnTracking = view.findViewById(R.id.btnTracking);
 
         edtDistance = view.findViewById(R.id.edtDistance);
+        edtDistance.setText(String.valueOf(DataCenter.currentUser.getWarning_distance()));
         btnDistance = view.findViewById(R.id.btnSaveDistance);
     }
 
@@ -102,6 +106,7 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
         btnDistance.setOnClickListener(v -> {
             DataManager.Instance().UpdateUserDistance(Integer.parseInt(edtDistance.getText().toString()));
             UnfocusElement();
+            hideKeyboardFrom(getContext(), view);
         });
     }
 
@@ -111,6 +116,11 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
         edtDistance.setFocusable(false);
         edtDistance.setFocusableInTouchMode(true);
         edtDistance.setFocusable(true);
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override

@@ -12,33 +12,46 @@
         android:id="@+id/mapVisualize"
         />
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-        <EditText
-            android:id="@+id/edtDistance"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/btnSaveDistance"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:hint="Khoảng cách cảnh báo"
-            android:layout_marginTop="20dp"/>
-        <Button
-            android:id="@+id/btnSaveDistance"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/edtDistance"
-            app:layout_constraintRight_toRightOf="parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:background="#fff">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_green"
-            android:text="Lưu"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="Khoảng cách nhận cảnh báo (km)"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/edtDistance"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/btnSaveDistance"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:hint="km"
+                android:layout_marginTop="20dp"/>
+            <Button
+                android:id="@+id/btnSaveDistance"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/edtDistance"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_green"
+                android:text="Lưu"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/btnTracking"
