@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.nguyenhongphuc98.dsaw.ui.home.HomeFragment"
+        android:name="com.corazon98.dsaw.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
 
@@ -18,24 +18,24 @@
 
     <fragment
         android:id="@+id/navigation_news"
-        android:name="com.nguyenhongphuc98.dsaw.ui.news.NewsFragment"
+        android:name="com.corazon98.dsaw.ui.news.NewsFragment"
         android:label="@string/title_news"
         tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/navigation_report"
-        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.UserSurveyListFragment"
+        android:name="com.corazon98.dsaw.ui.surveys.UserSurveyListFragment"
         android:label="@string/title_report"
         tools:layout="@layout/user_survey_list_fragment" />
 
     <fragment
         android:id="@+id/navigation_user"
-        android:name="com.nguyenhongphuc98.dsaw.ui.user.UserFragment"
+        android:name="com.corazon98.dsaw.ui.user.UserFragment"
         android:label="@string/title_report"
         tools:layout="@layout/fragment_user" />
     <fragment
         android:id="@+id/navigation_admin"
-        android:name="com.nguyenhongphuc98.dsaw.ui.admin.AdminFragment"
+        android:name="com.corazon98.dsaw.ui.admin.AdminFragment"
         android:label="@string/title_admin"
         tools:layout="@layout/fragment_admin" >
 
@@ -62,13 +62,13 @@
 
     <fragment
         android:id="@+id/viewCaseFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.cases.ViewCaseFragment"
+        android:name="com.corazon98.dsaw.ui.cases.ViewCaseFragment"
         android:label="fragment_user_manager"
         tools:layout="@layout/fragment_user_manager" />
 
     <fragment
         android:id="@+id/userManagerFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.admin.UserManagerFragment"
+        android:name="com.corazon98.dsaw.ui.admin.UserManagerFragment"
         android:label="UserManagerFragment" >
 
         <action
@@ -78,7 +78,7 @@
 
     <fragment
         android:id="@+id/caseFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.cases.CaseFragment"
+        android:name="com.corazon98.dsaw.ui.cases.CaseFragment"
         android:label="fragment_case">
 
         <action
@@ -88,7 +88,7 @@
 
     <fragment
         android:id="@+id/adminSurveyListFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.AdminSurveyListFragment"
+        android:name="com.corazon98.dsaw.ui.surveys.AdminSurveyListFragment"
         android:label="Admin Survey List"
         tools:layout="@layout/fragment_admin_survey_list">
 
@@ -105,47 +105,47 @@
 
     <fragment
         android:id="@+id/surveyResultFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.SurveyResultFragment"
+        android:name="com.corazon98.dsaw.ui.surveys.SurveyResultFragment"
         android:label="SurveyResultFragment" />
 
     <fragment
         android:id="@+id/routeFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.route.RouteFragment"
+        android:name="com.corazon98.dsaw.ui.route.RouteFragment"
         android:label="fragment_route"
         tools:layout="@layout/fragment_route" />
 
     <fragment
         android:id="@+id/warningFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.admin_warning.AdminWarning"
+        android:name="com.corazon98.dsaw.ui.admin_warning.AdminWarning"
         android:label="fragment_warning"
         tools:layout="@layout/fragment_admin_warning" />
 
     <fragment
         android:id="@+id/createSurveyFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.medical_report.CreateSurvey"
+        android:name="com.corazon98.dsaw.ui.medical_report.CreateSurvey"
         android:label="fragment_create_survey"
         tools:layout="@layout/fragment_create_survey" />
 
     <fragment
         android:id="@+id/personalReportFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.medical_report.SubmitSurvey"
+        android:name="com.corazon98.dsaw.ui.medical_report.SubmitSurvey"
         android:label="fragment_personal_report"
         tools:layout="@layout/fragment_submit_survey" />
 
     <fragment
         android:id="@+id/createNewsFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.news.CreateNewsFragment"
+        android:name="com.corazon98.dsaw.ui.news.CreateNewsFragment"
         android:label="fragment_create_news"
         tools:layout="@layout/fragment_create_news" />
 
     <fragment
         android:id="@+id/reportResultFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.surveys.ReportResultFragment"
+        android:name="com.corazon98.dsaw.ui.surveys.ReportResultFragment"
         android:label="ReportResultFragment" />
 
     <fragment
         android:id="@+id/mapVisualizeFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.map.MapVisualizeFragment"
+        android:name="com.corazon98.dsaw.ui.map.MapVisualizeFragment"
         android:label="MapVisualizeFragment">
 
         <action

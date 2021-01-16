@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/statisticFragment"
-        android:name="com.nguyenhongphuc98.dsaw.ui.statistic.StatisticFragment"
+        android:name="com.corazon98.dsaw.ui.statistic.StatisticFragment"
         android:label="fragment_statistic"
         tools:layout="@layout/fragment_statistic" />
 </navigation>
