@@ -1,6 +1,8 @@
 package com.corazon98.dsaw.adaptor;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +23,22 @@ import com.corazon98.dsaw.data.model.Question;
 
 import java.util.List;
 
-public class QuestionAdapter extends ArrayAdapter {
+public class QuestionAdapter extends ArrayAdapter implements OnIntentReceived {
     final int CODE_OPEN_DOCUMENT = 22;
 
     Context context;
     List<Question> lsQuestion;
-    AnswerAdaptor mAdapter;
+    ImageView imgCover;
 
     public QuestionAdapter(@NonNull Context context, List<Question> ls){
         super(context, R.layout.custom_survey_multichoice_answer, ls);
         this.context = context;
         lsQuestion = ls;
+    }
+
+    @Override
+    public void onIntent(Intent i, int resultCode, Uri uri) {
+        imgCover.setImageURI(uri);
     }
 
     @NonNull
@@ -96,14 +103,11 @@ public class QuestionAdapter extends ArrayAdapter {
                 holder.question = viewRow.findViewById(R.id.tqfQuestion);
                 holder.attachFile = viewRow.findViewById(R.id.attach_file_button);
                 holder.imageCover = viewRow.findViewById(R.id.image_cover);
+                imgCover = viewRow.findViewById(R.id.image_cover);
 
                 holder.attachFile.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Intent intentOpenFile = new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
-                        //ActivityCompat.startActivityForResult(intentOpenFile, Intent.createChooser(intentOpenFile,"Choose image"),CODE_OPEN_DOCUMENT);
-                        //context.startActivity(Intent.createChooser(intentOpenFile,"Choose image"));
-
                         Log.e("QuestionAdapter","Choose image event");
                     }
                 });

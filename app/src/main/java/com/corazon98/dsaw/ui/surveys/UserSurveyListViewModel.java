@@ -1,5 +1,8 @@
 package com.corazon98.dsaw.ui.surveys;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -23,7 +26,15 @@ public class UserSurveyListViewModel extends ViewModel {
         mSurveyKBNT = new MutableLiveData<>();
         mSurveyBC = new MutableLiveData<>();
 
-        fetchData();
+        try
+        {
+            fetchData();
+        }
+        catch (Exception e)
+        {
+            //Toast.makeText(this, "Xin vui lòng thử lại!", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     public void fetchData() {

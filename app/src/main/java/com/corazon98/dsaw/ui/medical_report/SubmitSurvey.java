@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.corazon98.dsaw.R;
+import com.corazon98.dsaw.adaptor.OnIntentReceived;
 import com.corazon98.dsaw.adaptor.QuestionAdapter;
 import com.corazon98.dsaw.data.DataCenter;
 import com.corazon98.dsaw.data.DataManager;
@@ -44,8 +46,8 @@ public class SubmitSurvey extends Fragment {
     private ImageView btnBack;
     private ListView lvQuestion;
     private Button btnSubmit;
+    private OnIntentReceived mIntentListener;
 
-    View view = null;
     int questionClicked;
     Uri coverImg;
     List<Uri> lsCoverImg = new ArrayList<>();
@@ -73,26 +75,24 @@ public class SubmitSurvey extends Fragment {
 
         adapter = new QuestionAdapter(getContext(), lsQuestion);
         lvQuestion.setAdapter(adapter);
+        mIntentListener = adapter;
 
         // TODO: Use the ViewModel
-        mViewModel.getmListQuestion().observe(this, new Observer<List<Question>>() {
-            @Override
-            public void onChanged(List<Question> mListQuestion) {
-                lsQuestion.clear();
-                for (Question a : mListQuestion) {
-                    lsQuestion.add(a);
-                    /*if (a.getType().equalsIgnoreCase("image")) {
-                        lsCoverImg.add(null);
-                        lsIdCoverImg.add(null);
-                    }*/
-                    Log.e("Submit survey", "Activity start");
-                }
-
-                if (lsQuestion.size() == 0)
-                    lsQuestion.add(new Question("", new ArrayList<String>(), "", "Tạm thời chưa có câu trả lời", ""));
-
-                adapter.notifyDataSetChanged();
+        mViewModel.getmListQuestion().observe(this, mListQuestion -> {
+            lsQuestion.clear();
+            for (Question a : mListQuestion) {
+                lsQuestion.add(a);
+                /*if (a.getType().equalsIgnoreCase("image")) {
+                    lsCoverImg.add(null);
+                    lsIdCoverImg.add(null);
+                }*/
+                Log.e("Submit survey", "Activity start");
             }
+
+            if (lsQuestion.size() == 0)
+                lsQuestion.add(new Question("", new ArrayList<String>(), "", "Tạm thời chưa có câu trả lời", ""));
+
+            adapter.notifyDataSetChanged();
         });
 
         mViewModel.FetchData();
@@ -109,12 +109,13 @@ public class SubmitSurvey extends Fragment {
                 coverImg = selectedFile;
                 Toast.makeText(getContext(), "Tải ảnh thành công", Toast.LENGTH_LONG).show();
 
-                //lsCoverImg.set(questionClicked, selectedFile);
                 lsCoverImg.add(selectedFile);
 
                 Long localDateTime=System.currentTimeMillis();
                 String id = localDateTime.toString();
                 lsIdCoverImg.add(id);
+
+                mIntentListener.onIntent(data, resultCode, selectedFile);
 
                 Log.e("Submit survey", "Uri image: " + selectedFile);
                 Log.e("Submit survey", "List uri image: " + lsCoverImg);
@@ -139,7 +140,7 @@ public class SubmitSurvey extends Fragment {
         lvQuestion.setOnItemClickListener((parent, view, position, id) -> {
             Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
             questionClicked = position;
-            view = lvQuestion.getChildAt(position);
+            //view = lvQuestion.getChildAt(position);
             if (lsQuestion.get(position).getType().equalsIgnoreCase("image")) {
                 try {
                     Intent intentOpenFile = new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);
