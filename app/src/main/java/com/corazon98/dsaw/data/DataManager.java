@@ -572,6 +572,7 @@ public class DataManager {
     public void AddNewAnswer(final String surveyKey, final String userId, final List<Question> questionList, final List<String> answerList)
     {
         Query query = mDatabaseRef.child("Answers").child(surveyKey).child(userId);
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -582,21 +583,25 @@ public class DataManager {
                         count++;
                     }
                 }
+
                 // save new answer here
                 Map<String, Object> map = new HashMap<>();
-                for (int i = 0; i < questionList.size(); i++)
-                {
-                    if (questionList.get(i).getType().equalsIgnoreCase("image"))
-                    {
-                        map.put(questionList.get(i).getId(), ">" + answerList.get(i));
+                try {
+                    for (int i = 0; i < questionList.size(); i++) {
+                        if (questionList.get(i).getType().equalsIgnoreCase("image")) {
+                            map.put(questionList.get(i).getId(), ">" + answerList.get(i));
+                        } else {
+                            map.put(questionList.get(i).getId(), answerList.get(i));
+                        }
                     }
-                    else
-                    {
-                        map.put(questionList.get(i).getId(), answerList.get(i));
-                    }
+                    mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).updateChildren(map);
+                    Log.e("Data manager", "Add new answer successful");
                 }
-                mDatabaseRef.child("Answers").child(surveyKey).child(userId).child(String.valueOf(count)).updateChildren(map);
-                Log.e("Data manager", "Add new answer successful");
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Log.e("Data manager", "Add new answer failure");
+                }
             }
 
             @Override
@@ -661,7 +666,7 @@ public class DataManager {
         String id;
 
         if (folder.equals("posts/")){
-            Long localDateTime=System.currentTimeMillis();
+            Long localDateTime = System.currentTimeMillis();
             id = localDateTime.toString();
         }
         else id = "1";
@@ -672,17 +677,9 @@ public class DataManager {
         UploadTask uploadTask = childRef.putFile(uriOfImage);
 
         // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.e("Data manager","save image suscess");
-            }
-        });
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+        }).addOnSuccessListener(taskSnapshot -> Log.e("Data manager","save image suscess"));
         return id;
     }
 
@@ -999,7 +996,6 @@ public class DataManager {
         return true;
     }
 
-    // folder = posts or report
     public void fetchPhoto(String fileName, final ImageView result, String folder) {
         mStorageRef.child(folder+"/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -1202,11 +1198,6 @@ public class DataManager {
         fetchCasesInfo(lsCases, query);
     }
 
-    public void updateArea()
-    {
-
-    }
-
     public void insertCase(final Case aCase) {
         // check if exist need update status before
         // if exist id user in any case mean we have to update old and insert new
@@ -1330,8 +1321,7 @@ public class DataManager {
         });
     }
 
-
-    /// Fetch route for special user
+    // Fetch route for special user
     public void fetchRouteOf(final MutableLiveData<RouteData> routeData, String uid) {
 
         Query query = mDatabaseRef.child("RouteData").orderByChild("user").equalTo(uid);
@@ -1358,7 +1348,7 @@ public class DataManager {
         });
     }
 
-    /// Fetch last location for special user
+    // Fetch last location for special user
     public void fetchLastLocationOfUser(final MutableLiveData<TrackingStatus> trackingStatus, String uid) {
 
         Query query = mDatabaseRef.child("RouteData").orderByChild("user").equalTo(uid);
@@ -1385,9 +1375,9 @@ public class DataManager {
         });
     }
 
-    /// Lay ra cau tra loi cua tat cua user nam trong khu vuc duoc chi dinh
+    // Lay ra cau tra loi cua tat cua user nam trong khu vuc duoc chi dinh
 
-    /// Lay ra thong ke cau tra loi cua cac cau hoi trong 1 survey
+    // Lay ra thong ke cau tra loi cua cac cau hoi trong 1 survey
     public void fetchAnswerFor(final MutableLiveData<List<AnswerViewModel>> answersResult, final String surveyid, final int city_code) {
 
         Query query = mDatabaseRef.child("Answers").child(surveyid);
@@ -1560,7 +1550,7 @@ public class DataManager {
         });
     }
 
-    /// Fetch cau tra loi danh rieng cho survey co cau truc report
+    // Fetch cau tra loi danh rieng cho survey co cau truc report
     public void fetchAnswerForReport(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid, final int city_code) {
         Query query = mDatabaseRef.child("Answers").child(surveyid);
 

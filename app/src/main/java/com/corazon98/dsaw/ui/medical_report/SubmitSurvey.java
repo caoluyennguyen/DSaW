@@ -153,7 +153,6 @@ public class SubmitSurvey extends Fragment {
         });
 
         btnSubmit.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Submit survey", Toast.LENGTH_LONG).show();
             lsAnswer = new ArrayList<>();
             //lsAnswer.clear();
             ArrayList<ArrayList<String>> lsMultipleAnswer = new ArrayList<>();
@@ -165,14 +164,30 @@ public class SubmitSurvey extends Fragment {
             {
                 parentView = lvQuestion.getChildAt(i);
                 if (lsQuestion.get(i).getType().equalsIgnoreCase("text")) {
-                    lsAnswer.add(((TextView) parentView.findViewById(R.id.edtAnswer)).getText().toString());
+                    try
+                    {
+                        String answer = ((TextView) parentView.findViewById(R.id.edtAnswer)).getText().toString();
+                        lsAnswer.add(answer);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 else if (lsQuestion.get(i).getType().equalsIgnoreCase("image")) {
-                    lsAnswer.add(lsIdCoverImg.get(index));
-                    DataManager.Instance().UploadImageToReport(lsIdCoverImg.get(index), "report/", lsCoverImg.get(index));
-                    Log.e("Submit survey", "List id cover image: " + lsIdCoverImg);
+                    try
+                    {
+                        lsAnswer.add(lsIdCoverImg.get(index));
+                        DataManager.Instance().UploadImageToReport(lsIdCoverImg.get(index), "report/", lsCoverImg.get(index));
+                        Log.e("Submit survey", "List id cover image: " + lsIdCoverImg);
 
-                    index++;
+                        index++;
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Khai báo thất bại", Toast.LENGTH_LONG).show();
+                    }
                 }
                 else {
                     ArrayList<String> lsCheckedAnswer = new ArrayList<>();
@@ -209,6 +224,7 @@ public class SubmitSurvey extends Fragment {
 
             lsCoverImg.clear();
             lsIdCoverImg.clear();
+            NavHostFragment.findNavController(this).navigate(R.id.navigation_report);
         });
     }
 }
