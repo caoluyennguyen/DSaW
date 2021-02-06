@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+
 public class LocationTrack extends Service implements LocationListener {
 
     private final Context mContext;
@@ -36,7 +39,7 @@ public class LocationTrack extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
 
     protected LocationManager locationManager;
-    //private FusedLocationProviderClient fusedLocationClient;
+    private FusedLocationProviderClient fusedLocationClient;
 
 
     public LocationTrack(Context mContext) {
@@ -48,6 +51,7 @@ public class LocationTrack extends Service implements LocationListener {
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
 
             // get GPS status
             checkGPS = locationManager
@@ -59,12 +63,12 @@ public class LocationTrack extends Service implements LocationListener {
 
             if (!checkGPS && !checkNetwork) {
                 Toast.makeText(mContext, "No Service Provider is available", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else {
                 this.canGetLocation = true;
 
                 // if GPS Enabled get lat/long using GPS Services
                 if (checkGPS) {
-
                     if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                             && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
@@ -82,13 +86,14 @@ public class LocationTrack extends Service implements LocationListener {
                     if (locationManager != null) {
                         loc = locationManager
                                 .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (loc != null) {
-                            latitude = loc.getLatitude();
-                            longitude = loc.getLongitude();
-                        }
                     }
-                } else if (checkNetwork) {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    if (loc != null) {
+                        latitude = loc.getLatitude();
+                        longitude = loc.getLongitude();
+                    }
+                }
+                else if (checkNetwork) {
+                    /*if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                             ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
@@ -97,7 +102,7 @@ public class LocationTrack extends Service implements LocationListener {
                         //                                          int[] grantResults)
                         // to handle the case where the user grants the permission. See the documentation
                         // for ActivityCompat#requestPermissions for more details.
-                    }
+                    }*/
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
@@ -136,6 +141,14 @@ public class LocationTrack extends Service implements LocationListener {
             latitude = loc.getLatitude();
         }
         return latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public boolean canGetLocation() {

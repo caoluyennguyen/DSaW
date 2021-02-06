@@ -33,7 +33,7 @@ public class GeoHandle extends Handler {
         }
         Log.e("location Address=", locationAddress);
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd - HH:mm");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
         Date date = new Date();
         String t = dateFormat.format(date);
 

@@ -11,6 +11,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.corazon98.dsaw.utils.Geo;
+import com.corazon98.dsaw.utils.GeoHandle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.corazon98.dsaw.data.DataCenter;
 import com.corazon98.dsaw.data.DataManager;
@@ -99,24 +101,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
 
-//        ///Test get name of location
-//        //GeoHandle handle = new GeoHandle();
-//        //Geo.getAddressFromLocation(10.877898, 106.807128,getApplicationContext(),handle);
-//
-//        /// Location tracking =======================================================================
-//        permissions.add(ACCESS_FINE_LOCATION);
-//        permissions.add(ACCESS_COARSE_LOCATION);
-//
-//        permissionsToRequest = findUnAskedPermissions(permissions);
-//        //get the permissions we have asked for before but are not granted..
-//        //we will store this in a global list to access later.
-//
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//
-//            if (permissionsToRequest.size() > 0)
-//                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
-//        }
+        ///Test get name of location
+        //GeoHandle handle = new GeoHandle();
+        //Geo.getAddressFromLocation(10.877898, 106.807128,getApplicationContext(),handle);
     }
 
     public double calculateDistance(double lat1,

@@ -1,12 +1,16 @@
 package com.corazon98.dsaw.ui.login;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.corazon98.dsaw.MainActivity;
@@ -25,6 +30,9 @@ import com.corazon98.dsaw.data.DataManager;
 import com.corazon98.dsaw.data.model.Account;
 import com.corazon98.dsaw.utils.CurrentLocation;
 import com.corazon98.dsaw.utils.LocationTrack;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
@@ -47,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,10 +111,6 @@ public class LoginActivity extends AppCompatActivity {
         DataCenter.currentUser = new Account();
         DataCenter.currentUser.setEmail(account.getText().toString());
         preSetup();
-
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-        //Log.d("Login activity", "User name" + DataCenter.currentUser.getUsername());
     }
 
     public void LoginSuccessful()
@@ -162,9 +167,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-                //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_LONG).show();
-                //Log.e("LOCATION", "onCreate: location:"+longitude +"-"+latitude);
-            } else {
+                Log.e("LOCATION", "onCreate: location: " + longitude + "-" + latitude);
+            }
+            else {
                 locationTrack.showSettingsAlert();
             }
 
@@ -215,7 +220,6 @@ public class LoginActivity extends AppCompatActivity {
     private boolean canMakeSmores() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
-
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override

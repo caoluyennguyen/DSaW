@@ -24,13 +24,14 @@ public class Geo {
                     if (addressList != null && addressList.size() > 0) {
                         Address address = addressList.get(0);
                         StringBuilder sb = new StringBuilder();
-                        sb.append("["+latitude+","+longitude+"]");
-                        for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                            sb.append(address.getAddressLine(i)); //.append("\n");
-                        }
-                        sb.append(address.getLocality()).append(",");
-                        //sb.append(address.getPostalCode()).append("\n");
-                        sb.append(address.getCountryName());
+                        sb.append("[" + latitude + ", " + longitude + "]");
+                        /*for (int i = 0; i < addressList.size(); i++) {
+                            sb.append(address.getAddressLine(i));
+                        }*/
+                        if (address.getThoroughfare() != null) sb.append(address.getThoroughfare()).append(",").append(" ");
+                        if (address.getSubAdminArea() != null) sb.append(address.getSubAdminArea()).append(", ").append(" ");
+                        if (address.getAdminArea() != null) sb.append(address.getAdminArea()).append(", ").append(" ");
+                        if (address.getCountryName() != null) sb.append(address.getCountryName());
                         result = sb.toString();
                     }
                 } catch (IOException e) {
