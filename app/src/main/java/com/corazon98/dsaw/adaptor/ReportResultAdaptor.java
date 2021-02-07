@@ -41,6 +41,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
             viewRow=layoutInflater.inflate(R.layout.custom_report_result_row,parent,false);
             ViewHolder holder=new ViewHolder();
 
+            holder.dateSubmit =viewRow.findViewById(R.id.report_date_submit);
             holder.tvQuestion =viewRow.findViewById(R.id.report_result_count);
             holder.answerListLayout =viewRow.findViewById(R.id.report_result_frame_subitem);
             holder.imageView = viewRow.findViewById(R.id.report_result_img);
@@ -54,6 +55,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
         ReportModel e = answers.get(position);
         int p = position + 1;
         viewHolder.tvQuestion.setText("Câu trả lời thứ "+ p);
+        viewHolder.dateSubmit.setText(e.getDateSubmit());
 
         viewHolder.answerListLayout.removeAllViews();
         for(int i = 0; i< answers.get(position).getLsAnswers().size(); i++) {
@@ -77,6 +79,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
     }
 
     public static class ViewHolder{
+        TextView dateSubmit;
         TextView tvQuestion;
         LinearLayout answerListLayout;
         ImageView imageView;

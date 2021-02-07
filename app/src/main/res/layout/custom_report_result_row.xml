@@ -5,6 +5,16 @@
     android:background="@drawable/custom_report_result_background">
 
     <TextView
+        android:id="@+id/report_date_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ngày trả lời"
+        android:textColor="#797979"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"/>
+
+    <TextView
         android:id="@+id/report_result_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +34,8 @@
     <ImageView
         android:id="@+id/report_result_img"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="300dp"
         android:padding="15dp"
         android:scaleType="centerCrop"/>
 </LinearLayout>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportModel {
+    private String dateSubmit;
 
     private String imageUrl;
 
@@ -32,5 +33,13 @@ public class ReportModel {
 
     public void setLsAnswers(List<String> lsAnswers) {
         this.lsAnswers = lsAnswers;
+    }
+
+    public String getDateSubmit() {
+        return dateSubmit;
+    }
+
+    public void setDateSubmit(String dateSubmit) {
+        this.dateSubmit = dateSubmit;
     }
 }
