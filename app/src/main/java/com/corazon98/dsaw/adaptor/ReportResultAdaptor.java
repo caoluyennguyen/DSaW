@@ -29,7 +29,6 @@ public class ReportResultAdaptor extends ArrayAdapter {
         answers =ls;
     }
 
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -59,20 +58,12 @@ public class ReportResultAdaptor extends ArrayAdapter {
 
         viewHolder.answerListLayout.removeAllViews();
         for(int i = 0; i< answers.get(position).getLsAnswers().size(); i++) {
-//            View subRow = layoutInflater.inflate(R.layout.custom_survey_result_sub_item_row,null);
-//
-//            TextView dotView = subRow.findViewById(R.id.survey_result_dot_subitem_tv);
-//            TextView titleView = subRow.findViewById(R.id.survey_result_title_subitem_tv);
-//
-//            titleView.setText(answers.get(position).getAnswers().get(i));
-
-            TextView answeri = new TextView(context);
-            answeri.setTextColor(Color.WHITE);
-            answeri.setText(answers.get(position).getLsAnswers().get(i));
-            viewHolder.answerListLayout.addView(answeri);
+            TextView iAnswer = new TextView(context);
+            iAnswer.setTextColor(Color.WHITE);
+            iAnswer.setText(answers.get(position).getLsAnswers().get(i));
+            viewHolder.answerListLayout.addView(iAnswer);
         }
 
-        //viewHolder.imageView.setImageResource(R.drawable.manager_48);
         DataManager.Instance().fetchPhoto(answers.get(position).getImageUrl(), viewHolder.imageView,"report");
 
         return viewRow;

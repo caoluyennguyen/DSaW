@@ -82,10 +82,6 @@ public class SubmitSurvey extends Fragment {
             lsQuestion.clear();
             for (Question a : mListQuestion) {
                 lsQuestion.add(a);
-                /*if (a.getType().equalsIgnoreCase("image")) {
-                    lsCoverImg.add(null);
-                    lsIdCoverImg.add(null);
-                }*/
                 Log.e("Submit survey", "Activity start");
             }
 
@@ -140,7 +136,6 @@ public class SubmitSurvey extends Fragment {
         lvQuestion.setOnItemClickListener((parent, view, position, id) -> {
             Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
             questionClicked = position;
-            //view = lvQuestion.getChildAt(position);
             if (lsQuestion.get(position).getType().equalsIgnoreCase("image")) {
                 try {
                     Intent intentOpenFile = new Intent().setType("*/*").setAction(Intent.ACTION_GET_CONTENT);

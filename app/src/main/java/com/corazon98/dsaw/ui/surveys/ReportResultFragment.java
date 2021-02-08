@@ -2,6 +2,7 @@ package com.corazon98.dsaw.ui.surveys;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,14 +13,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.corazon98.dsaw.R;
 import com.corazon98.dsaw.adaptor.ReportResultAdaptor;
 import com.corazon98.dsaw.data.DataCenter;
+import com.corazon98.dsaw.data.DataManager;
 import com.corazon98.dsaw.data.model.City;
 import com.corazon98.dsaw.data.model.ReportModel;
 
@@ -29,16 +34,17 @@ import java.util.List;
 public class ReportResultFragment extends Fragment {
 
     private ReportResultViewModel mViewModel;
-
     private ListView listView;
-
     private ReportResultAdaptor adaptor;
-
     private List<ReportModel> lsReport = new ArrayList<>();
 
     private ArrayList<City> lsCity = new ArrayList<>();
     private ArrayAdapter<String> adCityName;
     private Spinner mSpinCity;
+
+    Dialog nagDialog;
+    Button btnClose;
+    ImageView ivPreview;
 
     public static ReportResultFragment newInstance() {
         return new ReportResultFragment();
@@ -47,10 +53,16 @@ public class ReportResultFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_report_result, container, false);
         listView = view.findViewById(R.id.report_result_lv);
         mSpinCity = view.findViewById(R.id.survey_spinner);
+
+        nagDialog = new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        nagDialog.setCancelable(false);
+        nagDialog.setContentView(R.layout.dialog_full_image);
+        btnClose = (Button)nagDialog.findViewById(R.id.btnIvClose);
+        ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
 
         SetupEvent();
 
@@ -72,7 +84,6 @@ public class ReportResultFragment extends Fragment {
         listView.setAdapter(adaptor);
 
         mViewModel.getLsReport().observe(this, reportModels -> {
-
             lsReport.clear();
 
             for (ReportModel r : reportModels) {
@@ -80,7 +91,6 @@ public class ReportResultFragment extends Fragment {
             }
             adaptor.notifyDataSetChanged();
         });
-        //mViewModel.fetchData(DataCenter.surveyID, -1);
 
         //get all city
         adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
@@ -118,6 +128,18 @@ public class ReportResultFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+        });
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                nagDialog.dismiss();
+            }
+        });
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            DataManager.Instance().fetchPhoto(lsReport.get(position).getImageUrl(), ivPreview,"report");
+            nagDialog.show();
         });
     }
 }

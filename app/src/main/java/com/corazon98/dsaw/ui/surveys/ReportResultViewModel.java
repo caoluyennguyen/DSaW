@@ -21,23 +21,7 @@ public class ReportResultViewModel extends ViewModel {
     }
 
     public void fetchData(String reportID, int city_code) {
-
         DataManager.Instance().fetchAnswerForReport(lsReports, reportID, city_code);
-//        List<ReportModel> ls = new ArrayList<>();
-//        List<String> ans = new ArrayList<>();
-//        ans.add("Người báo cáo: Phúc");
-//        ans.add("Người vi phạm: Plazaaaa");
-//        ans.add("Nội dung: đi chơi không về");
-//
-//        ls.add(new ReportModel("null",ans));
-//
-//        List<String> ans2 = new ArrayList<>();
-//        ans2.add("Người báo cáo: Abc");
-//        ans2.add("Người vi phạm: kkk");
-//        ans2.add("Nội dung: đi chơi về như không");
-//        ls.add(new ReportModel("null",ans2));
-//
-//        lsReports.setValue(ls);
     }
 
     public MutableLiveData<List<ReportModel>> getLsReport() {

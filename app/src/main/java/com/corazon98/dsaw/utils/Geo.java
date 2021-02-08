@@ -25,13 +25,13 @@ public class Geo {
                         Address address = addressList.get(0);
                         StringBuilder sb = new StringBuilder();
                         sb.append("[" + latitude + ", " + longitude + "]");
-                        /*for (int i = 0; i < addressList.size(); i++) {
-                            sb.append(address.getAddressLine(i));
-                        }*/
-                        if (address.getThoroughfare() != null) sb.append(address.getThoroughfare()).append(",").append(" ");
+                        for (int i = 0; i < addressList.size(); i++) {
+                            sb.append(address.getAddressLine(i)).append(" ");
+                        }
+                        /*if (address.getThoroughfare() != null) sb.append(address.getThoroughfare()).append(",").append(" ");
                         if (address.getSubAdminArea() != null) sb.append(address.getSubAdminArea()).append(", ").append(" ");
                         if (address.getAdminArea() != null) sb.append(address.getAdminArea()).append(", ").append(" ");
-                        if (address.getCountryName() != null) sb.append(address.getCountryName());
+                        if (address.getCountryName() != null) sb.append(address.getCountryName());*/
                         result = sb.toString();
                     }
                 } catch (IOException e) {

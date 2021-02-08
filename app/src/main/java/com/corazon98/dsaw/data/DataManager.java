@@ -1015,7 +1015,7 @@ public class DataManager {
                 Glide.with(mContext)
                         .load(uri)
                         .into(result);
-                Log.e("DB","downloaded a photo:"+uri.getPath());
+                Log.e("DB","downloaded a photo:" + uri.getPath());
             }
         });
     }
@@ -1603,7 +1603,9 @@ public class DataManager {
                                                             {
                                                                 String[] imageName = map.get(qid).toString().split(">");
                                                                 model.setImageUrl(imageName[1]);
-                                                            }  else
+                                                                //oneAnswer.add(qid + ":");
+                                                            }
+                                                            else
                                                                 oneAnswer.add(qid + ": "+ map.get(qid));
                                                         }
                                                         model.setLsAnswers(oneAnswer);
@@ -1623,6 +1625,7 @@ public class DataManager {
                                                             {
                                                                 String[] imageName = map.get(qid).toString().split(">");
                                                                 model.setImageUrl(imageName[1]);
+                                                                //oneAnswer.add(qid + ":");
                                                             }
                                                             else
                                                                 oneAnswer.add(qid + ": "+ map.get(qid));
@@ -1661,7 +1664,9 @@ public class DataManager {
                                         {
                                             String[] imageName = map.get(qid).toString().split(">");
                                             model.setImageUrl(imageName[1]);
-                                        }  else
+                                            //oneAnswer.add(qid + ":");
+                                        }
+                                        else
                                             oneAnswer.add(qid + ": "+ map.get(qid));
                                     }
                                     model.setLsAnswers(oneAnswer);
@@ -1681,6 +1686,7 @@ public class DataManager {
                                         {
                                             String[] imageName = map.get(qid).toString().split(">");
                                             model.setImageUrl(imageName[1]);
+                                            //oneAnswer.add(qid + ":");
                                         }
                                         else
                                             oneAnswer.add(qid + ": "+ map.get(qid));
