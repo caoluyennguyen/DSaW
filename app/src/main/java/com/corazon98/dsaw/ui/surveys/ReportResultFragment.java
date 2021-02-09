@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.VideoView;
 
 import com.corazon98.dsaw.R;
 import com.corazon98.dsaw.adaptor.ReportResultAdaptor;
@@ -45,6 +46,7 @@ public class ReportResultFragment extends Fragment {
     Dialog nagDialog;
     Button btnClose;
     ImageView ivPreview;
+    VideoView vvPreview;
 
     public static ReportResultFragment newInstance() {
         return new ReportResultFragment();
@@ -63,6 +65,7 @@ public class ReportResultFragment extends Fragment {
         nagDialog.setContentView(R.layout.dialog_full_image);
         btnClose = (Button)nagDialog.findViewById(R.id.btnIvClose);
         ivPreview = (ImageView)nagDialog.findViewById(R.id.iv_preview_image);
+        vvPreview = (VideoView) nagDialog.findViewById(R.id.vv_preview_video);
 
         SetupEvent();
 
@@ -130,15 +133,15 @@ public class ReportResultFragment extends Fragment {
             }
         });
 
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                nagDialog.dismiss();
-            }
+        btnClose.setOnClickListener(arg0 -> {
+            nagDialog.dismiss();
+            vvPreview.stopPlayback();
+            ivPreview.setVisibility(View.GONE);
+            vvPreview.setVisibility(View.GONE);
         });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            DataManager.Instance().fetchPhoto(lsReport.get(position).getImageUrl(), ivPreview,"report");
+            DataManager.Instance().fetchPhoto(lsReport.get(position).getImageUrl(), ivPreview,"report", vvPreview);
             nagDialog.show();
         });
     }

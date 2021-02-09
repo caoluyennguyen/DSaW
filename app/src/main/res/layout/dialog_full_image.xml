@@ -5,15 +5,26 @@
     android:layout_height="fill_parent"
     android:background="#000">
 
-    <ImageView android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:id="@+id/iv_preview_image" />
+    <ImageView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/iv_preview_image"
+        android:visibility="gone"/>
 
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/vv_preview_video"
+        android:visibility="gone"/>
 
-    <Button android:layout_width="50dp"
-        android:layout_height="50dp"
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@drawable/ic_close"
         android:id="@+id/btnIvClose"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
 
 </RelativeLayout>

@@ -122,13 +122,13 @@ public class AdminFragment extends Fragment {
     }
 
     public void openCreateWaringPage() {
-        Toast.makeText(getContext(),"create waring",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(),"Tạo cảnh báo",Toast.LENGTH_SHORT).show();
         NavHostFragment.findNavController(this).navigate(R.id.warningFragment);
     }
 
     public void openCreateSurveyPage() {
+        //Toast.makeText(getContext(),"Tao khảo sát",Toast.LENGTH_SHORT).show();
         NavHostFragment.findNavController(this).navigate(R.id.createSurveyFragment);
-        Toast.makeText(getContext(),"create survey",Toast.LENGTH_SHORT).show();
     }
 
     public void openViewSurveyPage() {
@@ -137,8 +137,8 @@ public class AdminFragment extends Fragment {
     }
 
     public void openCreatePostPage() {
+        //Toast.makeText(getContext(),"Tạo bài viết",Toast.LENGTH_SHORT).show();
         NavHostFragment.findNavController(this).navigate(R.id.createNewsFragment);
-        Toast.makeText(getContext(),"create post",Toast.LENGTH_SHORT).show();
     }
 
     public void openStatisticsPage() {

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +26,8 @@ public class ReportResultAdaptor extends ArrayAdapter {
 
     public ReportResultAdaptor(@NonNull Context context, List<ReportModel> ls) {
         super(context, R.layout.custom_report_result_row,ls);
-        this.context=context;
-        answers =ls;
+        this.context = context;
+        answers = ls;
     }
 
     @NonNull
@@ -44,6 +45,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
             holder.tvQuestion =viewRow.findViewById(R.id.report_result_count);
             holder.answerListLayout =viewRow.findViewById(R.id.report_result_frame_subitem);
             holder.imageView = viewRow.findViewById(R.id.report_result_img);
+            //holder.videoView = viewRow.findViewById(R.id.videoView);
 
             viewRow.setTag(holder);
         }
@@ -53,7 +55,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
 
         ReportModel e = answers.get(position);
         int p = position + 1;
-        viewHolder.tvQuestion.setText("Câu trả lời thứ "+ p);
+        viewHolder.tvQuestion.setText("Câu trả lời thứ " + p);
         viewHolder.dateSubmit.setText(e.getDateSubmit());
 
         viewHolder.answerListLayout.removeAllViews();
@@ -64,7 +66,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
             viewHolder.answerListLayout.addView(iAnswer);
         }
 
-        DataManager.Instance().fetchPhoto(answers.get(position).getImageUrl(), viewHolder.imageView,"report");
+        DataManager.Instance().fetchPhoto(answers.get(position).getImageUrl(), viewHolder.imageView,"report", null);
 
         return viewRow;
     }

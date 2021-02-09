@@ -50,7 +50,7 @@ public class NewsAdaptor extends ArrayAdapter{
         News e = lsNews.get(position);
         viewHolder.title.setText(e.getTitle());
         viewHolder.content.setText(e.getContent());
-        DataManager.Instance().fetchPhoto(e.getCover(), viewHolder.cover,"posts");
+        DataManager.Instance().fetchPhoto(e.getCover(), viewHolder.cover,"posts", null);
 
         return viewRow;
     }

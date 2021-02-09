@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
         changeAreaBtn.setOnClickListener(v -> homeViewModel.changeArea());
 
         mapVisualizeBtn.setOnClickListener(v -> {
-            Toast.makeText(getContext(),"go to visualize",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),"Mở chế độ xem bản đồ",Toast.LENGTH_SHORT).show();
             NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_mapVisualize);
         });
     }
@@ -80,7 +80,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void setupChart() {
-
         cartesian = AnyChart.line();
         cartesian.animation(true);
         cartesian.padding(10d, 20d, 5d, 10d);
@@ -154,7 +153,6 @@ public class HomeFragment extends Fragment {
                 .offsetX(5d)
                 .offsetY(5d);
 
-
          homeViewModel.getData().observe(this, publicData -> {
              List<DataEntry> seriesData1 = new ArrayList<>();
 
@@ -167,19 +165,16 @@ public class HomeFragment extends Fragment {
 
              set.data(seriesData1);
 
-
              updateTimeTv.setText(publicData.get(publicData.size()-1).getUpdate_time());
          });
         anyChartView.setChart(cartesian);
     }
 
     public class CustomDataEntry extends ValueDataEntry {
-
         CustomDataEntry(String x, Number value, Number value2, Number value3) {
             super(x, value);
             setValue("value2", value2);
             setValue("value3", value3);
         }
-
     }
 }

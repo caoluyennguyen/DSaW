@@ -103,7 +103,7 @@ public class SubmitSurvey extends Fragment {
             {
                 Uri selectedFile = data.getData();
                 coverImg = selectedFile;
-                Toast.makeText(getContext(), "Tải ảnh thành công", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Tải ảnh thành công", Toast.LENGTH_LONG).show();
 
                 lsCoverImg.add(selectedFile);
 
@@ -134,7 +134,7 @@ public class SubmitSurvey extends Fragment {
         btnBack.setOnClickListener(v -> NavHostFragment.findNavController(getParentFragment()).navigate(R.id.navigation_report));
 
         lvQuestion.setOnItemClickListener((parent, view, position, id) -> {
-            Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
             questionClicked = position;
             if (lsQuestion.get(position).getType().equalsIgnoreCase("image")) {
                 try {
@@ -142,7 +142,7 @@ public class SubmitSurvey extends Fragment {
                     startActivityForResult(Intent.createChooser(intentOpenFile, "Choose image"), CODE_OPEN_DOCUMENT);
                 } catch (android.content.ActivityNotFoundException ex) {
                     // Potentially direct the user to the Market with a Dialog
-                    Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Vui lòng tải ứng dụng quản lý thư mục.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

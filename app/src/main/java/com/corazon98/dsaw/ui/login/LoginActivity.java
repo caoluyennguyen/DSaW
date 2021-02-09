@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         //else DataManager.Instance().GetUserDataByEmail(account.getText().toString());
         //Log.e("LoginProcess","Account: " + DataCenter.currentUser.getUsername());
 
-        Toast.makeText(getApplicationContext(), "Loading...", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_LONG).show();
     }
 
     public void LoginFail()

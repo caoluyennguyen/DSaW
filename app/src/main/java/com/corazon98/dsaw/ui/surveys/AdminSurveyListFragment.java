@@ -63,7 +63,7 @@ public class AdminSurveyListFragment extends Fragment {
         lvSurvey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"did click at:" + mViewModel.getLsSurvey().getValue().get(position).getId(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"did click at:" + mViewModel.getLsSurvey().getValue().get(position).getId(),Toast.LENGTH_SHORT).show();
                 SurveyModel survey= mViewModel.getLsSurvey().getValue().get(position);
                 DataCenter.surveyID = survey.getId();
 

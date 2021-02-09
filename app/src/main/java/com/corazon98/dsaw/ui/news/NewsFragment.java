@@ -62,16 +62,8 @@ public class NewsFragment extends Fragment {
         lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
-                view = lvNews.getChildAt(position);
-                /*if (lsNews.get(position).getType().equalsIgnoreCase("image")) {
-                    try {
-                        // Open browser here
+                //Toast.makeText(getContext(), "Selected item at position: " + position, Toast.LENGTH_LONG).show();
 
-                    } catch (android.content.ActivityNotFoundException ex) {
-                            Toast.makeText(getContext(), "Please install a web browser.", Toast.LENGTH_SHORT).show();
-                    }
-                }*/
                 try {
                     // Open browser here
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(lsNews.get(position).getLink()));

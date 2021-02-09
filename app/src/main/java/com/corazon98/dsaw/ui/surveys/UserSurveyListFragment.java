@@ -138,7 +138,7 @@ public class UserSurveyListFragment extends Fragment {
                         surveys = mViewModel.getlistKBNT().getValue();
                     else surveys = mViewModel.getlistBC().getValue();
 
-                Toast.makeText(getContext(),"did click at:" + surveys.get(position).getId(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"did click at:" + surveys.get(position).getId(),Toast.LENGTH_SHORT).show();
 
                 DataCenter.surveyID = surveys.get(position).getId();
                 NavHostFragment.findNavController(getParentFragment()).navigate(R.id.personalReportFragment);

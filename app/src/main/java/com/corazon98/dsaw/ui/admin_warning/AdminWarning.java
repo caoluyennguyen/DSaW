@@ -104,14 +104,12 @@ public class AdminWarning extends Fragment {
     public void InitEvent()
     {
         mButton.setOnClickListener(v -> {
-            Toast.makeText(getContext(),"Button is clicked",Toast.LENGTH_SHORT).show();
-
             mViewModel.setmContent(mTextContent.getText().toString());
             Warning warning;
 
             if (mTextContent.getText().toString().isEmpty())
             {
-                Toast.makeText(getContext(), "Content can not be empty!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Vui lòng nhập nội dung cảnh báo!", Toast.LENGTH_SHORT).show();
             }
             else
             {
@@ -154,7 +152,7 @@ public class AdminWarning extends Fragment {
                             // Log and toast
                             String msg = getString(R.string.msg_token_fmt, token);
                             Log.d(TAG, msg);
-                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Tạo cảnh báo thành công", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, token);
 
                         });

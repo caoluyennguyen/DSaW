@@ -11,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.corazon98.dsaw.data.model.Account;
 import com.corazon98.dsaw.utils.Geo;
 import com.corazon98.dsaw.utils.GeoHandle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 

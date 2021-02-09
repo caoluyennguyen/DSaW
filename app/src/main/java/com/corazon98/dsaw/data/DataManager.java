@@ -3,6 +3,8 @@ package com.corazon98.dsaw.data;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +18,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import android.widget.ImageView;
+import android.widget.VideoView;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.MutableLiveData;
@@ -29,6 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.corazon98.dsaw.R;
 import com.corazon98.dsaw.data.model.Account;
@@ -700,14 +706,28 @@ public class DataManager {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
+                Toast.makeText(mContext, "Tải ảnh không thành công", Toast.LENGTH_SHORT);
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.e("Data manager","save image suscess");
-            }
-        });
+        }).addOnSuccessListener(
+                new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(mContext, "Ảnh tải lên thành công", Toast.LENGTH_SHORT);
+                        Log.e("Data manager","save image suscess");
+                    }
+                });
         //return id;
+    }
+
+    private void updateProcess(UploadTask.TaskSnapshot snapshot, ProgressBar progressBar)
+    {
+        long fileSize = snapshot.getTotalByteCount();
+
+        long uploadBytes = snapshot.getBytesTransferred();
+
+        long progress = (100 * uploadBytes) / fileSize;
+
+        progressBar.setProgress((int) progress);
     }
 
     // Public data part
@@ -975,7 +995,6 @@ public class DataManager {
     }
 
     public Boolean fetchAllPosts(final MutableLiveData<List<News>> lsNews){
-
         try {
 
             Query query=mDatabaseRef.child("Post").orderByChild("createtime");
@@ -1008,14 +1027,48 @@ public class DataManager {
         return true;
     }
 
-    public void fetchPhoto(String fileName, final ImageView result, String folder) {
+    public void fetchPhoto(String fileName, final ImageView result, String folder, final VideoView videoView) {
+        StorageReference storageReference = mStorageRef.child(folder+"/" + fileName);
+
+        //Log.e("DB metadata", storageReference.getMetadata().toString());
+
+        storageReference.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+            @Override
+            public void onSuccess(StorageMetadata storageMetadata) {
+                Log.e("DB metadata", storageMetadata.getContentType().toString());
+                if (storageMetadata.getContentType().toString().contains("image") || videoView == null)
+                {
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            result.setVisibility(View.VISIBLE);
+                            Glide.with(mContext)
+                                    .load(uri)
+                                    .into(result);
+                            Log.e("DB","downloaded a photo:" + uri.getPath());
+                        }
+                    });
+                }
+                else
+                {
+                    if (videoView != null)
+                    {
+                        videoView.setVisibility(View.VISIBLE);
+                        fetchVideo(fileName, videoView, folder);
+                    }
+                }
+            }
+        });
+
+
+    }
+    public void fetchVideo(String fileName, final VideoView result, String folder) {
         mStorageRef.child(folder+"/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(mContext)
-                        .load(uri)
-                        .into(result);
-                Log.e("DB","downloaded a photo:" + uri.getPath());
+                result.setVideoURI(uri);
+                Log.e("DB","downloaded a video:" + uri.getPath());
+                result.start();
             }
         });
     }
