@@ -75,9 +75,9 @@ public class ReportResultFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_report_result, container, false);
         listView = view.findViewById(R.id.report_result_lv);
-        mSpinCity = view.findViewById(R.id.survey_spinner);
-        mSpinDistrict = view.findViewById(R.id.survey_spinner_district);
-        mSpinWard = view.findViewById(R.id.survey_spinner_ward);
+        mSpinCity = view.findViewById(R.id.report_spinner);
+        mSpinDistrict = view.findViewById(R.id.report_spinner_district);
+        mSpinWard = view.findViewById(R.id.report_spinner_ward);
 
         nagDialog = new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
         nagDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -107,9 +107,6 @@ public class ReportResultFragment extends Fragment {
     {
         mViewModel = ViewModelProviders.of(this).get(ReportResultViewModel.class);
 
-        adaptor = new ReportResultAdaptor(getContext(),lsReport);
-        listView.setAdapter(adaptor);
-
         mViewModel.getLsReport().observe(this, reportModels -> {
             lsReport.clear();
 
@@ -118,6 +115,9 @@ public class ReportResultFragment extends Fragment {
             }
             adaptor.notifyDataSetChanged();
         });
+
+        /*adaptor = new ReportResultAdaptor(getContext(), lsReport);
+        listView.setAdapter(adaptor);*/
 
         //get all city
         adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
@@ -185,8 +185,6 @@ public class ReportResultFragment extends Fragment {
 
                 cityPos = position;
                 //mViewModel.fetchData(DataCenter.surveyID, position - 1 , sortingAll);
-                adaptor = new ReportResultAdaptor(getContext(),lsReport);
-                listView.setAdapter(adaptor);
             }
 
             @Override
@@ -219,6 +217,8 @@ public class ReportResultFragment extends Fragment {
                 wardPos = position;
 
                 mViewModel.fetchData(DataCenter.surveyID, cityPos - 1, districtPos, position , sortingAll);
+                adaptor = new ReportResultAdaptor(getContext(),lsReport);
+                listView.setAdapter(adaptor);
             }
 
             @Override

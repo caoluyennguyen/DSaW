@@ -39,7 +39,7 @@ public class MultichoiceQuestionAdaptor extends ArrayAdapter {
             MultichoiceQuestionAdaptor.ViewHolder holder = new MultichoiceQuestionAdaptor.ViewHolder();
             holder.number = viewRow.findViewById(R.id.number);
             holder.question = viewRow.findViewById(R.id.question);
-            holder.listviewOfAnswer = viewRow.findViewById(R.id.listview_of_answer);
+            holder.listviewOfAnswer = viewRow.findViewById(R.id.list_view_of_answer);
 
             viewRow.setTag(holder);
         }

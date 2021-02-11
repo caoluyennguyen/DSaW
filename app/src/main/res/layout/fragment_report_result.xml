@@ -26,7 +26,7 @@
             android:layout_marginTop="10dp"/>
 
         <Spinner
-            android:id="@+id/survey_spinner"
+            android:id="@+id/report_spinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             style="@style/SpinnerTheme"
@@ -36,7 +36,7 @@
             />
 
         <Spinner
-            android:id="@+id/survey_spinner_district"
+            android:id="@+id/report_spinner_district"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             style="@style/SpinnerTheme"
@@ -46,7 +46,7 @@
             />
 
         <Spinner
-            android:id="@+id/survey_spinner_ward"
+            android:id="@+id/report_spinner_ward"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             style="@style/SpinnerTheme"

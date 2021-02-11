@@ -1443,15 +1443,17 @@ public class DataManager {
     // Lay ra cau tra loi cua tat cua user nam trong khu vuc duoc chi dinh
 
     // Lay ra thong ke cau tra loi cua cac cau hoi trong 1 survey
-    public void fetchAnswerFor(final MutableLiveData<List<AnswerViewModel>> answersResult, final String surveyid, final int city_code) {
+    public void fetchAnswerFor(final MutableLiveData<List<AnswerViewModel>> answersResult, final String surveyid,
+                               final int city_code, final int district_code, final int ward_code) {
 
         Query query = mDatabaseRef.child("Answers").child(surveyid);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+                final List<AnswerViewModel> answers = new ArrayList<>();
 
+                if (dataSnapshot.exists()) {
                     // key = account id
                     // value list instance of a answer
                     Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
@@ -1563,7 +1565,6 @@ public class DataManager {
                         }
                     }
 
-                    final List<AnswerViewModel> answers = new ArrayList<>();
                     /// sau khi thong ke xong can map cu the cau hoi do la gi va cac cau tra loi
                     Query query = mDatabaseRef.child("Question").orderByChild("survey").equalTo(surveyid);
 

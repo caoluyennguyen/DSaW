@@ -56,7 +56,7 @@ public class QuestionAdapter extends ArrayAdapter implements OnIntentReceived {
 
                 holder.number = viewRow.findViewById(R.id.number);
                 holder.question = viewRow.findViewById(R.id.question);
-                holder.listviewOfAnswer = viewRow.findViewById(R.id.listview_of_answer);
+                holder.listviewOfAnswer = viewRow.findViewById(R.id.list_view_of_answer);
                 holder.listOfAnswer = viewRow.findViewById(R.id.list_of_answer);
 
                 viewRow.setTag(holder);
@@ -75,7 +75,7 @@ public class QuestionAdapter extends ArrayAdapter implements OnIntentReceived {
             //viewHolder.listviewOfAnswer.setAdapter(mAdapter);
             viewHolder.listOfAnswer.removeAllViews();
 
-            for(int i = 0; i < lsQuestion.get(position).getAnswers().size(); i++) {
+            for (int i = 0; i < lsQuestion.get(position).getAnswers().size(); i++) {
                 subRow = layoutInflater.inflate(R.layout.custom_survey_multichoice_answer,null);
                 final CheckedTextView answer = subRow.findViewById(R.id.answer);
                 answer.setText(lsQuestion.get(position).getAnswers().get(i));

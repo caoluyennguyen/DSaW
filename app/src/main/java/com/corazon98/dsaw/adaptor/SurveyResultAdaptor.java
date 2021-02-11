@@ -50,9 +50,9 @@ public class SurveyResultAdaptor extends ArrayAdapter {
         AnswerViewModel e = answers.get(position);
         int p = position + 1;
         viewHolder.tvQuestion.setText("Câu "+ p + ": " + e.getQuestionTitle());
+        viewHolder.answerListLayout.removeAllViews();
 
-
-        for(int i = 0; i< answers.get(position).getAnswers().size(); i++) {
+        for(int i = 0; i < answers.get(position).getAnswers().size(); i++) {
             View subRow = layoutInflater.inflate(R.layout.custom_survey_result_sub_item_row,null);
 
             TextView dotView = subRow.findViewById(R.id.survey_result_dot_subitem_tv);
