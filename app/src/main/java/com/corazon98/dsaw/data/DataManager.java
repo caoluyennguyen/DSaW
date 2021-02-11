@@ -359,7 +359,7 @@ public class DataManager {
     }
 
     public void UpdateUser(final String name, final String identity, final String birthday, final String phoneNumber,
-                           final int code_city, int code_district, final int code_ward)
+                           final int code_city, int code_district, final int code_ward, final String street)
     {
         try {
             Query query = mDatabase.getReference("Account").orderByChild("mail").equalTo(DataCenter.currentUser.getEmail());
@@ -380,6 +380,7 @@ public class DataManager {
                             account.setCode_city(code_city);
                             account.setCode_district(code_district);
                             account.setCode_ward(code_ward);
+                            account.setStreet(street);
                             DataCenter.currentUser = account;
                             mDatabase.getReference("Account").child(snapshot.getKey()).setValue(account);
                             Log.e("DataManager", "Update user successfully");
@@ -1476,6 +1477,15 @@ public class DataManager {
                                             Account account = snapshot.getValue(Account.class);
                                             if (account.getCode_city() == city_code)
                                             {
+                                                if (district_code != 0)
+                                                {
+                                                    if (account.getCode_district() != district_code - 1) continue;
+                                                    else if (ward_code != 0)
+                                                    {
+                                                        if (account.getCode_ward() != ward_code - 1) continue;
+                                                    }
+                                                }
+
                                                 Log.e("DataManager"," User was found is " + account.getId());
                                                 ArrayList<Map<String,Object>> ls = (ArrayList<Map<String,Object>>) userReponse.get(accountID);
                                                 // submit cuoi cung la submit gan day nhat va phan anh dung nhat cho thong ke hien tai
@@ -1672,7 +1682,7 @@ public class DataManager {
                                                             oneAnswer.add(qid + ": "+ map.get(qid));
                                                     }
                                                     model.setLsAnswers(oneAnswer);
-                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                     listAnswers.add(model);
                                                 }
                                             }
@@ -1696,7 +1706,7 @@ public class DataManager {
                                                     }
                                                     model.setLsAnswers(oneAnswer);
                                                     model.setDateSubmit(dateSubmit.get(temp));
-                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                     temp++;
                                                     listAnswers.add(model);
                                                 }
@@ -1721,7 +1731,7 @@ public class DataManager {
                                                             oneAnswer.add(qid + ": "+ map.get(qid));
                                                     }
                                                     model.setLsAnswers(oneAnswer);
-                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                     listAnswers.add(model);
                                                 }
                                             }
@@ -1745,7 +1755,7 @@ public class DataManager {
                                                     }
                                                     model.setLsAnswers(oneAnswer);
                                                     model.setDateSubmit(dateSubmit.get(temp));
-                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                     temp++;
                                                     listAnswers.add(model);
                                                 }
@@ -1834,6 +1844,7 @@ public class DataManager {
                                                     if (account.getCode_ward() != ward_code - 1) continue;
                                                 }
                                             }
+
                                             if (userReponse.get(accountID).getClass() == ArrayList.class)
                                             {
                                                 ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
@@ -1852,7 +1863,7 @@ public class DataManager {
                                                     }
                                                 }
                                                 model.setLsAnswers(oneAnswer);
-                                                model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                 listAnswers.add(model);
                                             }
                                             else
@@ -1878,7 +1889,7 @@ public class DataManager {
                                                         }
                                                         model.setLsAnswers(oneAnswer);
                                                         model.setDateSubmit(dateSubmit.get(temp));
-                                                        model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                        model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                         listAnswers.add(model);
                                                     }
                                                     temp++;
@@ -1904,7 +1915,7 @@ public class DataManager {
                                                         oneAnswer.add(qid + ": "+ lastSubmitAnswer.get(qid));
                                                 }
                                                 model.setLsAnswers(oneAnswer);
-                                                model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                 listAnswers.add(model);
                                             }
                                             else
@@ -1929,7 +1940,7 @@ public class DataManager {
                                                         }
                                                         model.setLsAnswers(oneAnswer);
                                                         model.setDateSubmit(dateSubmit.get(temp));
-                                                        model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                        model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                         listAnswers.add(model);
                                                     }
                                                     temp++;

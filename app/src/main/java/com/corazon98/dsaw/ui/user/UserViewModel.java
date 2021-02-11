@@ -1,5 +1,6 @@
 package com.corazon98.dsaw.ui.user;
 
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
@@ -19,6 +20,7 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<String> mCMND = new MutableLiveData<>();
     private MutableLiveData<String> mDayOfBirth = new MutableLiveData<>();
     private MutableLiveData<String> mContact = new MutableLiveData<>();
+    private MutableLiveData<String> mStreet = new MutableLiveData<>();
     private MutableLiveData<List<City>> lsCity = new MutableLiveData<>();
     private MutableLiveData<List<District>> lsDistrict = new MutableLiveData<>();
     private MutableLiveData<List<Ward>> lsWard = new MutableLiveData<>();
@@ -28,6 +30,7 @@ public class UserViewModel extends ViewModel {
         mCMND.setValue(DataCenter.currentUser.getIdentity());
         mDayOfBirth.setValue(DataCenter.currentUser.getBirthday());
         mContact.setValue(DataCenter.currentUser.getPhonenumber());
+        mStreet.setValue(DataCenter.currentUser.getStreet());
     }
 
     public MutableLiveData<String> getName() {
@@ -44,6 +47,10 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<String> getContact() {
         return mContact;
+    }
+
+    public MutableLiveData<String> getmStreet() {
+        return mStreet;
     }
 
     public MutableLiveData<List<City>> getLsCity() {
@@ -74,14 +81,18 @@ public class UserViewModel extends ViewModel {
         this.mContact.setValue(mContact);
     }
 
-    public void GetUser(TextView name, TextView identity, TextView birthday, TextView phonenumber)
+    public void setmStreet(MutableLiveData<String> mStreet) {
+        this.mStreet = mStreet;
+    }
+
+    public void GetUser(EditText name, EditText identity, EditText birthday, EditText phonenumber)
     {
         DataManager.Instance().GetUserData(name, identity, birthday, phonenumber);
     }
 
-    public void UpdateUser(String name, String identity, String birthday, String phoneNumber, int code_city, int code_district, int code_ward)
+    public void UpdateUser(String name, String identity, String birthday, String phoneNumber, int code_city, int code_district, int code_ward, String street)
     {
-        DataManager.Instance().UpdateUser(name, identity, birthday, phoneNumber, code_city, code_district, code_ward);
+        DataManager.Instance().UpdateUser(name, identity, birthday, phoneNumber, code_city, code_district, code_ward, street);
     }
 
     public void GetAllCity()

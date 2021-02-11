@@ -31,7 +31,7 @@ public class Account {
 
     private int warning_distance;
 
-    private String address;
+    private String street;
 
     public Account() {}
 
@@ -166,5 +166,13 @@ public class Account {
 
     public void setWarning_distance(int warning_distance) {
         this.warning_distance = warning_distance;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }

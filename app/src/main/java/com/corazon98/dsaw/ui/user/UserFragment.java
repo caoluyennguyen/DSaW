@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +40,11 @@ public class UserFragment extends Fragment {
 
     private UserViewModel mViewModel;
 
-    private TextView mTextName;
-    private TextView mTextCMND;
-    private TextView mTextDayofBirth;
-    private TextView mTextContact;
+    private EditText mTextName;
+    private EditText mTextCMND;
+    private EditText mTextDayofBirth;
+    private EditText mTextContact;
+    private EditText mTextStreet;
     private Button mBtnUpdate;
     private CheckedTextView checkedTextView;
     private Spinner mSpinCity;
@@ -113,6 +116,8 @@ public class UserFragment extends Fragment {
         mTextCMND = view.findViewById(R.id.txtCMND);
         mTextDayofBirth = view.findViewById(R.id.txtDayOfBirth);
         mTextContact = view.findViewById(R.id.txtContact);
+        mTextStreet = view.findViewById(R.id.txtStreet);
+
         mBtnUpdate = view.findViewById(R.id.user_update_btn);
         checkedTextView = view.findViewById(R.id.ctxAgreement);
 
@@ -124,16 +129,22 @@ public class UserFragment extends Fragment {
     public void InitEvent()
     {
         mBtnUpdate.setOnClickListener(v -> {
-            if (checkedTextView.isChecked()) {
-                mViewModel.setmName(mTextName.getText().toString());
-                mViewModel.setmCMND(mTextCMND.getText().toString());
-                mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
-                mViewModel.setmContact(mTextContact.getText().toString());
-                mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(),
-                        mTextDayofBirth.getText().toString(), mTextContact.getText().toString(),
-                        cityPos, districtPos, wardPos);
-                Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
-                UnfocusedElement();
+            if (checkedTextView.isChecked())
+            {
+                if (TextUtils.isEmpty(mTextName.getText().toString())) Toast.makeText(getContext(), "Vui lòng nhập họ và tên", Toast.LENGTH_SHORT).show();
+                else if (TextUtils.isEmpty(mTextCMND.getText().toString())) Toast.makeText(getContext(), "Vui lòng nhập CMND chính xác", Toast.LENGTH_SHORT).show();
+                else if (TextUtils.isEmpty(mTextContact.getText().toString())) Toast.makeText(getContext(), "Vui lòng nhập số điện thoại", Toast.LENGTH_SHORT).show();
+                else {
+                    mViewModel.setmName(mTextName.getText().toString());
+                    mViewModel.setmCMND(mTextCMND.getText().toString());
+                    mViewModel.setmDayOfBirth(mTextDayofBirth.getText().toString());
+                    mViewModel.setmContact(mTextContact.getText().toString());
+                    mViewModel.UpdateUser(mTextName.getText().toString(), mTextCMND.getText().toString(),
+                            mTextDayofBirth.getText().toString(), mTextContact.getText().toString(),
+                            cityPos, districtPos, wardPos, mTextStreet.getText().toString());
+                    Toast.makeText(getContext(), "Bạn vừa mới thay đổi thông tin cá nhân", Toast.LENGTH_LONG).show();
+                    UnfocusedElement();
+                }
             }
             else Toast.makeText(getContext(), "Vui lòng xác nhận cam kết", Toast.LENGTH_LONG).show();
         });
@@ -206,6 +217,7 @@ public class UserFragment extends Fragment {
         mViewModel.getCMND().observe(this, s -> mTextCMND.setText(String.valueOf(s)));
         mViewModel.getDayOfBirth().observe(this, s -> mTextDayofBirth.setText(String.valueOf(s)));
         mViewModel.getContact().observe(this, s -> mTextContact.setText(String.valueOf(s)));
+        mViewModel.getmStreet().observe(this, s -> mTextStreet.setText(String.valueOf(s)));
 
         // add items to city spinner
         adCityName = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, lsCity);
