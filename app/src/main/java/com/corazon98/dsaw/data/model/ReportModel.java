@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportModel {
+    private String author;
+
     private String dateSubmit;
 
     private String imageUrl;
@@ -41,5 +43,13 @@ public class ReportModel {
 
     public void setDateSubmit(String dateSubmit) {
         this.dateSubmit = dateSubmit;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

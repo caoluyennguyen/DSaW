@@ -279,5 +279,4 @@ public class UserFragment extends Fragment {
         mTextContact.setFocusableInTouchMode(true);
         mTextContact.setFocusable(true);
     }
-
 }

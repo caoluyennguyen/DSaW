@@ -45,18 +45,18 @@ public class ReportResultAdaptor extends ArrayAdapter {
             holder.tvQuestion =viewRow.findViewById(R.id.report_result_count);
             holder.answerListLayout =viewRow.findViewById(R.id.report_result_frame_subitem);
             holder.imageView = viewRow.findViewById(R.id.report_result_img);
-            //holder.videoView = viewRow.findViewById(R.id.videoView);
+            holder.tvAuthor = viewRow.findViewById(R.id.report_author);
 
             viewRow.setTag(holder);
         }
 
         ViewHolder viewHolder= (ViewHolder) viewRow.getTag();
 
-
         ReportModel e = answers.get(position);
         int p = position + 1;
         viewHolder.tvQuestion.setText("Câu trả lời thứ " + p);
         viewHolder.dateSubmit.setText(e.getDateSubmit());
+        viewHolder.tvAuthor.setText(e.getAuthor());
 
         viewHolder.answerListLayout.removeAllViews();
         for(int i = 0; i< answers.get(position).getLsAnswers().size(); i++) {
@@ -73,6 +73,7 @@ public class ReportResultAdaptor extends ArrayAdapter {
 
     public static class ViewHolder{
         TextView dateSubmit;
+        TextView tvAuthor;
         TextView tvQuestion;
         LinearLayout answerListLayout;
         ImageView imageView;

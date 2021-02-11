@@ -601,7 +601,7 @@ public class DataManager {
                         }
                     }
 
-                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-HH:mm:ss");
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
                     Date date = new Date();
                     String timeNow = dateFormat.format(date);
 
@@ -1163,7 +1163,6 @@ public class DataManager {
     }
 
     public void fetchAccountByEmail(final String email, final MutableLiveData<Account> account) {
-
         Query query = mDatabaseRef.child("Account").orderByChild("mail").equalTo(email);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -1177,7 +1176,8 @@ public class DataManager {
                         account.setValue(a);
                         return;
                     }
-                } else {
+                }
+                else {
                     Account temp = new Account();
                     temp.setIdentity("null");
                     account.setValue(temp);
@@ -1481,10 +1481,10 @@ public class DataManager {
 
                                                 /// key - question key
                                                 /// value -list cac lua chon da duoc tick cho mutichoice Q
-                                                Map<String,List<Long>> ansewerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
+                                                Map<String,List<Long>> answerMutilChoices = (Map<String, List<Long>>) lastSubmitAnswer.get("answers_key");
 
                                                 // duyet het tat ca cau hoi trong phan tra loi
-                                                for(Map.Entry<String, List<Long>> entry : ansewerMutilChoices.entrySet()) {
+                                                for(Map.Entry<String, List<Long>> entry : answerMutilChoices.entrySet()) {
                                                     String key = entry.getKey();
                                                     List<Long> answerSelected = entry.getValue();
 
@@ -1547,7 +1547,8 @@ public class DataManager {
                                     }
 
                                     result.put(key, ans);
-                                } else {
+                                }
+                                else {
                                     // neu day la lan thu 2+ thi phai count len 1 neu tim thay
                                     for (Long i : answerSelected) {
                                         // chua co ai tick cau tra loi nay ca
@@ -1561,7 +1562,6 @@ public class DataManager {
                             }
                         }
                     }
-
 
                     final List<AnswerViewModel> answers = new ArrayList<>();
                     /// sau khi thong ke xong can map cu the cau hoi do la gi va cac cau tra loi
@@ -1616,7 +1616,8 @@ public class DataManager {
     }
 
     // Fetch cau tra loi danh rieng cho survey co cau truc report
-    public void fetchAnswerForReport(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid, final int city_code) {
+    public void fetchAnswerForReport(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid,
+                                     final int city_code, final int district_code, final int ward_code) {
         Query query = mDatabaseRef.child("Answers").child(surveyid);
 
         query.addValueEventListener(new ValueEventListener() {
@@ -1630,47 +1631,219 @@ public class DataManager {
                     // value list instance of a answer
                     Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
 
-                    if (city_code != -1)
-                    {
-                        // duyet tat ca account da tra loi survey nay
-                        for (String accountID : userReponse.keySet()) {
+                    // duyet tat ca account da tra loi survey nay
+                    for (String accountID : userReponse.keySet()) {
 
-                            // List<qid,textAnswer>
-                            Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(accountID);
-                            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        // List<qid,textAnswer>
+                        Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(accountID);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                                            Account account = snapshot.getValue(Account.class);
-                                            if (account.getCode_city() == city_code) {
-                                                if (userReponse.get(accountID).getClass() == ArrayList.class)
-                                                {
-                                                    ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
-                                                    for (Map map : ls) {
-                                                        List<String> oneAnswer = new ArrayList<>();
-                                                        ReportModel model = new ReportModel();
-                                                        for (Object qid : map.keySet()) {
-                                                            if (map.get(qid).toString().charAt(0) == '>')
-                                                            {
-                                                                String[] imageName = map.get(qid).toString().split(">");
-                                                                model.setImageUrl(imageName[1]);
-                                                                //oneAnswer.add(qid + ":");
-                                                            }
-                                                            else
-                                                                oneAnswer.add(qid + ": "+ map.get(qid));
+                                        Account account = snapshot.getValue(Account.class);
+                                        if (account.getCode_city() == city_code) {
+                                            if (userReponse.get(accountID).getClass() == ArrayList.class)
+                                            {
+                                                ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
+                                                for (Map map : ls) {
+                                                    List<String> oneAnswer = new ArrayList<>();
+                                                    ReportModel model = new ReportModel();
+                                                    for (Object qid : map.keySet()) {
+                                                        if (map.get(qid).toString().charAt(0) == '>')
+                                                        {
+                                                            String[] imageName = map.get(qid).toString().split(">");
+                                                            model.setImageUrl(imageName[1]);
+                                                            //oneAnswer.add(qid + ":");
                                                         }
-                                                        model.setLsAnswers(oneAnswer);
-                                                        listAnswers.add(model);
+                                                        else
+                                                            oneAnswer.add(qid + ": "+ map.get(qid));
+                                                    }
+                                                    model.setLsAnswers(oneAnswer);
+                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    listAnswers.add(model);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Map<String, Map<String,Object>> ls = (HashMap<String, Map<String,Object>>) userReponse.get(accountID);
+                                                ArrayList<String> dateSubmit = new ArrayList<>(ls.keySet());
+                                                int temp = 0;
+                                                for (Map map : ls.values()) {
+                                                    List<String> oneAnswer = new ArrayList<>();
+                                                    ReportModel model = new ReportModel();
+                                                    for (Object qid : map.keySet()) {
+                                                        if (map.get(qid).toString().charAt(0) == '>')
+                                                        {
+                                                            String[] imageName = map.get(qid).toString().split(">");
+                                                            model.setImageUrl(imageName[1]);
+                                                            //oneAnswer.add(qid + ":");
+                                                        }
+                                                        else
+                                                            oneAnswer.add(qid + ": "+ map.get(qid));
+                                                    }
+                                                    model.setLsAnswers(oneAnswer);
+                                                    model.setDateSubmit(dateSubmit.get(temp));
+                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    temp++;
+                                                    listAnswers.add(model);
+                                                }
+                                            }
+                                        }
+                                        else if (city_code == -1)
+                                        {
+                                            if (userReponse.get(accountID).getClass() == ArrayList.class)
+                                            {
+                                                ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
+                                                for (Map map : ls) {
+                                                    List<String> oneAnswer = new ArrayList<>();
+                                                    ReportModel model = new ReportModel();
+                                                    for (Object qid : map.keySet()) {
+                                                        if (map.get(qid).toString().charAt(0) == '>')
+                                                        {
+                                                            String[] imageName = map.get(qid).toString().split(">");
+                                                            model.setImageUrl(imageName[1]);
+                                                            //oneAnswer.add(qid + ":");
+                                                        }
+                                                        else
+                                                            oneAnswer.add(qid + ": "+ map.get(qid));
+                                                    }
+                                                    model.setLsAnswers(oneAnswer);
+                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    listAnswers.add(model);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Map<String, Map<String,Object>> ls = (HashMap<String, Map<String,Object>>) userReponse.get(accountID);
+                                                ArrayList<String> dateSubmit = new ArrayList<>(ls.keySet());
+                                                int temp = 0;
+                                                for (Map map : ls.values()) {
+                                                    List<String> oneAnswer = new ArrayList<>();
+                                                    ReportModel model = new ReportModel();
+                                                    for (Object qid : map.keySet()) {
+                                                        if (map.get(qid).toString().charAt(0) == '>')
+                                                        {
+                                                            String[] imageName = map.get(qid).toString().split(">");
+                                                            model.setImageUrl(imageName[1]);
+                                                            //oneAnswer.add(qid + ":");
+                                                        }
+                                                        else
+                                                            oneAnswer.add(qid + ": "+ map.get(qid));
+                                                    }
+                                                    model.setLsAnswers(oneAnswer);
+                                                    model.setDateSubmit(dateSubmit.get(temp));
+                                                    model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                    temp++;
+                                                    listAnswers.add(model);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                }
+
+                // replace question key by title of question
+                Query query = mDatabaseRef.child("Question").orderByChild("survey").equalTo(surveyid);
+
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Question q = snapshot.getValue(Question.class);
+                                for (ReportModel r : listAnswers) {
+                                    List<String> newAnswers = new ArrayList<>();
+                                    for (String s : r.getLsAnswers()) {
+                                        String t = s.replace(q.getId(),q.getTitle());
+                                        newAnswers.add(t);
+                                    }
+                                    r.setLsAnswers(newAnswers);
+                                }
+                            }
+                        }
+                        answersResult.setValue(listAnswers);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // Fetch cau tra loi danh rieng cho survey co cau truc report
+    public void fetchAnswerForStatistic(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid, final int city_code) {
+        Query query = mDatabaseRef.child("Answers").child(surveyid);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                final List<ReportModel> listAnswers = new ArrayList<>();
+
+                if (dataSnapshot.exists()) {
+                    // key = account id
+                    // value list instance of a answer
+                    Map<String, Object> userReponse = (HashMap<String, Object>) dataSnapshot.getValue();
+
+                    // duyet tat ca account da tra loi survey nay
+                    for (String accountID : userReponse.keySet()) {
+                        Query query = mDatabaseRef.child("Account").orderByChild("identity").equalTo(accountID);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                        Account account = snapshot.getValue(Account.class);
+                                        if (account.getCode_city() == city_code) {
+                                            if (userReponse.get(accountID).getClass() == ArrayList.class)
+                                            {
+                                                ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
+                                                Map<String,String> lastSubmitAnswer = ls.get(ls.size() - 1);
+
+                                                List<String> oneAnswer = new ArrayList<>();
+                                                ReportModel model = new ReportModel();
+                                                for (Object qid : lastSubmitAnswer.keySet()) {
+                                                    if (lastSubmitAnswer.get(qid).toString().charAt(0) == '>')
+                                                    {
+                                                        String[] imageName = lastSubmitAnswer.get(qid).toString().split(">");
+                                                        model.setImageUrl(imageName[1]);
+                                                    }
+                                                    else {
+                                                        oneAnswer.add(qid + ": " + lastSubmitAnswer.get(qid));
                                                     }
                                                 }
-                                                else
-                                                {
-                                                    Map<String, Map<String,Object>> ls = (HashMap<String, Map<String,Object>>) userReponse.get(accountID);
-                                                    ArrayList<String> dateSubmit = new ArrayList<>(ls.keySet());
-                                                    int temp = 0;
-                                                    for (Map map : ls.values()) {
+                                                model.setLsAnswers(oneAnswer);
+                                                model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                listAnswers.add(model);
+                                            }
+                                            else
+                                            {
+                                                Map<String, Map<String,Object>> ls = (HashMap<String, Map<String,Object>>) userReponse.get(accountID);
+                                                ArrayList<String> dateSubmit = new ArrayList<>(ls.keySet());
+                                                int temp = 0;
+
+                                                for (Map map : ls.values()) {
+                                                    if (temp == ls.values().size() - 1)
+                                                    {
                                                         List<String> oneAnswer = new ArrayList<>();
                                                         ReportModel model = new ReportModel();
                                                         for (Object qid : map.keySet()) {
@@ -1685,73 +1858,73 @@ public class DataManager {
                                                         }
                                                         model.setLsAnswers(oneAnswer);
                                                         model.setDateSubmit(dateSubmit.get(temp));
-                                                        temp++;
+                                                        model.setAuthor(account.getUsername() + " - " + account.getIdentity());
                                                         listAnswers.add(model);
                                                     }
+                                                    temp++;
+                                                }
+                                            }
+                                        }
+                                        else if (city_code == -1)
+                                        {
+                                            if (userReponse.get(accountID).getClass() == ArrayList.class)
+                                            {
+                                                ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
+                                                Map<String, String> lastSubmitAnswer = ls.get(ls.size() - 1);
+
+                                                List<String> oneAnswer = new ArrayList<>();
+                                                ReportModel model = new ReportModel();
+                                                for (Object qid : lastSubmitAnswer.keySet()) {
+                                                    if (lastSubmitAnswer.get(qid).toString().charAt(0) == '>')
+                                                    {
+                                                        String[] imageName = lastSubmitAnswer.get(qid).toString().split(">");
+                                                        model.setImageUrl(imageName[1]);
+                                                    }
+                                                    else
+                                                        oneAnswer.add(qid + ": "+ lastSubmitAnswer.get(qid));
+                                                }
+                                                model.setLsAnswers(oneAnswer);
+                                                model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                listAnswers.add(model);
+                                            }
+                                            else
+                                            {
+                                                Map<String, Map<String,Object>> ls = (HashMap<String, Map<String,Object>>) userReponse.get(accountID);
+                                                ArrayList<String> dateSubmit = new ArrayList<>(ls.keySet());
+                                                int temp = 0;
+                                                for (Map map : ls.values()) {
+                                                    if (temp == ls.values().size() - 1)
+                                                    {
+                                                        List<String> oneAnswer = new ArrayList<>();
+                                                        ReportModel model = new ReportModel();
+                                                        for (Object qid : map.keySet()) {
+                                                            if (map.get(qid).toString().charAt(0) == '>')
+                                                            {
+                                                                String[] imageName = map.get(qid).toString().split(">");
+                                                                model.setImageUrl(imageName[1]);
+                                                                //oneAnswer.add(qid + ":");
+                                                            }
+                                                            else
+                                                                oneAnswer.add(qid + ": "+ map.get(qid));
+                                                        }
+                                                        model.setLsAnswers(oneAnswer);
+                                                        model.setDateSubmit(dateSubmit.get(temp));
+                                                        model.setAuthor(account.getUsername() + " - " + account.getIdentity());
+                                                        listAnswers.add(model);
+                                                    }
+                                                    temp++;
                                                 }
                                             }
                                         }
                                     }
                                 }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                    }
-                    else
-                    {
-                        // duyet tat ca account da tra loi survey nay
-                        for (String accountID : userReponse.keySet()) {
-
-                            if (userReponse.get(accountID).getClass() == ArrayList.class)
-                            {
-                                ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
-                                for (Map map : ls) {
-                                    List<String> oneAnswer = new ArrayList<>();
-                                    ReportModel model = new ReportModel();
-                                    for (Object qid : map.keySet()) {
-                                        if (map.get(qid).toString().charAt(0) == '>')
-                                        {
-                                            String[] imageName = map.get(qid).toString().split(">");
-                                            model.setImageUrl(imageName[1]);
-                                            //oneAnswer.add(qid + ":");
-                                        }
-                                        else
-                                            oneAnswer.add(qid + ": "+ map.get(qid));
-                                    }
-                                    model.setLsAnswers(oneAnswer);
-                                    listAnswers.add(model);
-                                }
-                            }
-                            else
-                            {
-                                Map<String, Map<String,Object>> ls = (HashMap<String, Map<String,Object>>) userReponse.get(accountID);
-                                ArrayList<String> dateSubmit = new ArrayList<>(ls.keySet());
-                                int temp = 0;
-                                for (Map map : ls.values()) {
-                                    List<String> oneAnswer = new ArrayList<>();
-                                    ReportModel model = new ReportModel();
-                                    for (Object qid : map.keySet()) {
-                                        if (map.get(qid).toString().charAt(0) == '>')
-                                        {
-                                            String[] imageName = map.get(qid).toString().split(">");
-                                            model.setImageUrl(imageName[1]);
-                                            //oneAnswer.add(qid + ":");
-                                        }
-                                        else
-                                            oneAnswer.add(qid + ": "+ map.get(qid));
-                                    }
-                                    model.setLsAnswers(oneAnswer);
-                                    model.setDateSubmit(dateSubmit.get(temp));
-                                    temp++;
-                                    listAnswers.add(model);
-                                }
                             }
 
-                        }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
 
                 }
@@ -1762,7 +1935,6 @@ public class DataManager {
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 Question q = snapshot.getValue(Question.class);

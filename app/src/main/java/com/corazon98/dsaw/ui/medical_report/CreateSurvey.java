@@ -139,6 +139,10 @@ public class CreateSurvey extends Fragment {
 
                 Toast.makeText(getContext(), "Không dược bỏ trống tên khảo sát", Toast.LENGTH_LONG).show();
             }
+            else if (lsQuestion.isEmpty())
+            {
+                Toast.makeText(getContext(), "Khảo sát chưa có câu hỏi", Toast.LENGTH_SHORT).show();
+            }
             else {
                 lvQuestion.removeAllViewsInLayout();
                 int spinner_pos = typeOfSurvey.getSelectedItemPosition();

@@ -31,6 +31,8 @@ public class Account {
 
     private int warning_distance;
 
+    private String address;
+
     public Account() {}
 
     public Account(String birthday, String identity, String password, String phonenumber,
