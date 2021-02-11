@@ -1620,6 +1620,8 @@ public class DataManager {
                                      final int city_code, final int district_code, final int ward_code) {
         Query query = mDatabaseRef.child("Answers").child(surveyid);
 
+        Log.e("DB", "district_code: " + district_code + ", ward_code: " + ward_code);
+
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -1641,9 +1643,17 @@ public class DataManager {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
                                         Account account = snapshot.getValue(Account.class);
                                         if (account.getCode_city() == city_code) {
+                                            if (district_code != 0)
+                                            {
+                                                if (account.getCode_district() != district_code - 1) continue;
+                                                else if (ward_code != 0)
+                                                {
+                                                    if (account.getCode_ward() != ward_code - 1) continue;
+                                                }
+                                            }
+
                                             if (userReponse.get(accountID).getClass() == ArrayList.class)
                                             {
                                                 ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
@@ -1789,7 +1799,8 @@ public class DataManager {
     }
 
     // Fetch cau tra loi danh rieng cho survey co cau truc report
-    public void fetchAnswerForStatistic(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid, final int city_code) {
+    public void fetchAnswerForStatistic(final MutableLiveData<List<ReportModel>> answersResult, final String surveyid,
+                                        final int city_code, final int district_code, final int ward_code) {
         Query query = mDatabaseRef.child("Answers").child(surveyid);
 
         query.addValueEventListener(new ValueEventListener() {
@@ -1814,6 +1825,14 @@ public class DataManager {
 
                                         Account account = snapshot.getValue(Account.class);
                                         if (account.getCode_city() == city_code) {
+                                            if (district_code != 0)
+                                            {
+                                                if (account.getCode_district() != district_code - 1) continue;
+                                                else if (ward_code != 0)
+                                                {
+                                                    if (account.getCode_ward() != ward_code - 1) continue;
+                                                }
+                                            }
                                             if (userReponse.get(accountID).getClass() == ArrayList.class)
                                             {
                                                 ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);

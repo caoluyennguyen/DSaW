@@ -30,7 +30,7 @@ public class ReportResultViewModel extends ViewModel {
             DataManager.Instance().fetchAnswerForReport(lsReports, reportID, city_code, district_code, ward_code);
         }
         else
-            DataManager.Instance().fetchAnswerForStatistic(lsReports, reportID, city_code);
+            DataManager.Instance().fetchAnswerForStatistic(lsReports, reportID, city_code, district_code, ward_code);
     }
 
     public MutableLiveData<List<ReportModel>> getLsReport() {
