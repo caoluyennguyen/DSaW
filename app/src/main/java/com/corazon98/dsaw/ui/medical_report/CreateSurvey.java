@@ -113,7 +113,7 @@ public class CreateSurvey extends Fragment {
             @Override
             public void onClick(View v) {
                 int spinner_pos = typeOfSurvey.getSelectedItemPosition();
-                if (spinner_pos > 1) {
+                if (spinner_pos > 0) {
                     typeOfQuestionDialog = new ChooseTypeOfQuestionDialog();
                     typeOfQuestionDialog.show(getFragmentManager(), "Type of question");
                     typeOfQuestionDialog.setTargetFragment(CreateSurvey.this, 0);

@@ -67,10 +67,10 @@ public class AdminSurveyListFragment extends Fragment {
                 SurveyModel survey= mViewModel.getLsSurvey().getValue().get(position);
                 DataCenter.surveyID = survey.getId();
 
-                if (survey.getType().equals("report"))
-                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_report_result);
-                else
+                if (survey.getType().equals("personal_medical"))
                     NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_survey_result);
+                else
+                    NavHostFragment.findNavController(getParentFragment()).navigate(R.id.go_to_report_result);
             }
         });
     }

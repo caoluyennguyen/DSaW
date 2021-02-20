@@ -1033,35 +1033,36 @@ public class DataManager {
 
         //Log.e("DB metadata", storageReference.getMetadata().toString());
 
-        storageReference.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
-            @Override
-            public void onSuccess(StorageMetadata storageMetadata) {
-                Log.e("DB metadata", storageMetadata.getContentType().toString());
-                if (storageMetadata.getContentType().toString().contains("image") || videoView == null)
+        storageReference.getMetadata().addOnSuccessListener(storageMetadata -> {
+            Log.e("DB metadata", storageMetadata.getContentType().toString());
+            if (storageMetadata.getContentType().toString().contains("image") || videoView == null)
+            {
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        result.setVisibility(View.VISIBLE);
+                        Glide.with(mContext)
+                                .load(uri)
+                                .into(result);
+                        Log.e("DB","downloaded a photo:" + uri.getPath());
+                    }
+                });
+            }
+            else
+            {
+                if (videoView != null)
                 {
-                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            result.setVisibility(View.VISIBLE);
-                            Glide.with(mContext)
-                                    .load(uri)
-                                    .into(result);
-                            Log.e("DB","downloaded a photo:" + uri.getPath());
-                        }
-                    });
+                    videoView.setVisibility(View.VISIBLE);
+                    fetchVideo(fileName, videoView, folder);
                 }
                 else
                 {
-                    if (videoView != null)
-                    {
-                        videoView.setVisibility(View.VISIBLE);
-                        fetchVideo(fileName, videoView, folder);
-                    }
+                    result.setVisibility(View.GONE);
                 }
             }
         });
 
-
+        storageReference.getMetadata().addOnFailureListener(e -> result.setVisibility(View.GONE));
     }
     public void fetchVideo(String fileName, final VideoView result, String folder) {
         mStorageRef.child(folder+"/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
