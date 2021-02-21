@@ -28,7 +28,6 @@ public class ViewCaseViewModel extends ViewModel {
     }
 
     public void fetchData() {
-
         // just have permission to view case in this area
         DataManager.Instance().fetchAllCaseOfArea(lsCases, DataCenter.currentUser.getArea_management());
     }

@@ -99,8 +99,7 @@ public class CaseFragment extends Fragment {
             String t = dateFormat.format(date);
             Log.d("TAGGG", "onChanged: date"+ t);
 
-            String location = "1,1";
-            // Ex parten: "[10.84627,106.76992999999999]null,Vietnam"
+            String location = "10.84627,106.76992999999999";
             location = trackingStatus.getLocation().split("]")[0];
             location = location.substring(1);
 
@@ -168,7 +167,7 @@ public class CaseFragment extends Fragment {
             }
 
             String f = spinner.getSelectedItem().toString().split("-")[0].split(" ")[0];
-            mViewModel.updateCase(tvCmnd.getText().toString(),f);
+            mViewModel.updateCase(tvCmnd.getText().toString(), f);
             fx = f;
         });
 

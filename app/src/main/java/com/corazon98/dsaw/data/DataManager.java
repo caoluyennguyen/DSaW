@@ -1035,6 +1035,7 @@ public class DataManager {
 
         storageReference.getMetadata().addOnSuccessListener(storageMetadata -> {
             Log.e("DB metadata", storageMetadata.getContentType().toString());
+            result.setVisibility(View.VISIBLE);
             if (storageMetadata.getContentType().toString().contains("image") || videoView == null)
             {
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -1061,9 +1062,8 @@ public class DataManager {
                 }
             }
         });
-
-        storageReference.getMetadata().addOnFailureListener(e -> result.setVisibility(View.GONE));
     }
+
     public void fetchVideo(String fileName, final VideoView result, String folder) {
         mStorageRef.child(folder+"/"+fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override

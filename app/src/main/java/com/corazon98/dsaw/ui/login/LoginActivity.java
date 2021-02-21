@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,8 +30,13 @@ import com.corazon98.dsaw.data.DataCenter;
 import com.corazon98.dsaw.data.DataManager;
 import com.corazon98.dsaw.data.model.Account;
 import com.corazon98.dsaw.utils.CurrentLocation;
+import com.corazon98.dsaw.utils.Geo;
+import com.corazon98.dsaw.utils.GeoHandle;
 import com.corazon98.dsaw.utils.LocationTrack;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -55,7 +61,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LocationTrack locationTrack;
+
     private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    LocationRequest locationRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,10 +76,11 @@ public class LoginActivity extends AppCompatActivity {
 
         getLocationPermission();
 
+        locationTrack = new LocationTrack(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
     }
 
-    void InitComponent()
-    {
+    void InitComponent() {
         account = findViewById(R.id.account);
         password = findViewById(R.id.password);
         get_password = findViewById(R.id.get_password);
@@ -79,15 +89,13 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.login_progessbar);
     }
 
-    void InitEvent()
-    {
+    void InitEvent() {
         login.setOnClickListener(v -> LoginProcess());
         sign_up.setOnClickListener(v -> CreateNewAccount());
         get_password.setOnClickListener(v -> ResetPassword());
     }
 
-    public void LoginProcess()
-    {
+    public void LoginProcess() {
         if (account.getText().toString().length() != 0 && password.getText().toString().length() != 0) {
 
             progressBar.setIndeterminate(true);
@@ -96,48 +104,35 @@ public class LoginActivity extends AppCompatActivity {
             DataManager.Instance().setLoginProcess(this);
             DataManager.Instance().ProcessLogin(account.getText().toString(), password.getText().toString());
 
-        }
-        else if (account.getText().toString().equalsIgnoreCase("1")) {
+        } else if (account.getText().toString().equalsIgnoreCase("1")) {
             DataManager.Instance().setLoginProcess(this);
             DataManager.Instance().ProcessLogin("tihtk.98@gmail.com", "123456789");
-        }
-        else{
+        } else {
             Toast.makeText(getApplicationContext(), "Xin kiểm tra lại thông tin đăng nhập!", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void LoadUserDataComplete()
-    {
+    public void LoadUserDataComplete() {
         DataCenter.currentUser = new Account();
         DataCenter.currentUser.setEmail(account.getText().toString());
         preSetup();
     }
 
-    public void LoginSuccessful()
-    {
-        // Khong xu ly thong tin user o day ma se de cho qua main activity lam
-        //========================================================
-        //if (account.getText().toString().equalsIgnoreCase("1")) DataManager.Instance().GetUserDataByEmail("tihtk.98@gmail.com");
-        //else DataManager.Instance().GetUserDataByEmail(account.getText().toString());
-        //Log.e("LoginProcess","Account: " + DataCenter.currentUser.getUsername());
-
+    public void LoginSuccessful() {
         Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_LONG).show();
     }
 
-    public void LoginFail()
-    {
+    public void LoginFail() {
         Toast.makeText(getApplicationContext(), "Xin kiểm tra lại thông tin đăng nhập!", Toast.LENGTH_LONG).show();
         hiddenProgessbar();
     }
 
-    public void CreateNewAccount()
-    {
+    public void CreateNewAccount() {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
 
-    public void ResetPassword()
-    {
+    public void ResetPassword() {
         Intent intent = new Intent(this, ResetPasswordActivity.class);
         startActivity(intent);
     }
@@ -149,29 +144,52 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void preSetup() {
+        locationTrack = new LocationTrack(this);
 
         //set current account after login to using later
         MutableLiveData<Account> user = new MutableLiveData<>();
-        DataManager.Instance().fetchAccountByEmail(DataCenter.currentUser.getEmail(),user);
+        DataManager.Instance().fetchAccountByEmail(DataCenter.currentUser.getEmail(), user);
         user.observe(this, account -> {
             // update to get full info of current account
             DataCenter.currentUser = account;
-            locationTrack = new LocationTrack(this);
+            //locationTrack = new LocationTrack(this);
+            locationTrack.getLocation();
+
+            /*double longitude = locationTrack.getLongitude();
+            double latitude = locationTrack.getLatitude();*/
 
             if (locationTrack.canGetLocation()) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    // Logic to handle location object
+                                    DataCenter.currentLocation = new CurrentLocation(location.getLatitude(), location.getLongitude());
+                                    Log.e("LOCATION", "onCreate: location: " + location.getLatitude() + "-" + location.getLongitude());
+                                }
+                            }
+                        });
 
-                double longitude = locationTrack.getLongitude();
-                double latitude = locationTrack.getLatitude();
-
-                DataCenter.currentLocation = new CurrentLocation(latitude, longitude);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-                Log.e("LOCATION", "onCreate: location: " + longitude + "-" + latitude);
-            }
-            else {
+                //Log.e("LOCATION", "onCreate: location: " + longitude + "-" + latitude);
+            } else {
                 locationTrack.showSettingsAlert();
             }
+
 
             // Open main screen when have enough data
             hiddenProgessbar();
@@ -220,6 +238,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean canMakeSmores() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
+
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override

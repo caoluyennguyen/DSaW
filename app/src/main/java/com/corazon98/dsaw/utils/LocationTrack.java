@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.corazon98.dsaw.data.DataCenter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+
+import static java.lang.Math.abs;
 
 public class LocationTrack extends Service implements LocationListener {
 
@@ -34,9 +37,10 @@ public class LocationTrack extends Service implements LocationListener {
     double latitude;
     double longitude;
 
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;
 
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+    //private static final long MIN_TIME_BW_UPDATES = 1000 * 30;
 
     protected LocationManager locationManager;
     private FusedLocationProviderClient fusedLocationClient;
@@ -47,7 +51,24 @@ public class LocationTrack extends Service implements LocationListener {
         getLocation();
     }
 
-    private Location getLocation() {
+    public void RequestLocationChanged(Location location)
+    {
+        // update location to db here :v
+        Log.e("LOCATION", "onLocationChanged: "+ location.getLongitude() + ":" + location.getLatitude());
+
+        if (abs(location.getLatitude() - DataCenter.currentLocation.getLatitude()) < 0.1
+        && abs(location.getLongitude() - DataCenter.currentLocation.longitude) < 0.1) return;
+
+        /*if (Integer.compare(location.getLongitude(), DataCenter.currentLocation.longitude))
+        {
+
+        }*/
+        // get address from google map
+        GeoHandle handle = new GeoHandle();
+        Geo.getAddressFromLocation(location.getLatitude(), location.getLongitude(), mContext, handle);
+    }
+
+    public Location getLocation() {
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);

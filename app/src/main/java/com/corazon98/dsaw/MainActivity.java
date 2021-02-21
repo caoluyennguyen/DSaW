@@ -1,9 +1,16 @@
 package com.corazon98.dsaw;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.PersistableBundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.MutableLiveData;
@@ -14,6 +21,12 @@ import androidx.navigation.ui.NavigationUI;
 import com.corazon98.dsaw.data.model.Account;
 import com.corazon98.dsaw.utils.Geo;
 import com.corazon98.dsaw.utils.GeoHandle;
+import com.corazon98.dsaw.utils.LocationTrack;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.corazon98.dsaw.data.DataCenter;
 import com.corazon98.dsaw.data.DataManager;
@@ -25,6 +38,11 @@ import com.corazon98.dsaw.utils.Utils;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    LocationTrack locationTrack;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    LocationRequest locationRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -100,15 +118,56 @@ public class MainActivity extends AppCompatActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        locationTrack = new LocationTrack(this);
+        locationRequest = LocationRequest.create();
+        locationTrack = new LocationTrack(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        createLocationRequest();
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // ...
+                    locationTrack.RequestLocationChanged(location);
+                }
+            }
+        };
+    }
 
-        ///Test get name of location
-        //GeoHandle handle = new GeoHandle();
-        //Geo.getAddressFromLocation(10.877898, 106.807128,getApplicationContext(),handle);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        locationTrack.getLocation();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
     }
 
     public double calculateDistance(double lat1,
-                                  double lat2, double lon1,
-                                  double lon2)
+                                    double lat2, double lon1,
+                                    double lon2)
     {
 
         // The math module contains a function
@@ -134,6 +193,16 @@ public class MainActivity extends AppCompatActivity {
 
         // calculate the result
         return(c * r);
+    }
+
+    protected void createLocationRequest() {
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
 //    private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {
