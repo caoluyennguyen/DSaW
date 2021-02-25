@@ -19,7 +19,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#000"
-        android:text="Hello, Admin" />
+        android:text="Xin chào, admin" />
 
     <ScrollView
         android:layout_width="match_parent"

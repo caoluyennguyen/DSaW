@@ -1850,6 +1850,7 @@ public class DataManager {
                                             {
                                                 ArrayList<Map<String, String>> ls = (ArrayList<Map<String, String>>) userReponse.get(accountID);
                                                 Map<String,String> lastSubmitAnswer = ls.get(ls.size() - 1);
+                                                //Map<String,String> lastSubmitAnswer = ls.get(0);
 
                                                 List<String> oneAnswer = new ArrayList<>();
                                                 ReportModel model = new ReportModel();
@@ -1925,7 +1926,7 @@ public class DataManager {
                                                 ArrayList<String> dateSubmit = new ArrayList<>(ls.keySet());
                                                 int temp = 0;
                                                 for (Map map : ls.values()) {
-                                                    if (temp == ls.values().size() - 1)
+                                                    /*if (temp == ls.values().size() - 1)
                                                     {
                                                         List<String> oneAnswer = new ArrayList<>();
                                                         ReportModel model = new ReportModel();
@@ -1944,7 +1945,25 @@ public class DataManager {
                                                         model.setAuthor(account.getUsername() + " - " + account.getStreet());
                                                         listAnswers.add(model);
                                                     }
-                                                    temp++;
+                                                    temp++;*/
+
+                                                    List<String> oneAnswer = new ArrayList<>();
+                                                    ReportModel model = new ReportModel();
+                                                    for (Object qid : map.keySet()) {
+                                                        if (map.get(qid).toString().charAt(0) == '>')
+                                                        {
+                                                            String[] imageName = map.get(qid).toString().split(">");
+                                                            model.setImageUrl(imageName[1]);
+                                                            //oneAnswer.add(qid + ":");
+                                                        }
+                                                        else
+                                                            oneAnswer.add(qid + ": "+ map.get(qid));
+                                                    }
+                                                    model.setLsAnswers(oneAnswer);
+                                                    model.setDateSubmit(dateSubmit.get(temp));
+                                                    model.setAuthor(account.getUsername() + " - " + account.getStreet());
+                                                    listAnswers.add(model);
+                                                    break;
                                                 }
                                             }
                                         }

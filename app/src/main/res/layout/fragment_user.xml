@@ -187,7 +187,7 @@
                     android:layout_height="40dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/button_green"
-                    android:text="Update"
+                    android:text="Cập nhật"
                     android:textColor="#FFFFFF" />
             </LinearLayout>
         </LinearLayout>

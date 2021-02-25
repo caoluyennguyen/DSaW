@@ -144,12 +144,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void preSetup() {
-        locationTrack = new LocationTrack(this);
-
         //set current account after login to using later
         MutableLiveData<Account> user = new MutableLiveData<>();
         DataManager.Instance().fetchAccountByEmail(DataCenter.currentUser.getEmail(), user);
         user.observe(this, account -> {
+            locationTrack = new LocationTrack(this);
             // update to get full info of current account
             DataCenter.currentUser = account;
             //locationTrack = new LocationTrack(this);

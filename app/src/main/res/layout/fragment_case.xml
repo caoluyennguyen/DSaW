@@ -93,8 +93,8 @@
             android:layout_width="150dp"
             android:layout_height="40dp"
             app:layout_constraintLeft_toLeftOf="@id/import_case_parent"
-            android:background="@drawable/background_button"
-            android:text="Update"
+            android:background="@drawable/button_green"
+            android:text="Cập nhật"
             android:textAllCaps="false"
             android:textColor="#fff"
             android:gravity="center"/>

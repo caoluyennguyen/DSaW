@@ -98,13 +98,21 @@ public class CreateNewsFragment extends Fragment {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link = edtLink.getText().toString();
-                if (!link.startsWith("http://") || !link.startsWith("https://"))
-                    link = "https://" + link;
-                DataManager.Instance().AddNewPost(edtTitle.getText().toString(), link, edtContent.getText().toString(),
-                        DataManager.Instance().UploadFileToFirebase("posts/", coverImg));
-                Toast.makeText(getContext(), "Đăng bài viết thành công", Toast.LENGTH_LONG).show();
-                UnfocusElement();
+                try
+                {
+                    String link = edtLink.getText().toString();
+                    if (!link.startsWith("http://") || !link.startsWith("https://"))
+                        link = "https://" + link;
+                    DataManager.Instance().AddNewPost(edtTitle.getText().toString(), link, edtContent.getText().toString(),
+                            DataManager.Instance().UploadFileToFirebase("posts/", coverImg));
+                    Toast.makeText(getContext(), "Đăng bài viết thành công", Toast.LENGTH_LONG).show();
+                    UnfocusElement();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Tạo bài viết thất bại", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

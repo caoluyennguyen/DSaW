@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:hint="Nhập email đã đăng ký"
-                android:text="tihtk.98@gmail.com"
+                android:text="luyen.htk98@gmail.com"
                 android:textSize="15dp" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:hint="Mật khẩu"
                 android:inputType="textPassword"
-                android:text="123456789"
+                android:text="123456"
                 android:textSize="15dp" />
 
             <TextView

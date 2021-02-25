@@ -224,7 +224,7 @@ public class MapVisualizeFragment extends Fragment implements OnMapReadyCallback
 
             caseInfoDialog.show();
             Toast.makeText(getActivity(),
-                    c.getName() + " is in " + c.getArea() + " from " + c.getBegin_time(),
+                    c.getName() + "đã ở trong khu vực " + c.getArea() + " từ ngày " + c.getBegin_time(),
                     Toast.LENGTH_SHORT).show();
             // Return false to indicate that we have not consumed the event and that we wish
             // for the default behavior to occur (which is for the camera to move such that the

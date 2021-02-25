@@ -41,11 +41,18 @@ public class GeoHandle extends Handler {
         List<TrackingStatus> l = new ArrayList<>();
         l.add(status);
 
-        RouteData routeData = new RouteData("set later",
-                DataCenter.currentUser.getIdentity(),
-                l,
-                DataCenter.currentUser.getUsername());
+        try
+        {
+            RouteData routeData = new RouteData("set later",
+                    DataCenter.currentUser.getIdentity(),
+                    l,
+                    DataCenter.currentUser.getUsername());
 
-        DataManager.Instance().updateRouteData(routeData);
+            DataManager.Instance().updateRouteData(routeData);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
