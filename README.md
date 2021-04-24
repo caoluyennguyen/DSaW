@@ -6,7 +6,7 @@
   Project by Luyen Nguyen
 </p>
 <p align="center">  
-Project for Graduted Thesis
+Project for Gradute Thesis
 </p>
 
 
