@@ -36,7 +36,7 @@ Copyright 2021 - DSaW by Luyen Nguyen (UIT)
 <h1>Tiếng Việt</h1>
 
 <p align="center">
-  Đồ án của Luyện Nguyễn
+  Đồ án của Nguyễn Cao Luyện
 </p>
 <p align="center">  
 Khóa luận tốt nghiệp
